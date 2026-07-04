@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Reyansh Patel portfolio: frontend development, UI design, projects, experience, education, and contact details.">
+  <meta name="author" content="Reyansh Patel">
+  <meta name="theme-color" content="#101418">
+  <meta property="og:title" content="Reyansh Patel | Frontend Portfolio">
+  <meta property="og:description" content="A polished portfolio for frontend development, UI refinement, and digital product work.">
+  <meta property="og:type" content="website">
+  <title>Reyansh Patel | Frontend Portfolio</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Reyansh Patel",
+      "jobTitle": "Frontend Developer",
+      "url": ".",
+      "sameAs": [
+        "https://github.com/johndoe",
+        "https://linkedin.com/in/johndoe"
+      ],
+      "knowsAbout": ["Frontend Development", "UI Design", "Responsive Web Design", "JavaScript"]
+    }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <nav class="nav shell" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="Reyansh Patel home">
+        <span class="brand-mark" aria-hidden="true">RP</span>
+        <span>Reyansh Patel</span>
+      </a>
+
+      <button class="icon-button menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-controls="primaryMenu" aria-expanded="false">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+
+      <div class="nav-menu" id="primaryMenu">
+        <a href="#about">About</a>
+        <a href="#education">Education</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+        <a href="about.html">About Page</a>
+      </div>
+
+      <button class="icon-button theme-toggle" id="themeToggle" type="button" aria-label="Switch theme">
+        <svg class="theme-icon-sun" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 4V2m0 20v-2m8-8h2M2 12h2m14.95-6.95 1.41-1.41M3.64 20.36l1.41-1.41m0-13.9L3.64 3.64m16.72 16.72-1.41-1.41M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/></svg>
+        <svg class="theme-icon-moon" aria-hidden="true" viewBox="0 0 24 24"><path d="M21 14.2A8.5 8.5 0 0 1 9.8 3a7 7 0 1 0 11.2 11.2Z"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero shell section" id="top" aria-labelledby="hero-title">
+      <div class="hero-content reveal">
+        <p class="eyebrow">Frontend Developer | UI Designer | Digital Creator</p>
+        <h1 id="hero-title">I build polished web experiences with clean code and thoughtful design.</h1>
+        <p class="hero-lead">
+          I am Reyansh Patel, a frontend-focused creator who enjoys turning ideas into responsive,
+          accessible, and visually balanced interfaces.
+        </p>
+        <div class="button-row" aria-label="Primary actions">
+          <a class="button button-primary" href="#projects">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+            View Projects
+          </a>
+          <a class="button button-secondary" href="#contact">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4m4-5 5 5 5-5m-5 5V3"/></svg>
+            Contact Me
+          </a>
+          <button class="button button-ghost" id="printPage" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/></svg>
+            Print
+          </button>
+        </div>
+      </div>
+
+      <aside class="hero-panel reveal" aria-label="Profile summary">
+        <div class="profile-card">
+          <div class="profile-photo" aria-hidden="true">
+            <img src="C:/Users/REYANSH/OneDrive/Pictures/my photo.png" alt="" loading="eager">
+            <span>RP</span>
+          </div>
+          <div>
+            <h2>Reyansh Patel</h2>
+            <p>Frontend developer focused on elegant, responsive portfolio and product interfaces.</p>
+          </div>
+        </div>
+        <dl class="quick-stats">
+          <div>
+            <dt><span class="counter" data-target="20">0</span>+</dt>
+            <dd>Project ideas</dd>
+          </div>
+          <div>
+            <dt><span class="counter" data-target="6">0</span>+</dt>
+            <dd>Years learning</dd>
+          </div>
+          <div>
+            <dt><span class="counter" data-target="100">0</span>%</dt>
+            <dd>Focus</dd>
+          </div>
+        </dl>
+      </aside>
+    </section>
+
+    <section class="section shell" id="about" aria-labelledby="about-title">
+      <div class="section-header reveal">
+        <p class="eyebrow">About</p>
+        <h2 id="about-title">A calm, practical approach to modern frontend work.</h2>
+        <p>
+          I care about interfaces that feel clear, responsive, and intentional. My work combines
+          visual polish with practical structure so pages stay easy to use and easy to maintain.
+        </p>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card reveal">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h16"/></svg>
+          </div>
+          <h3>Readable Structure</h3>
+          <p>Clean sections, predictable navigation, and balanced content hierarchy.</p>
+        </article>
+        <article class="feature-card reveal">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 3 2 8l10 5 10-5-10-5Zm0 10v8m-7-6 7 4 7-4"/></svg>
+          </div>
+          <h3>Polished UI</h3>
+          <p>Consistent spacing, refined components, and subtle motion that supports the content.</p>
+        </article>
+        <article class="feature-card reveal">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 20V10M18 20V4M6 20v-6"/></svg>
+          </div>
+          <h3>Performance Mindset</h3>
+          <p>Lightweight styling, no heavy libraries, optimized JavaScript, and reduced layout shifts.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section shell split-section" id="education" aria-labelledby="education-title">
+      <div class="section-header reveal">
+        <p class="eyebrow">Education</p>
+        <h2 id="education-title">Learning path and technical foundation.</h2>
+        <p>Focused on strong fundamentals, practical execution, and continuous improvement.</p>
+      </div>
+
+      <div class="timeline reveal">
+        <article class="timeline-item">
+          <span class="timeline-marker" aria-hidden="true"></span>
+          <div>
+            <p class="timeline-date">2026</p>
+            <h3>Frontend Development</h3>
+            <p>Responsive layouts, semantic HTML, modern CSS, JavaScript, accessibility, and UI polish.</p>
+          </div>
+        </article>
+        <article class="timeline-item">
+          <span class="timeline-marker" aria-hidden="true"></span>
+          <div>
+            <p class="timeline-date">2024 - 2025</p>
+            <h3>Technology and Design Practice</h3>
+            <p>Built a foundation in web development, visual hierarchy, and digital product thinking.</p>
+          </div>
+        </article>
+        <article class="timeline-item">
+          <span class="timeline-marker" aria-hidden="true"></span>
+          <div>
+            <p class="timeline-date">Ongoing</p>
+            <h3>Continuous Learning</h3>
+            <p>Improving code quality, interaction design, and maintainable frontend architecture.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section shell" id="skills" aria-labelledby="skills-title">
+      <div class="section-header reveal">
+        <p class="eyebrow">Skills</p>
+        <h2 id="skills-title">Core strengths.</h2>
+        <p>Skills are grouped by practical impact: building, designing, solving, and communicating.</p>
+      </div>
+
+      <div class="skills-grid">
+        <article class="skill-card reveal">
+          <div class="skill-head">
+            <h3>Frontend Development</h3>
+            <span>90%</span>
+          </div>
+          <p>Semantic HTML, CSS architecture, responsive layouts, and JavaScript interactions.</p>
+          <div class="progress-track" aria-label="Frontend Development skill level 90 percent">
+            <span class="skill-progress" data-width="90"></span>
+          </div>
+        </article>
+        <article class="skill-card reveal">
+          <div class="skill-head">
+            <h3>UI Design</h3>
+            <span>85%</span>
+          </div>
+          <p>Spacing systems, visual hierarchy, component consistency, and interaction polish.</p>
+          <div class="progress-track" aria-label="UI Design skill level 85 percent">
+            <span class="skill-progress" data-width="85"></span>
+          </div>
+        </article>
+        <article class="skill-card reveal">
+          <div class="skill-head">
+            <h3>Problem Solving</h3>
+            <span>88%</span>
+          </div>
+          <p>Breaking complex ideas into clear, usable, and maintainable interface decisions.</p>
+          <div class="progress-track" aria-label="Problem Solving skill level 88 percent">
+            <span class="skill-progress" data-width="88"></span>
+          </div>
+        </article>
+        <article class="skill-card reveal">
+          <div class="skill-head">
+            <h3>Communication</h3>
+            <span>82%</span>
+          </div>
+          <p>Explaining ideas clearly, collaborating thoughtfully, and presenting work professionally.</p>
+          <div class="progress-track" aria-label="Communication skill level 82 percent">
+            <span class="skill-progress" data-width="82"></span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section shell" id="experience" aria-labelledby="experience-title">
+      <div class="section-header reveal">
+        <p class="eyebrow">Experience</p>
+        <h2 id="experience-title">Practical work style.</h2>
+        <p>Experience focused on building reliable interfaces and refining the details users notice.</p>
+      </div>
+
+      <div class="experience-grid">
+        <article class="experience-card reveal">
+          <p class="role">Frontend Developer</p>
+          <h3>Responsive Portfolio Systems</h3>
+          <ul>
+            <li>Built section-based portfolio pages with semantic HTML and reusable CSS components.</li>
+            <li>Improved navigation, button states, mobile layouts, and content readability.</li>
+            <li>Reduced unnecessary animation and removed fragile decorative effects.</li>
+          </ul>
+        </article>
+        <article class="experience-card reveal">
+          <p class="role">UI Refinement</p>
+          <h3>Interface Polish and Review</h3>
+          <ul>
+            <li>Audited spacing, alignment, typography, contrast, and hover states.</li>
+            <li>Organized CSS with design tokens and predictable component naming.</li>
+            <li>Improved accessibility through focus states, labels, landmarks, and reduced motion support.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section shell" id="projects" aria-labelledby="projects-title">
+      <div class="section-header reveal">
+        <p class="eyebrow">Projects</p>
+        <h2 id="projects-title">Selected project concepts.</h2>
+        <p>Project cards show the type of polished product thinking this portfolio is designed to present.</p>
+      </div>
+
+      <div class="project-grid">
+        <article class="project-card reveal">
+          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80" alt="Laptop showing frontend development code" loading="lazy">
+          <div class="project-body">
+            <h3>Portfolio Website</h3>
+            <p>A responsive personal portfolio focused on speed, accessibility, and clean presentation.</p>
+            <div class="tag-list" aria-label="Technologies">
+              <span>HTML</span>
+              <span>CSS</span>
+              <span>JavaScript</span>
+            </div>
+            <div class="project-actions">
+              <a href="https://github.com" target="_blank" rel="noreferrer">GitHub</a>
+              <a href="#top">Live Preview</a>
+            </div>
+          </div>
+        </article>
+        <article class="project-card reveal">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80" alt="Analytics dashboard interface on a screen" loading="lazy">
+          <div class="project-body">
+            <h3>Analytics Dashboard</h3>
+            <p>A dashboard concept with dense information, clear hierarchy, and calm visual rhythm.</p>
+            <div class="tag-list" aria-label="Technologies">
+              <span>UI Design</span>
+              <span>Data</span>
+              <span>UX</span>
+            </div>
+            <div class="project-actions">
+              <a href="https://github.com" target="_blank" rel="noreferrer">GitHub</a>
+              <a href="#contact">Discuss</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section shell" id="achievements" aria-labelledby="achievements-title">
+      <div class="section-header reveal">
+        <p class="eyebrow">Achievements</p>
+        <h2 id="achievements-title">Progress worth highlighting.</h2>
+      </div>
+
+      <div class="compact-grid">
+        <article class="compact-card reveal">
+          <h3>Academic Excellence</h3>
+          <p>Consistent commitment to technical and analytical learning.</p>
+        </article>
+        <article class="compact-card reveal">
+          <h3>Design Discipline</h3>
+          <p>Strong focus on visual hierarchy, spacing, and presentation quality.</p>
+        </article>
+        <article class="compact-card reveal">
+          <h3>Professional Growth</h3>
+          <p>Developing the mindset and habits of a careful frontend developer.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section shell" id="services" aria-labelledby="services-title">
+      <div class="section-header reveal">
+        <p class="eyebrow">Services</p>
+        <h2 id="services-title">How I can help.</h2>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card reveal">
+          <h3>Frontend Development</h3>
+          <p>Responsive, accessible pages built with clean HTML, CSS, and JavaScript.</p>
+        </article>
+        <article class="feature-card reveal">
+          <h3>Portfolio Design</h3>
+          <p>Professional personal websites that feel polished and easy to navigate.</p>
+        </article>
+        <article class="feature-card reveal">
+          <h3>UI Refinement</h3>
+          <p>Layout, spacing, contrast, and interaction improvements for existing pages.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section shell" id="testimonials" aria-labelledby="testimonials-title">
+      <div class="section-header reveal">
+        <p class="eyebrow">Testimonials</p>
+        <h2 id="testimonials-title">What people value.</h2>
+      </div>
+
+      <div class="testimonial-grid">
+        <figure class="testimonial-card reveal">
+          <blockquote>Thoughtful, polished, and calm. The design feels modern and trustworthy.</blockquote>
+          <figcaption>Design Collaborator</figcaption>
+        </figure>
+        <figure class="testimonial-card reveal">
+          <blockquote>The presentation feels intentional, with clarity in every detail.</blockquote>
+          <figcaption>Project Partner</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section shell contact-section" id="contact" aria-labelledby="contact-title">
+      <div class="section-header reveal">
+        <p class="eyebrow">Contact</p>
+        <h2 id="contact-title">Let us build something clean and useful.</h2>
+        <p>Send a short note or copy the email below. The form validates locally and prepares a mail message.</p>
+      </div>
+
+      <div class="contact-grid">
+        <form class="contact-form reveal" id="contactForm">
+          <label>
+            <span>Name</span>
+            <input name="name" type="text" autocomplete="name" required>
+          </label>
+          <label>
+            <span>Email</span>
+            <input name="email" type="email" autocomplete="email" required>
+          </label>
+          <label>
+            <span>Message</span>
+            <textarea name="message" rows="5" required></textarea>
+          </label>
+          <button class="button button-primary" type="submit">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4 20-7Z"/></svg>
+            Prepare Email
+          </button>
+        </form>
+
+        <aside class="contact-card reveal" aria-label="Contact details">
+          <div>
+            <span>Email</span>
+            <strong id="emailText">john.doe@example.com</strong>
+            <button class="icon-button" id="copyEmail" type="button" aria-label="Copy email address">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 8h11v11H8zM5 15H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1"/></svg>
+            </button>
+          </div>
+          <div>
+            <span>GitHub</span>
+            <a href="https://github.com/johndoe" target="_blank" rel="noreferrer">github.com/johndoe</a>
+          </div>
+          <div>
+            <span>LinkedIn</span>
+            <a href="https://linkedin.com/in/johndoe" target="_blank" rel="noreferrer">linkedin.com/in/johndoe</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer shell">
+    <p>Copyright 2026 Reyansh Patel. Built with semantic HTML, organized CSS, and lightweight JavaScript.</p>
+    <a href="#top">Back to top</a>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

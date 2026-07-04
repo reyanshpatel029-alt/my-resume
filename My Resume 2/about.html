@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="About Reyansh Patel: frontend development approach, values, workflow, and portfolio review improvements.">
+  <meta name="author" content="Reyansh Patel">
+  <meta name="theme-color" content="#101418">
+  <meta property="og:title" content="About Reyansh Patel">
+  <meta property="og:description" content="Learn more about Reyansh Patel's frontend development approach and design values.">
+  <meta property="og:type" content="profile">
+  <title>About Reyansh Patel | Portfolio</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <nav class="nav shell" aria-label="Primary navigation">
+      <a class="brand" href="index.html#top" aria-label="Reyansh Patel home">
+        <span class="brand-mark" aria-hidden="true">RP</span>
+        <span>Reyansh Patel</span>
+      </a>
+
+      <button class="icon-button menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-controls="primaryMenu" aria-expanded="false">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+
+      <div class="nav-menu" id="primaryMenu">
+        <a href="index.html#about">About</a>
+        <a href="index.html#education">Education</a>
+        <a href="index.html#skills">Skills</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="index.html#projects">Projects</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+
+      <button class="icon-button theme-toggle" id="themeToggle" type="button" aria-label="Switch theme">
+        <svg class="theme-icon-sun" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 4V2m0 20v-2m8-8h2M2 12h2m14.95-6.95 1.41-1.41M3.64 20.36l1.41-1.41m0-13.9L3.64 3.64m16.72 16.72-1.41-1.41M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/></svg>
+        <svg class="theme-icon-moon" aria-hidden="true" viewBox="0 0 24 24"><path d="M21 14.2A8.5 8.5 0 0 1 9.8 3a7 7 0 1 0 11.2 11.2Z"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="section shell page-hero" aria-labelledby="about-page-title">
+      <div class="section-header reveal">
+        <p class="eyebrow">About Page</p>
+        <h1 id="about-page-title">Building with clarity, discipline, and a strong eye for detail.</h1>
+        <p>
+          This page explains the working style behind the portfolio: organized code, clean visual
+          systems, accessible interactions, and thoughtful content presentation.
+        </p>
+      </div>
+    </section>
+
+    <section class="section shell" aria-labelledby="values-title">
+      <div class="section-header reveal">
+        <p class="eyebrow">Values</p>
+        <h2 id="values-title">What guides the work.</h2>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card reveal">
+          <h3>Useful Before Decorative</h3>
+          <p>Every visual choice should make the portfolio easier to understand, scan, or trust.</p>
+        </article>
+        <article class="feature-card reveal">
+          <h3>Consistency Builds Quality</h3>
+          <p>Spacing, typography, buttons, cards, and states follow one shared system.</p>
+        </article>
+        <article class="feature-card reveal">
+          <h3>Fast Pages Feel Better</h3>
+          <p>Lightweight assets and minimal JavaScript improve loading speed and user confidence.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section shell split-section" aria-labelledby="workflow-title">
+      <div class="section-header reveal">
+        <p class="eyebrow">Workflow</p>
+        <h2 id="workflow-title">How I improve a frontend project.</h2>
+      </div>
+
+      <div class="timeline reveal">
+        <article class="timeline-item">
+          <span class="timeline-marker" aria-hidden="true"></span>
+          <div>
+            <p class="timeline-date">1</p>
+            <h3>Audit</h3>
+            <p>Review UI consistency, spacing, typography, responsiveness, accessibility, and performance.</p>
+          </div>
+        </article>
+        <article class="timeline-item">
+          <span class="timeline-marker" aria-hidden="true"></span>
+          <div>
+            <p class="timeline-date">2</p>
+            <h3>Refactor</h3>
+            <p>Separate structure, styles, and behavior into clear files with predictable names.</p>
+          </div>
+        </article>
+        <article class="timeline-item">
+          <span class="timeline-marker" aria-hidden="true"></span>
+          <div>
+            <p class="timeline-date">3</p>
+            <h3>Polish</h3>
+            <p>Refine states, motion, copy, alignment, and mobile behavior until the result feels complete.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section shell contact-section" aria-labelledby="about-contact-title">
+      <div class="section-header reveal">
+        <p class="eyebrow">Next Step</p>
+        <h2 id="about-contact-title">Ready to connect?</h2>
+        <p>Return to the main portfolio to view projects, skills, experience, and contact details.</p>
+      </div>
+      <a class="button button-primary" href="index.html#contact">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+        Go to Contact
+      </a>
+    </section>
+  </main>
+
+  <footer class="site-footer shell">
+    <p>Copyright 2026 Reyansh Patel. About page refined for clarity and consistency.</p>
+    <a href="index.html#top">Home</a>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

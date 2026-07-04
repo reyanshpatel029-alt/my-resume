@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Productivity Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="dashboard-header">
+        <div class="title-group">
+          <span class="section-kicker">Productivity Dashboard</span>
+          <h1 id="dashboardTitle">MONTH YEAR</h1>
+        </div>
+        <div class="date-controls" aria-label="Dashboard date controls">
+          <label>
+            <span>Month</span>
+            <select id="monthSelect"></select>
+          </label>
+          <label>
+            <span>Year</span>
+            <select id="yearSelect"></select>
+          </label>
+        </div>
+      </header>
+
+      <section class="stats-grid" aria-label="Statistics">
+        <article class="stat-card">
+          <span>Number of Habits</span>
+          <strong id="statHabitCount">0</strong>
+        </article>
+        <article class="stat-card">
+          <span>Completed Habits</span>
+          <strong id="statCompletedHabits">0</strong>
+        </article>
+        <article class="stat-card">
+          <span>Completion %</span>
+          <strong id="statCompletion">0%</strong>
+        </article>
+        <article class="stat-card">
+          <span>Current Streak</span>
+          <strong id="statCurrentStreak">0</strong>
+        </article>
+        <article class="stat-card">
+          <span>Longest Streak</span>
+          <strong id="statLongestStreak">0</strong>
+        </article>
+        <article class="stat-card">
+          <span>Total Tasks</span>
+          <strong id="statTotalTasks">0</strong>
+        </article>
+        <article class="stat-card">
+          <span>Completed Tasks</span>
+          <strong id="statCompletedTasks">0</strong>
+        </article>
+        <article class="stat-card">
+          <span>Study Hours</span>
+          <strong id="statStudyHours">0</strong>
+        </article>
+      </section>
+
+      <section class="panel tracker-panel">
+        <div class="panel-header">
+          <div>
+            <span class="section-kicker">Monthly</span>
+            <h2>Habit Tracker</h2>
+          </div>
+          <button class="primary-btn" id="addHabitBtn" type="button">Add Habit</button>
+        </div>
+
+        <div class="tracker-frame">
+          <table class="habit-table" id="habitTable" aria-label="Monthly habit tracker">
+            <thead id="habitTableHead"></thead>
+            <tbody id="habitTableBody"></tbody>
+            <tfoot id="habitTableFoot"></tfoot>
+          </table>
+        </div>
+
+        <div class="monthly-progress">
+          <div class="progress-copy">
+            <span>Monthly Progress</span>
+            <strong id="monthlyProgressText">0%</strong>
+          </div>
+          <div class="progress-track" aria-hidden="true">
+            <div class="progress-fill" id="monthlyProgressFill"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel chart-panel">
+        <div class="panel-header">
+          <div>
+            <span class="section-kicker">Analytics</span>
+            <h2>Daily Completion Trend</h2>
+          </div>
+        </div>
+        <div class="chart-shell">
+          <canvas id="habitTrendChart" aria-label="Daily completion trend"></canvas>
+        </div>
+      </section>
+
+      <section class="panel weekly-panel">
+        <div class="panel-header week-header">
+          <div>
+            <span class="section-kicker">Weekly</span>
+            <h2>Dashboard</h2>
+          </div>
+          <strong id="weekRange" class="week-range-label">Weeks</strong>
+        </div>
+        <div class="weekly-grid" id="weeklyGrid"></div>
+      </section>
+
+      <section class="analytics-grid" aria-label="Dashboard analytics">
+        <article class="metric-card">
+          <span>Daily Completion %</span>
+          <strong id="metricDailyCompletion">0%</strong>
+        </article>
+        <article class="metric-card">
+          <span>Weekly Completion %</span>
+          <strong id="metricWeeklyCompletion">0%</strong>
+        </article>
+        <article class="metric-card">
+          <span>Monthly Completion %</span>
+          <strong id="metricMonthlyCompletion">0%</strong>
+        </article>
+        <article class="metric-card">
+          <span>Most Productive Day</span>
+          <strong id="metricMostProductive">-</strong>
+        </article>
+        <article class="metric-card">
+          <span>Least Productive Day</span>
+          <strong id="metricLeastProductive">-</strong>
+        </article>
+        <article class="metric-card">
+          <span>Task Completion Rate</span>
+          <strong id="metricTaskRate">0%</strong>
+        </article>
+        <article class="metric-card">
+          <span>Habit Completion Rate</span>
+          <strong id="metricHabitRate">0%</strong>
+        </article>
+        <article class="metric-card">
+          <span>Study Hours</span>
+          <strong id="metricStudyHours">0</strong>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>
