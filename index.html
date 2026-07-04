@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reyansh Patel | Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-1: #07111f;
+            --bg-2: #13233d;
+            --card: rgba(255,255,255,0.12);
+            --card-strong: rgba(255,255,255,0.16);
+            --text: #f8fafc;
+            --muted: #cbd5e1;
+            --accent: #7dd3fc;
+            --accent-2: #8b5cf6;
+            --border: rgba(255,255,255,0.22);
+            --shadow: 0 20px 45px rgba(2,8,23,0.35);
+            --surface: rgba(255,255,255,0.08);
+            --surface-strong: rgba(255,255,255,0.14);
+        }
+
+        body[data-theme="light"] {
+            --bg-1: #f8fbff;
+            --bg-2: #e9f2ff;
+            --card: rgba(255,255,255,0.82);
+            --card-strong: rgba(255,255,255,0.92);
+            --text: #10233c;
+            --muted: #55708f;
+            --accent: #2563eb;
+            --accent-2: #7c3aed;
+            --border: rgba(15,23,42,0.12);
+            --shadow: 0 16px 35px rgba(15,23,42,0.1);
+            --surface: rgba(37,99,235,0.08);
+            --surface-strong: rgba(124,58,237,0.12);
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background: var(--bg-1);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Floating background blobs removed per user request */
+        body::before, body::after {
+            display: none !important;
+            content: none !important;
+        }
+
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: rgba(7,17,31,0.95);
+            display: grid;
+            place-items: center;
+            z-index: 99999;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        body[data-theme="light"] .loading-screen {
+            background: rgba(248,251,255,0.95);
+        }
+
+        .page-transition {
+            position: fixed;
+            inset: 0;
+            background: rgba(7,17,31,0.18);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 10004;
+        }
+
+        body.is-transitioning .page-transition {
+            opacity: 1;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader {
+            width: 54px;
+            height: 54px;
+            border: 3px solid rgba(255,255,255,0.18);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+        }
+
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            z-index: 10005;
+            box-shadow: 0 0 18px rgba(125,211,252,0.5);
+        }
+
+        .navbar {
+            position: sticky;
+            top: 16px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            margin: 18px auto 24px;
+            max-width: 1120px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .brand { font-family: 'Poppins', sans-serif; font-weight: 600; letter-spacing: 0.04em; color: white; text-decoration: none; }
+        .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+        .nav-links a {
+            color: var(--muted);
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 999px;
+            transition: all 0.25s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover, .nav-links a.active { color: white; background: rgba(255,255,255,0.16); }
+
+        .nav-actions { display: flex; align-items: center; gap: 8px; }
+        .icon-btn {
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .icon-btn:hover { transform: translateY(-1px); background: var(--surface-strong); }
+
+        .glass-card {
+            position: relative;
+            z-index: 1;
+            max-width: 1120px;
+            margin: 24px auto;
+            padding: 28px;
+            border-radius: 24px;
+            background: var(--card);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 30px;
+            align-items: center;
+            padding: 10px 4px 20px;
+        }
+
+        .profile-shell {
+            display: grid;
+            place-items: center;
+        }
+
+        .profile-ring {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            padding: 8px;
+            background: conic-gradient(from 180deg, var(--accent), var(--accent-2), var(--accent), transparent);
+            box-shadow: 0 16px 34px rgba(0,0,0,0.3);
+        }
+
+        .profile-ring::after {
+            content: '';
+            position: absolute;
+            inset: 12px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .profile-ring img {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid rgba(255,255,255,0.22);
+        }
+
+        .eyebrow {
+            display: inline-block;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-size: 0.74rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .hero h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2rem, 3.4vw, 2.9rem);
+            margin: 0 0 10px;
+        }
+
+        .typing { color: var(--accent); }
+        .cursor-blink { color: var(--text); animation: blink 0.8s step-end infinite; }
+
+        .hero .lead { line-height: 1.75; color: var(--muted); margin: 0 0 14px; }
+        .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 18px 0 12px; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 16px;
+            border-radius: 999px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.16);
+            box-shadow: 0 10px 24px rgba(15,23,42,0.22);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(15,23,42,0.3); }
+        .btn-primary { background: linear-gradient(135deg, var(--accent), #38bdf8); }
+        .btn-secondary { background: rgba(255,255,255,0.12); }
+        .btn-tertiary { background: linear-gradient(135deg, var(--accent-2), #7c3aed); }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .hero-meta span {
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.09);
+            color: var(--muted);
+            font-size: 0.92rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .section-card {
+            margin-top: 24px;
+            padding: 22px;
+            border-radius: 22px;
+            background: linear-gradient(145deg, rgba(255,255,255,0.13), rgba(255,255,255,0.08));
+            border: 1px solid var(--border);
+            box-shadow: 0 12px 30px rgba(2,8,23,0.18);
+        }
+
+        .section-heading { margin-bottom: 16px; }
+        .section-kicker {
+            margin: 0 0 4px;
+            color: var(--accent);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-weight: 600;
+        }
+
+        .section-card h2 { font-family: 'Poppins', sans-serif; margin: 0; font-size: 1.3rem; }
+        .section-card p, .section-card li { color: var(--muted); line-height: 1.75; }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 18px;
+            align-items: start;
+        }
+
+        .about-main {
+            padding: 16px 0;
+        }
+
+        .about-highlights {
+            display: grid;
+            gap: 12px;
+        }
+
+        .about-card {
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .about-card h3 { margin: 0 0 6px; font-size: 1rem; color: white; }
+        .about-card p { margin: 0; font-size: 0.95rem; }
+
+        .about-cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .mini-card {
+            padding: 16px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .mini-card h3 { margin: 0 0 8px; color: white; font-size: 1rem; }
+        .mini-card ul { margin: 0; padding-left: 18px; }
+
+        .timeline { position: relative; padding-left: 20px; margin-top: 10px; }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 4px;
+            bottom: 4px;
+            width: 1px;
+            background: rgba(255,255,255,0.2);
+        }
+
+        .timeline-item { position: relative; margin-bottom: 16px; padding-left: 18px; }
+        .timeline-dot {
+            position: absolute;
+            left: -2px;
+            top: 8px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            box-shadow: 0 0 0 4px rgba(125,211,252,0.16);
+        }
+
+        .timeline-card {
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .timeline-card .year { color: var(--accent); font-weight: 600; font-size: 0.9rem; }
+        .timeline-card h3 { margin: 4px 0 6px; color: white; font-size: 1rem; }
+
+        .skills-grid, .experience-grid, .project-grid, .achievements-grid, .services-grid, .testimonials-grid, .stats-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .skills-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .experience-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .achievements-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .services-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .testimonials-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .stats-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+        .skill-card, .experience-card, .project-card, .achievement-card, .service-card, .testimonial-card, .stat-card {
+            padding: 16px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .skill-card:hover, .experience-card:hover, .project-card:hover, .achievement-card:hover, .service-card:hover, .testimonial-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(2,8,23,0.22);
+        }
+
+        .skill-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .skill-icon {
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(125,211,252,0.2), rgba(139,92,246,0.2));
+            color: var(--accent);
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.12);
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .skill-progress-bar {
+            height: 100%;
+            width: 0;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            transition: width 1s ease;
+        }
+
+        .experience-card h3, .project-card h3, .achievement-card h3, .service-card h3, .testimonial-card h3 { margin: 6px 0 8px; color: white; }
+        .experience-card .role { color: var(--accent); font-weight: 600; margin-bottom: 8px; }
+        .experience-card ul { padding-left: 18px; margin: 0; }
+
+        .project-media {
+            width: 100%;
+            height: 180px;
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .project-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.35s ease;
+        }
+
+        .project-card:hover .project-media img {
+            transform: scale(1.03);
+        }
+        .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+        .tag {
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.08);
+            color: var(--muted);
+            font-size: 0.82rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .project-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+        .project-links a { color: white; text-decoration: none; font-size: 0.9rem; }
+
+        .achievement-card p { margin: 0; }
+        .stat-card { text-align: center; }
+        .stat-card .counter { font-family: 'Poppins', sans-serif; font-size: 2rem; color: white; }
+        .stat-card p { margin: 6px 0 0; color: var(--muted); }
+
+        .service-card .service-icon {
+            width: 46px;
+            height: 46px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, rgba(125,211,252,0.22), rgba(139,92,246,0.22));
+            color: var(--accent);
+        }
+
+        .testimonial-card blockquote {
+            margin: 0 0 12px;
+            color: var(--muted);
+            line-height: 1.8;
+            font-style: italic;
+        }
+
+        .testimonial-card .person { color: white; font-weight: 600; }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 18px;
+            margin-top: 12px;
+        }
+
+        .contact-form {
+            display: grid;
+            gap: 12px;
+        }
+
+        .form-row { display: grid; gap: 6px; }
+        .form-row label { font-size: 0.95rem; color: var(--muted); }
+        .form-row input,
+        .form-row textarea {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 11px 12px;
+            background: rgba(255,255,255,0.06);
+            color: var(--text);
+            font: inherit;
+            resize: vertical;
+        }
+
+        .form-row input:focus,
+        .form-row textarea:focus {
+            outline: 2px solid rgba(125,211,252,0.3);
+            border-color: var(--accent);
+        }
+
+        .contact-info {
+            display: grid;
+            gap: 10px;
+        }
+
+        .contact-pill {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .toast {
+            position: fixed;
+            right: 20px;
+            bottom: 84px;
+            background: rgba(7,17,31,0.95);
+            color: white;
+            padding: 12px 14px;
+            border-radius: 999px;
+            box-shadow: 0 10px 24px rgba(2,8,23,0.25);
+            z-index: 10006;
+            opacity: 0;
+            transform: translateY(8px);
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .toast.show { opacity: 1; transform: translateY(0); }
+
+        .footer {
+            max-width: 1120px;
+            margin: 0 auto 30px;
+            padding: 18px 22px;
+            border-radius: 24px;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .footer a { color: var(--accent); text-decoration: none; margin-right: 12px; }
+
+        .back-to-top {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            width: 48px;
+            height: 48px;
+            border: 0;
+            border-radius: 50%;
+            color: white;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            box-shadow: 0 10px 24px rgba(15,23,42,0.3);
+            cursor: pointer;
+            z-index: 10002;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(8px);
+            transition: all 0.3s ease;
+        }
+
+        .back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+
+        .cursor-dot, .cursor-ring {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            transition: transform 0.16s ease-out, width 0.2s ease, height 0.2s ease;
+        }
+
+        .cursor-dot {
+            width: 10px;
+            height: 10px;
+            background: rgba(255,255,255,0.95);
+            box-shadow: 0 0 18px rgba(255,255,255,0.5);
+        }
+
+        .cursor-ring {
+            width: 34px;
+            height: 34px;
+            border: 1px solid rgba(255,255,255,0.75);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Removed animated background keyframes to eliminate floating blob effects */
+        @keyframes blink { 50% { opacity: 0; } }
+
+        @media (max-width: 960px) {
+            .hero { grid-template-columns: 1fr; }
+            .about-grid { grid-template-columns: 1fr; }
+            .skills-grid, .experience-grid, .project-grid, .achievements-grid, .services-grid, .testimonials-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 640px) {
+            body { padding: 0 10px 40px; }
+            .glass-card { padding: 18px; border-radius: 20px; }
+            .navbar { flex-direction: column; gap: 10px; border-radius: 22px; }
+            .nav-links { justify-content: center; }
+            .btn-row { flex-direction: column; }
+            .btn { width: 100%; }
+            .about-cards { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .cursor-dot, .cursor-ring { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader"></div>
+    </div>
+    <div class="scroll-progress" id="progressBar"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+
+    <nav class="navbar">
+        <a href="#top" class="brand interactive">Reyansh Patel</a>
+        <div class="nav-actions">
+            <div class="nav-links">
+                <a href="#About" class="interactive">About</a>
+                <a href="#Education" class="interactive">Education</a>
+                <a href="#Skills" class="interactive">Skills</a>
+                <a href="#Experience" class="interactive">Experience</a>
+                <a href="#Projects" class="interactive">Projects</a>
+                <a href="#Contact" class="interactive">Contact</a>
+                <a href="aboutus.html" class="interactive">About Me</a>
+            </div>
+            <button class="icon-btn interactive" id="themeToggle" aria-label="Toggle color theme">☀</button>
+        </div>
+    </nav>
+
+    <main class="glass-card" id="top">
+        <section class="hero reveal">
+            <div class="profile-shell">
+                <div class="profile-ring">
+                    <img src="C:\Users\REYANSH\OneDrive\Pictures\my photo.png" alt="Reyansh Patel profile picture">
+                </div>
+            </div>
+            <div>
+                <p class="eyebrow">Software Engineer • Web Developer • Product Thinker</p>
+                <h1>Hi, I'm <span class="typing" id="typingText">Reyansh Patel</span><span class="cursor-blink">|</span></h1>
+                <p class="lead">I create thoughtful digital experiences that blend polished design, clear structure and calm interaction for modern brands and personal portfolios.</p>
+                <div class="btn-row">
+                    <a href="resume.txt" class="btn btn-primary interactive" download>Download Resume</a>
+                    <button class="btn btn-secondary interactive" id="copyEmailBtn" type="button">Copy Email</button>
+                    <button class="btn btn-tertiary interactive" id="printResumeBtn" type="button">Print Resume</button>
+                    <a href="#Projects" class="btn btn-secondary interactive">View Projects</a>
+                </div>
+                <div class="hero-meta">
+                    <span>Responsive UI</span>
+                    <span>Modern Frontend</span>
+                    <span>Clean Interaction</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-card reveal" id="About">
+            <div class="section-heading">
+                <p class="section-kicker">About</p>
+                <h2>Professional Introduction</h2>
+            </div>
+            <div class="about-grid">
+                <div class="about-main">
+                    <p>I am a software engineer with a strong interest in building intuitive, premium web experiences. My work focuses on combining elegant design with reliable engineering so that every interaction feels effortless and purposeful.</p>
+                    <p>With experience in analysis, engineering and product-minded thinking, I value clarity, quality and a calm visual language that lets the content stand out.</p>
+                </div>
+                <div class="about-highlights">
+                    <div class="about-card">
+                        <h3>Career Objective</h3>
+                        <p>To build meaningful digital products that blend technical excellence with a refined user experience.</p>
+                    </div>
+                    <div class="about-card">
+                        <h3>Technologies</h3>
+                        <p>HTML, CSS, JavaScript, responsive design, user experience thinking and modern frontend workflows.</p>
+                    </div>
+                    <div class="about-card">
+                        <h3>Goals</h3>
+                        <p>To grow into a strong product-focused engineer who creates scalable, elegant and accessible interfaces.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="about-cards">
+                <div class="mini-card">
+                    <h3>Approach</h3>
+                    <ul>
+                        <li>Structured and clean code</li>
+                        <li>Considered visual hierarchy</li>
+                        <li>Professional presentation</li>
+                    </ul>
+                </div>
+                <div class="mini-card">
+                    <h3>Focus</h3>
+                    <ul>
+                        <li>Modern interfaces</li>
+                        <li>Accessible experiences</li>
+                        <li>Precise interaction design</li>
+                    </ul>
+                </div>
+                <div class="mini-card">
+                    <h3>Values</h3>
+                    <ul>
+                        <li>Detail and quality</li>
+                        <li>Clear communication</li>
+                        <li>Continuous refinement</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-card reveal" id="Education">
+            <div class="section-heading">
+                <p class="section-kicker">Education</p>
+                <h2>Learning Journey</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="year">2020</div>
+                        <h3>B.Tech in Computer Science and Data Algorithms</h3>
+                        <p>Kalinga University · 9.8 CGPA</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="year">2016</div>
+                        <h3>Data Analyst Certification</h3>
+                        <p>Ira Edutech · 9.5 CGPA</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card">
+                        <div class="year">2010</div>
+                        <h3>PCM — 12th Grade</h3>
+                        <p>Delhi Public School · 99%</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-card reveal" id="Skills">
+            <div class="section-heading">
+                <p class="section-kicker">Skills</p>
+                <h2>Core Strengths</h2>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-head">
+                        <strong>Frontend Development</strong>
+                        <div class="skill-icon">✦</div>
+                    </div>
+                    <p>Crafting responsive, elegant interfaces with a strong focus on usability and clarity.</p>
+                    <div class="progress-track"><div class="skill-progress-bar" data-width="90"></div></div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-head">
+                        <strong>UI / UX Thinking</strong>
+                        <div class="skill-icon">◌</div>
+                    </div>
+                    <p>Designing balanced layouts, thoughtful flow and polished visual hierarchy.</p>
+                    <div class="progress-track"><div class="skill-progress-bar" data-width="85"></div></div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-head">
+                        <strong>Problem Solving</strong>
+                        <div class="skill-icon">⚙</div>
+                    </div>
+                    <p>Approaching technical and product challenges with structure and calm precision.</p>
+                    <div class="progress-track"><div class="skill-progress-bar" data-width="88"></div></div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-head">
+                        <strong>Communication</strong>
+                        <div class="skill-icon">◎</div>
+                    </div>
+                    <p>Translating complex ideas into clear, compelling experiences and collaboration.</p>
+                    <div class="progress-track"><div class="skill-progress-bar" data-width="82"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-card reveal" id="Experience">
+            <div class="section-heading">
+                <p class="section-kicker">Experience</p>
+                <h2>Professional Highlights</h2>
+            </div>
+            <div class="experience-grid">
+                <div class="experience-card">
+                    <h3>Oracle Limited</h3>
+                    <div class="role">Technology Analyst</div>
+                    <ul>
+                        <li>Worked on reliable digital solutions with a focus on quality.</li>
+                        <li>Supported product thinking through practical technical execution.</li>
+                    </ul>
+                </div>
+                <div class="experience-card">
+                    <h3>Acc Limited</h3>
+                    <div class="role">Data Analyst</div>
+                    <ul>
+                        <li>Translated complex data into useful insights and clear reporting.</li>
+                        <li>Contributed to thoughtful decision-making with structured analysis.</li>
+                    </ul>
+                </div>
+                <div class="experience-card">
+                    <h3>Jindal Steel and Power Limited</h3>
+                    <div class="role">Analytical Head</div>
+                    <ul>
+                        <li>Led analytical initiatives with discipline and clarity.</li>
+                        <li>Improved reporting systems with a strong operational focus.</li>
+                    </ul>
+                </div>
+                <div class="experience-card">
+                    <h3>Independent Learning</h3>
+                    <div class="role">Frontend & Product Focus</div>
+                    <ul>
+                        <li>Built polished web experiences with modern layout and interaction design.</li>
+                        <li>Continually refined skills in UI, responsiveness and portfolio presentation.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-card reveal" id="Projects">
+            <div class="section-heading">
+                <p class="section-kicker">Projects</p>
+                <h2>Selected Work</h2>
+            </div>
+            <div class="project-grid">
+                <div class="project-card">
+                    <div class="project-media">
+                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80" alt="Modern web project preview">
+                    </div>
+                    <h3>Premium Portfolio Website</h3>
+                    <p>A refined portfolio concept built with elegant glass surfaces, smooth motion and focused content hierarchy.</p>
+                    <div class="tags">
+                        <span class="tag">HTML</span>
+                        <span class="tag">CSS</span>
+                        <span class="tag">JavaScript</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com" target="_blank" rel="noreferrer">GitHub</a>
+                        <a href="#top" target="_blank" rel="noreferrer">Live Demo</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-media">
+                        <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=900&q=80" alt="Dashboard interface preview">
+                    </div>
+                    <h3>Analytics Dashboard</h3>
+                    <p>A polished dashboard experience designed to present information with clarity and calm visual structure.</p>
+                    <div class="tags">
+                        <span class="tag">UI Design</span>
+                        <span class="tag">Data</span>
+                        <span class="tag">UX</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com" target="_blank" rel="noreferrer">GitHub</a>
+                        <a href="#top" target="_blank" rel="noreferrer">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-card reveal" id="Achievements">
+            <div class="section-heading">
+                <p class="section-kicker">Achievements</p>
+                <h2>Recognitions and Milestones</h2>
+            </div>
+            <div class="achievements-grid">
+                <div class="achievement-card">
+                    <h3>Academic Excellence</h3>
+                    <p>Consistently maintained strong academic results across technical and analytical studies.</p>
+                </div>
+                <div class="achievement-card">
+                    <h3>Professional Growth</h3>
+                    <p>Built a foundation across technology, data and analytical leadership in diverse industry settings.</p>
+                </div>
+                <div class="achievement-card">
+                    <h3>Design Discipline</h3>
+                    <p>Developed a strong eye for polished interfaces, clear hierarchy and premium presentation.</p>
+                </div>
+                <div class="achievement-card">
+                    <h3>Continuous Learning</h3>
+                    <p>Committed to expanding technical depth and refining design-focused problem solving.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-card reveal" id="Statistics">
+            <div class="section-heading">
+                <p class="section-kicker">Statistics</p>
+                <h2>Progress at a Glance</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="counter" data-target="6">0</div>
+                    <p>Years of Growth</p>
+                </div>
+                <div class="stat-card">
+                    <div class="counter" data-target="20">0</div>
+                    <p>Projects Inspired</p>
+                </div>
+                <div class="stat-card">
+                    <div class="counter" data-target="15">0</div>
+                    <p>Design Principles Applied</p>
+                </div>
+                <div class="stat-card">
+                    <div class="counter" data-target="100">0</div>
+                    <p>Percent Focused</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-card reveal" id="Services">
+            <div class="section-heading">
+                <p class="section-kicker">Services</p>
+                <h2>What I Offer</h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">⌘</div>
+                    <h3>Frontend Development</h3>
+                    <p>Clean, responsive web interfaces built with modern standards and strong visual craft.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">◧</div>
+                    <h3>Portfolio Design</h3>
+                    <p>Elegant personal or professional portfolio experiences that feel polished and memorable.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">✧</div>
+                    <h3>UI Refinement</h3>
+                    <p>Thoughtful component styling, spacing and interaction polish for a premium feel.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">⟡</div>
+                    <h3>Creative Direction</h3>
+                    <p>Support for visual storytelling, tone and content presentation with a calm, modern approach.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-card reveal" id="Testimonials">
+            <div class="section-heading">
+                <p class="section-kicker">Testimonials</p>
+                <h2>What People Value</h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <blockquote>“Thoughtful, polished and calm — the kind of design that feels both modern and trustworthy.”</blockquote>
+                    <div class="person">— Design Collaborator</div>
+                </div>
+                <div class="testimonial-card">
+                    <blockquote>“The presentation feels premium and intentional, with clarity in every detail.”</blockquote>
+                    <div class="person">— Project Partner</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-card reveal" id="Contact">
+            <div class="section-heading">
+                <p class="section-kicker">Contact</p>
+                <h2>Let’s Connect</h2>
+            </div>
+            <div class="contact-grid">
+                <form class="contact-form" id="contactForm">
+                    <div class="form-row">
+                        <label for="name">Name</label>
+                        <input id="name" name="name" type="text" placeholder="Your name" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="email">Email</label>
+                        <input id="email" name="email" type="email" placeholder="Your email" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="4" placeholder="Write a short note" required></textarea>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Send Message</button>
+                </form>
+                <div class="contact-info">
+                    <div class="contact-pill">
+                        <span>Email</span>
+                        <strong>john.doe@example.com</strong>
+                        <button class="icon-btn interactive" id="copyEmailInline" type="button" aria-label="Copy email">✉</button>
+                    </div>
+                    <div class="contact-pill">
+                        <span>GitHub</span>
+                        <strong>github.com/johndoe</strong>
+                    </div>
+                    <div class="contact-pill">
+                        <span>LinkedIn</span>
+                        <strong>linkedin.com/in/johndoe</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer reveal">
+        <div>© 2026 Reyansh Patel · Premium Portfolio</div>
+        <div>
+            <a href="https://github.com/johndoe" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="https://linkedin.com/in/johndoe" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a href="mailto:john.doe@example.com">Email</a>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+    <div class="toast" id="toast"></div>
+    <div class="page-transition"></div>
+
+    <script>
+        const body = document.body;
+        const themeKey = 'portfolio-theme';
+        const themeToggle = document.getElementById('themeToggle');
+        const typingText = document.getElementById('typingText');
+        const progressBar = document.getElementById('progressBar');
+        const backToTop = document.getElementById('backToTop');
+        const loadingScreen = document.getElementById('loadingScreen');
+        const toast = document.getElementById('toast');
+        const contactForm = document.getElementById('contactForm');
+        const copyEmailBtn = document.getElementById('copyEmailBtn');
+        const copyEmailInline = document.getElementById('copyEmailInline');
+        const printResumeBtn = document.getElementById('printResumeBtn');
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorRing = document.getElementById('cursorRing');
+        const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+        const sections = document.querySelectorAll('main section[id]');
+        const counters = document.querySelectorAll('.counter');
+        const progressBars = document.querySelectorAll('.skill-progress-bar');
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const savedTheme = localStorage.getItem(themeKey);
+        if (savedTheme) {
+            body.dataset.theme = savedTheme;
+        }
+
+        const setThemeIcon = () => {
+            themeToggle.textContent = body.dataset.theme === 'light' ? '☾' : '☀';
+        };
+        setThemeIcon();
+
+        themeToggle.addEventListener('click', () => {
+            const nextTheme = body.dataset.theme === 'light' ? 'dark' : 'light';
+            body.dataset.theme = nextTheme;
+            localStorage.setItem(themeKey, nextTheme);
+            setThemeIcon();
+            showToast(nextTheme === 'light' ? 'Light mode enabled' : 'Dark mode enabled');
+        });
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.16 });
+        revealElements.forEach((element) => revealObserver.observe(element));
+
+        const phrases = ['Reyansh Patel', 'a Software Engineer', 'a Frontend Developer', 'a Digital Creator'];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        const typeLoop = () => {
+            const current = phrases[phraseIndex];
+            typingText.textContent = current.slice(0, charIndex);
+            if (!isDeleting && charIndex < current.length) {
+                charIndex += 1;
+            } else if (isDeleting && charIndex > 0) {
+                charIndex -= 1;
+            } else {
+                isDeleting = !isDeleting;
+                if (!isDeleting) {
+                    phraseIndex = (phraseIndex + 1) % phrases.length;
+                }
+            }
+            setTimeout(typeLoop, isDeleting ? 60 : 90);
+        };
+        typeLoop();
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach((link) => {
+                        const isActive = link.getAttribute('href') === `#${entry.target.id}`;
+                        link.classList.toggle('active', isActive);
+                    });
+                }
+            });
+        }, { threshold: 0.45 });
+        sections.forEach((section) => sectionObserver.observe(section));
+
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const target = Number(entry.target.dataset.target);
+                    let current = 0;
+                    const step = Math.max(1, Math.ceil(target / 40));
+                    const update = () => {
+                        current += step;
+                        if (current >= target) {
+                            entry.target.textContent = target;
+                            counterObserver.unobserve(entry.target);
+                            return;
+                        }
+                        entry.target.textContent = current;
+                        requestAnimationFrame(update);
+                    };
+                    update();
+                }
+            });
+        }, { threshold: 0.6 });
+        counters.forEach((counter) => counterObserver.observe(counter));
+
+        const progressObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.width = `${entry.target.dataset.width}%`;
+                    progressObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        progressBars.forEach((bar) => progressObserver.observe(bar));
+
+        let ticking = false;
+        const updateScrollProgress = () => {
+            const scrollTop = window.scrollY;
+            const height = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = height > 0 ? (scrollTop / height) * 100 : 0;
+            progressBar.style.width = `${progress}%`;
+            backToTop.classList.toggle('show', scrollTop > 320);
+        };
+
+        const onScroll = () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    updateScrollProgress();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('load', () => {
+            setTimeout(() => loadingScreen.classList.add('hidden'), 600);
+            updateScrollProgress();
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        const showToast = (message) => {
+            toast.textContent = message;
+            toast.classList.add('show');
+            clearTimeout(showToast.timer);
+            showToast.timer = setTimeout(() => toast.classList.remove('show'), 2200);
+        };
+
+        const copyEmail = async () => {
+            try {
+                await navigator.clipboard.writeText('john.doe@example.com');
+                showToast('Email copied');
+            } catch {
+                showToast('Copy failed');
+            }
+        };
+
+        copyEmailBtn.addEventListener('click', copyEmail);
+        copyEmailInline.addEventListener('click', copyEmail);
+
+        printResumeBtn.addEventListener('click', () => window.print());
+
+        contactForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const name = contactForm.name.value.trim();
+            const email = contactForm.email.value.trim();
+            const message = contactForm.message.value.trim();
+            if (!name || !email || !message) {
+                showToast('Please fill all fields');
+                return;
+            }
+            const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            if (!isValidEmail) {
+                showToast('Enter a valid email');
+                return;
+            }
+            contactForm.reset();
+            showToast('Message ready to send');
+        });
+
+        const preloadImages = () => {
+            const sources = [
+                'C:/Users/REYANSH/OneDrive/Pictures/my photo.png',
+                'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80',
+                'https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=900&q=80'
+            ];
+            sources.forEach((src) => {
+                const img = new Image();
+                img.src = src;
+            });
+        };
+        preloadImages();
+
+        const triggerTransition = () => {
+            body.classList.add('is-transitioning');
+            setTimeout(() => body.classList.remove('is-transitioning'), 220);
+        };
+
+        document.addEventListener('click', (event) => {
+            const link = event.target.closest('a');
+            if (!link) return;
+            const href = link.getAttribute('href') || '';
+            if (href.startsWith('#')) {
+                event.preventDefault();
+                triggerTransition();
+                document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+            } else if (!href.startsWith('http') && !href.startsWith('mailto:')) {
+                triggerTransition();
+            }
+        });
+
+        const pointerFine = window.matchMedia('(pointer:fine)').matches;
+        if (pointerFine) {
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let dotX = mouseX;
+            let dotY = mouseY;
+            let ringX = mouseX;
+            let ringY = mouseY;
+
+            const updateCursor = () => {
+                dotX += (mouseX - dotX) * 0.22;
+                dotY += (mouseY - dotY) * 0.22;
+                ringX += (mouseX - ringX) * 0.12;
+                ringY += (mouseY - ringY) * 0.12;
+                cursorDot.style.left = `${dotX}px`;
+                cursorDot.style.top = `${dotY}px`;
+                cursorRing.style.left = `${ringX}px`;
+                cursorRing.style.top = `${ringY}px`;
+                requestAnimationFrame(updateCursor);
+            };
+            updateCursor();
+
+            window.addEventListener('mousemove', (event) => {
+                mouseX = event.clientX;
+                mouseY = event.clientY;
+            });
+            window.addEventListener('mousedown', () => {
+                cursorDot.style.transform = 'translate(-50%, -50%) scale(0.88)';
+                cursorRing.style.transform = 'translate(-50%, -50%) scale(0.92)';
+            });
+            window.addEventListener('mouseup', () => {
+                cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursorRing.style.transform = 'translate(-50%, -50%) scale(1)';
+            });
+            document.querySelectorAll('a, button, .skill-card, .experience-card, .project-card, .achievement-card, .service-card, .testimonial-card, .stat-card, .timeline-card, .about-card, img').forEach((element) => {
+                element.addEventListener('mouseenter', () => {
+                    cursorDot.style.transform = 'translate(-50%, -50%) scale(1.45)';
+                    cursorRing.style.transform = 'translate(-50%, -50%) scale(1.1)';
+                });
+                element.addEventListener('mouseleave', () => {
+                    cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+                    cursorRing.style.transform = 'translate(-50%, -50%) scale(1)';
+                });
+            });
+        } else {
+            cursorDot.style.display = 'none';
+            cursorRing.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
