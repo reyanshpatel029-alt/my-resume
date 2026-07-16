@@ -1,0 +1,3894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIFE OS - Immortal Ultimate Version</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* =========================================================
+           LIFE OS - GLOBAL DESIGN SYSTEM
+           ========================================================= */
+        :root {
+            --bg-a: #07111f;
+            --bg-b: #102a43;
+            --bg-c: #213a8f;
+            --panel: rgba(255, 255, 255, 0.12);
+            --panel-strong: rgba(255, 255, 255, 0.18);
+            --panel-soft: rgba(255, 255, 255, 0.08);
+            --text: #f7fbff;
+            --muted: rgba(247, 251, 255, 0.68);
+            --faint: rgba(247, 251, 255, 0.42);
+            --border: rgba(255, 255, 255, 0.18);
+            --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+            --glow: 0 0 24px rgba(72, 187, 255, 0.38);
+            --accent: #44c7ff;
+            --accent-2: #77f2c1;
+            --accent-3: #ffd166;
+            --danger: #ff6680;
+            --warning: #ffbf5f;
+            --ok: #6ff0a8;
+            --radius: 18px;
+            --radius-sm: 10px;
+            --sidebar-w: 236px;
+            --subbar-w: 220px;
+            --topbar-h: 76px;
+            --speed: 180ms;
+            color-scheme: dark;
+        }
+
+        [data-theme="light"] {
+            --bg-a: #eef7ff;
+            --bg-b: #d7f2ef;
+            --bg-c: #dbe5ff;
+            --panel: rgba(255, 255, 255, 0.62);
+            --panel-strong: rgba(255, 255, 255, 0.78);
+            --panel-soft: rgba(255, 255, 255, 0.38);
+            --text: #102033;
+            --muted: rgba(16, 32, 51, 0.68);
+            --faint: rgba(16, 32, 51, 0.44);
+            --border: rgba(16, 32, 51, 0.13);
+            --shadow: 0 24px 70px rgba(39, 82, 130, 0.18);
+            --glow: 0 0 24px rgba(23, 132, 255, 0.18);
+            color-scheme: light;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background:
+                radial-gradient(circle at 12% 8%, rgba(68, 199, 255, 0.26), transparent 28rem),
+                radial-gradient(circle at 84% 12%, rgba(119, 242, 193, 0.2), transparent 24rem),
+                radial-gradient(circle at 50% 96%, rgba(255, 209, 102, 0.16), transparent 28rem),
+                linear-gradient(135deg, var(--bg-a), var(--bg-b) 54%, var(--bg-c));
+            color: var(--text);
+            overflow-x: hidden;
+            transition: background var(--speed), color var(--speed);
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 42px 42px;
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 85%);
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        button {
+            border: 0;
+            cursor: pointer;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px 13px;
+            outline: none;
+            transition: border var(--speed), background var(--speed), box-shadow var(--speed);
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus,
+        .editor:focus {
+            border-color: rgba(68, 199, 255, 0.65);
+            box-shadow: var(--glow);
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: var(--faint);
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        .tiny {
+            color: var(--faint);
+            font-size: 0.78rem;
+        }
+
+        .app-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 80;
+            display: grid;
+            place-items: center;
+            background: rgba(5, 10, 18, 0.7);
+            backdrop-filter: blur(20px);
+        }
+
+        .loader-card {
+            display: grid;
+            gap: 16px;
+            width: min(360px, calc(100vw - 32px));
+            padding: 26px;
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            background: var(--panel);
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .loader-ring {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto;
+            border: 4px solid rgba(255, 255, 255, 0.14);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translateX(-1px); }
+            20%, 80% { transform: translateX(2px); }
+            30%, 50%, 70% { transform: translateX(-5px); }
+            40%, 60% { transform: translateX(5px); }
+        }
+
+        @keyframes shimmer {
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* =========================================================
+           AUTHENTICATION SCREEN
+           ========================================================= */
+        .auth-screen {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+        }
+
+        .auth-card {
+            width: min(440px, 100%);
+            padding: 30px;
+            border: 1px solid var(--border);
+            border-radius: 26px;
+            background: var(--panel);
+            backdrop-filter: blur(26px);
+            box-shadow: var(--shadow);
+            animation: fadeUp 420ms ease both;
+        }
+
+        .brand-mark {
+            display: inline-grid;
+            place-items: center;
+            width: 52px;
+            height: 52px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: #06111d;
+            box-shadow: var(--glow);
+            margin-bottom: 18px;
+        }
+
+        .auth-card h1 {
+            margin: 0 0 8px;
+            font-size: clamp(2rem, 8vw, 3.25rem);
+            letter-spacing: 0;
+        }
+
+        .auth-card p {
+            margin: 0 0 22px;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+
+        .auth-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: space-between;
+            margin: 12px 0 18px;
+        }
+
+        .checkline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .checkline input {
+            width: auto;
+        }
+
+        .auth-error {
+            min-height: 24px;
+            margin-top: 12px;
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        .shake {
+            animation: shake 420ms cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        /* =========================================================
+           LAYOUT
+           ========================================================= */
+        .app-shell {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: var(--sidebar-w) var(--subbar-w) minmax(0, 1fr);
+            gap: 14px;
+            padding: 14px;
+        }
+
+        .sidebar,
+        .sub-sidebar,
+        .topbar,
+        .glass,
+        .modal-card,
+        .quick-panel,
+        .notification-center {
+            border: 1px solid var(--border);
+            background: var(--panel);
+            backdrop-filter: blur(24px);
+            box-shadow: var(--shadow);
+        }
+
+        .sidebar,
+        .sub-sidebar {
+            position: sticky;
+            top: 14px;
+            height: calc(100vh - 28px);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            padding: 16px 12px;
+        }
+
+        .sidebar-head {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 8px 8px 14px;
+        }
+
+        .logo {
+            display: grid;
+            place-items: center;
+            min-width: 42px;
+            width: 42px;
+            height: 42px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: #06111d;
+            box-shadow: var(--glow);
+        }
+
+        .brand-title {
+            font-weight: 900;
+            line-height: 1.05;
+        }
+
+        .brand-subtitle {
+            color: var(--faint);
+            font-size: 0.72rem;
+            margin-top: 3px;
+        }
+
+        .collapse-btn {
+            margin-left: auto;
+            min-width: 34px;
+            width: 34px;
+            height: 34px;
+        }
+
+        .nav-scroll {
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .nav-scroll::-webkit-scrollbar,
+        .content-shell::-webkit-scrollbar,
+        .sub-scroll::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        .nav-scroll::-webkit-scrollbar-thumb,
+        .content-shell::-webkit-scrollbar-thumb,
+        .sub-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.18);
+            border-radius: 999px;
+        }
+
+        .nav-btn,
+        .sub-btn,
+        .icon-btn,
+        .pill-btn,
+        .primary-btn,
+        .ghost-btn,
+        .danger-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            min-height: 40px;
+            border-radius: 12px;
+            color: var(--text);
+            transition: transform var(--speed), background var(--speed), box-shadow var(--speed), border var(--speed);
+        }
+
+        .nav-btn,
+        .sub-btn {
+            width: 100%;
+            justify-content: flex-start;
+            padding: 11px 12px;
+            margin: 3px 0;
+            background: transparent;
+            color: var(--muted);
+        }
+
+        .nav-btn:hover,
+        .sub-btn:hover,
+        .nav-btn.active,
+        .sub-btn.active {
+            color: var(--text);
+            background: var(--panel-strong);
+            transform: translateX(3px);
+        }
+
+        .nav-btn.active,
+        .sub-btn.active {
+            box-shadow: inset 0 0 0 1px rgba(68, 199, 255, 0.3), var(--glow);
+        }
+
+        .sub-sidebar {
+            padding: 18px;
+        }
+
+        .sub-title {
+            margin: 0 0 4px;
+            font-size: 1rem;
+        }
+
+        .sub-desc {
+            margin: 0 0 16px;
+            color: var(--muted);
+            line-height: 1.45;
+            font-size: 0.86rem;
+        }
+
+        .sub-scroll {
+            max-height: calc(100vh - 132px);
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .workspace {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 14px;
+            z-index: 25;
+            min-height: var(--topbar-h);
+            border-radius: 24px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mobile-menu {
+            display: none;
+        }
+
+        .page-heading {
+            min-width: 168px;
+        }
+
+        .page-heading h2 {
+            margin: 0;
+            font-size: clamp(1.2rem, 2vw, 1.55rem);
+        }
+
+        .page-heading span {
+            color: var(--faint);
+            font-size: 0.78rem;
+        }
+
+        .global-search {
+            position: relative;
+            flex: 1;
+            min-width: 160px;
+        }
+
+        .global-search i {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--faint);
+        }
+
+        .global-search input {
+            padding-left: 39px;
+        }
+
+        .search-results {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            z-index: 40;
+            max-height: 360px;
+            overflow: auto;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: rgba(10, 22, 35, 0.92);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow);
+            padding: 8px;
+        }
+
+        [data-theme="light"] .search-results {
+            background: rgba(255, 255, 255, 0.94);
+        }
+
+        .search-item {
+            width: 100%;
+            justify-content: flex-start;
+            padding: 10px;
+            border-radius: 10px;
+            background: transparent;
+            color: var(--text);
+            text-align: left;
+        }
+
+        .content-shell {
+            overflow-y: auto;
+            height: calc(100vh - 104px);
+            padding: 2px 2px 42px;
+            animation: fadeUp 220ms ease both;
+        }
+
+        .sidebar-collapsed {
+            --sidebar-w: 82px;
+        }
+
+        .sidebar-collapsed .brand-copy,
+        .sidebar-collapsed .nav-label {
+            display: none;
+        }
+
+        .sidebar-collapsed .nav-btn {
+            justify-content: center;
+        }
+
+        /* =========================================================
+           COMPONENTS
+           ========================================================= */
+        .grid {
+            display: grid;
+            gap: 14px;
+        }
+
+        .grid.two {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .grid.three {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .grid.four {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .grid.auto {
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        }
+
+        .card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--panel);
+            backdrop-filter: blur(20px);
+            padding: 16px;
+            box-shadow: 0 16px 38px rgba(0, 0, 0, 0.15);
+            transition: transform var(--speed), border var(--speed), background var(--speed);
+            animation: fadeUp 260ms ease both;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(68, 199, 255, 0.34);
+            background: var(--panel-strong);
+        }
+
+        .card-head,
+        .row,
+        .between {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .between {
+            justify-content: space-between;
+        }
+
+        .card-head {
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .metric {
+            max-width: 100%;
+            overflow-wrap: anywhere;
+            font-size: clamp(1.35rem, 2.4vw, 2.3rem);
+            font-weight: 900;
+            letter-spacing: 0;
+            line-height: 1.08;
+        }
+
+        .metric.small {
+            font-size: 1.45rem;
+        }
+
+        .chip,
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            width: fit-content;
+            min-height: 28px;
+            padding: 5px 9px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--muted);
+            border: 1px solid var(--border);
+            font-size: 0.78rem;
+            white-space: nowrap;
+        }
+
+        .tag.ok { color: var(--ok); }
+        .tag.warn { color: var(--warning); }
+        .tag.danger { color: var(--danger); }
+        .tag.accent { color: var(--accent); }
+
+        .icon-btn,
+        .pill-btn,
+        .ghost-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border);
+        }
+
+        .icon-btn {
+            min-width: 40px;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+        }
+
+        .pill-btn,
+        .primary-btn,
+        .ghost-btn,
+        .danger-btn {
+            padding: 0 13px;
+            min-width: 0;
+        }
+
+        .primary-btn {
+            color: #06111d;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            box-shadow: var(--glow);
+            font-weight: 800;
+        }
+
+        .danger-btn {
+            color: #fff;
+            background: linear-gradient(135deg, #ff6680, #ff8c66);
+            box-shadow: 0 0 24px rgba(255, 102, 128, 0.3);
+        }
+
+        .icon-btn:hover,
+        .pill-btn:hover,
+        .primary-btn:hover,
+        .ghost-btn:hover,
+        .danger-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .form-grid .full {
+            grid-column: 1 / -1;
+        }
+
+        .list {
+            display: grid;
+            gap: 9px;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .list-main {
+            min-width: 0;
+        }
+
+        .list-main strong,
+        .truncate {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 720px;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        th {
+            color: var(--muted);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+        }
+
+        tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .progress {
+            height: 10px;
+            overflow: hidden;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .progress span {
+            display: block;
+            height: 100%;
+            width: var(--w, 0%);
+            border-radius: inherit;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+        }
+
+        .skeleton {
+            position: relative;
+            overflow: hidden;
+            min-height: 16px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .skeleton::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            transform: translateX(-100%);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+            animation: shimmer 1.3s infinite;
+        }
+
+        .empty {
+            min-height: 160px;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            color: var(--muted);
+            border: 1px dashed var(--border);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 24px;
+        }
+
+        .empty i {
+            display: block;
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .fab {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            z-index: 34;
+            width: 58px;
+            height: 58px;
+            border-radius: 22px;
+            color: #06111d;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            box-shadow: var(--glow), var(--shadow);
+        }
+
+        .modal-root,
+        .focus-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 70;
+            display: none;
+            place-items: center;
+            padding: 18px;
+            background: rgba(0, 0, 0, 0.48);
+            backdrop-filter: blur(14px);
+        }
+
+        .modal-root.active,
+        .focus-overlay.active {
+            display: grid;
+        }
+
+        .modal-card {
+            width: min(720px, 100%);
+            max-height: calc(100vh - 36px);
+            overflow: auto;
+            border-radius: 24px;
+            padding: 18px;
+        }
+
+        .toast-root {
+            position: fixed;
+            z-index: 90;
+            top: 18px;
+            right: 18px;
+            display: grid;
+            gap: 10px;
+            width: min(360px, calc(100vw - 36px));
+        }
+
+        .toast {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: rgba(10, 22, 35, 0.88);
+            backdrop-filter: blur(20px);
+            color: var(--text);
+            box-shadow: var(--shadow);
+            padding: 12px;
+            animation: fadeUp 220ms ease both;
+        }
+
+        [data-theme="light"] .toast {
+            background: rgba(255, 255, 255, 0.92);
+        }
+
+        .quick-panel,
+        .notification-center {
+            position: fixed;
+            top: 96px;
+            right: 18px;
+            z-index: 45;
+            width: min(360px, calc(100vw - 36px));
+            border-radius: 22px;
+            padding: 16px;
+            transform: translateX(calc(100% + 28px));
+            transition: transform 260ms ease;
+        }
+
+        .quick-panel.open,
+        .notification-center.open {
+            transform: translateX(0);
+        }
+
+        .notification-center {
+            top: 168px;
+        }
+
+        .kbd {
+            display: inline-grid;
+            place-items: center;
+            min-width: 26px;
+            height: 24px;
+            padding: 0 6px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--muted);
+            font-size: 0.76rem;
+        }
+
+        /* =========================================================
+           MODULE-SPECIFIC SURFACES
+           ========================================================= */
+        .vault-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 12px;
+        }
+
+        .folder-card,
+        .file-card,
+        .note-card {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 13px;
+            min-height: 132px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 10px;
+            transition: transform var(--speed), border var(--speed);
+        }
+
+        .folder-card:hover,
+        .file-card:hover,
+        .note-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(68, 199, 255, 0.32);
+        }
+
+        .folder-icon,
+        .file-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 15px;
+            display: grid;
+            place-items: center;
+            color: #06111d;
+            background: var(--folder-color, linear-gradient(135deg, var(--accent), var(--accent-2)));
+        }
+
+        .drop-zone {
+            border: 1px dashed rgba(68, 199, 255, 0.55);
+            border-radius: 18px;
+            min-height: 124px;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            padding: 20px;
+            background: rgba(68, 199, 255, 0.08);
+        }
+
+        .drop-zone.drag {
+            background: rgba(68, 199, 255, 0.18);
+            box-shadow: var(--glow);
+        }
+
+        .editor-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-bottom: 10px;
+        }
+
+        .editor {
+            min-height: 320px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.08);
+            outline: none;
+            line-height: 1.65;
+        }
+
+        .task-complete {
+            opacity: 0.62;
+            text-decoration: line-through;
+        }
+
+        .pomodoro-time,
+        .clock-time {
+            font-size: clamp(2.2rem, 6vw, 5rem);
+            font-weight: 900;
+            letter-spacing: 0;
+            text-align: center;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .dashboard-clock-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 14px;
+        }
+
+        .dashboard-clock-card .clock-time {
+            text-align: left;
+            font-size: clamp(2.2rem, 5.4vw, 4.8rem);
+        }
+
+        .dashboard-clock-meta {
+            display: grid;
+            gap: 8px;
+            justify-items: end;
+            text-align: right;
+        }
+
+        .analog-clock {
+            position: relative;
+            width: min(260px, 74vw);
+            aspect-ratio: 1;
+            margin: 0 auto;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.08);
+        }
+
+        .hand {
+            position: absolute;
+            left: 50%;
+            bottom: 50%;
+            width: 4px;
+            transform-origin: bottom;
+            border-radius: 999px;
+            background: var(--accent);
+        }
+
+        .hand.hour { height: 28%; }
+        .hand.minute { height: 38%; background: var(--accent-2); }
+        .hand.second { height: 44%; width: 2px; background: var(--danger); }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .calendar-cell {
+            min-height: 112px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 9px;
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .calendar-cell.today {
+            box-shadow: inset 0 0 0 1px var(--accent), var(--glow);
+        }
+
+        .timetable-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(180px, 1fr));
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .day-column {
+            min-height: 280px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.07);
+            padding: 10px;
+        }
+
+        .class-card {
+            border-radius: 12px;
+            padding: 10px;
+            margin: 8px 0;
+            background: var(--class-color, rgba(68,199,255,0.2));
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            cursor: grab;
+        }
+
+        .drawing-board {
+            width: 100%;
+            max-width: 820px;
+            height: 360px;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: #ffffff;
+            touch-action: none;
+        }
+
+        .focus-overlay .modal-card {
+            text-align: center;
+            width: min(620px, 100%);
+        }
+
+        /* =========================================================
+           RESPONSIVE DESIGN
+           ========================================================= */
+        @media (max-width: 1180px) {
+            .app-shell {
+                grid-template-columns: 86px minmax(180px, 210px) minmax(0, 1fr);
+            }
+            .brand-copy,
+            .nav-label {
+                display: none;
+            }
+            .nav-btn {
+                justify-content: center;
+            }
+            .collapse-btn {
+                display: none;
+            }
+        }
+
+        @media (max-width: 920px) {
+            .app-shell {
+                grid-template-columns: 1fr;
+                padding: 10px;
+            }
+            .sidebar,
+            .sub-sidebar {
+                position: fixed;
+                z-index: 50;
+                top: 10px;
+                bottom: 10px;
+                height: auto;
+                transform: translateX(-120%);
+                transition: transform 240ms ease;
+            }
+            .sidebar {
+                left: 10px;
+                width: min(284px, calc(100vw - 20px));
+            }
+            .sub-sidebar {
+                left: 10px;
+                width: min(284px, calc(100vw - 20px));
+                top: auto;
+                height: min(68vh, 560px);
+            }
+            .sidebar.open,
+            .sub-sidebar.open {
+                transform: translateX(0);
+            }
+            .brand-copy,
+            .nav-label {
+                display: block;
+            }
+            .nav-btn {
+                justify-content: flex-start;
+            }
+            .mobile-menu {
+                display: inline-flex;
+            }
+            .topbar {
+                top: 10px;
+                flex-wrap: wrap;
+            }
+            .page-heading {
+                flex: 1;
+                min-width: 150px;
+            }
+            .global-search {
+                flex-basis: 100%;
+                order: 4;
+            }
+            .content-shell {
+                height: auto;
+                min-height: calc(100vh - 104px);
+            }
+            .grid.two,
+            .grid.three,
+            .grid.four {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .auth-card {
+                padding: 22px;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .card {
+                padding: 14px;
+            }
+            .topbar {
+                border-radius: 18px;
+            }
+            .calendar {
+                grid-template-columns: 1fr;
+            }
+            .dashboard-clock-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+            .dashboard-clock-meta {
+                justify-items: start;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <div id="loader" class="app-loader">
+        <div class="loader-card">
+            <div class="loader-ring"></div>
+            <strong>Booting LIFE OS</strong>
+            <span class="muted">Loading your personal operating system...</span>
+        </div>
+    </div>
+
+    <section id="authScreen" class="auth-screen hidden">
+        <form id="authForm" class="auth-card" autocomplete="off">
+            <div class="brand-mark"><i class="fa-solid fa-infinity"></i></div>
+            <h1>LIFE OS</h1>
+            <p id="authHint">Create a private password to protect your personal workspace.</p>
+            <input id="passwordInput" type="password" placeholder="Password" minlength="4" required>
+            <div id="confirmWrap" class="hidden" style="margin-top:12px;">
+                <input id="confirmInput" type="password" placeholder="Confirm password" minlength="4">
+            </div>
+            <div class="auth-options">
+                <label class="checkline"><input id="showPasswordInput" type="checkbox"> Show password</label>
+                <label class="checkline"><input id="rememberInput" type="checkbox"> Remember me</label>
+            </div>
+            <button id="authSubmit" class="primary-btn" type="submit" style="width:100%;">Create Password</button>
+            <div id="authError" class="auth-error" aria-live="polite"></div>
+        </form>
+    </section>
+
+    <div id="app" class="app-shell hidden">
+        <aside id="mainSidebar" class="sidebar" aria-label="Main navigation"></aside>
+        <aside id="subSidebar" class="sub-sidebar" aria-label="Section navigation"></aside>
+        <main class="workspace">
+            <header class="topbar">
+                <button class="icon-btn mobile-menu" data-action="toggle-mobile-main" title="Menu"><i class="fa-solid fa-bars"></i></button>
+                <button class="icon-btn mobile-menu" data-action="toggle-mobile-sub" title="Sub menu"><i class="fa-solid fa-layer-group"></i></button>
+                <div class="page-heading">
+                    <h2 id="pageTitle">Dashboard</h2>
+                    <span id="pageSubtitle">Your daily command center</span>
+                </div>
+                <div class="global-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input id="globalSearch" type="search" placeholder="Search notes, tasks, files, expenses...">
+                    <div id="searchResults" class="search-results hidden"></div>
+                </div>
+                <button class="icon-btn" data-action="toggle-theme" title="Toggle theme"><i class="fa-solid fa-circle-half-stroke"></i></button>
+                <button class="icon-btn" data-action="toggle-notifications" title="Notifications"><i class="fa-solid fa-bell"></i></button>
+                <button class="icon-btn" data-action="toggle-quick" title="Quick actions"><i class="fa-solid fa-bolt"></i></button>
+                <button class="icon-btn" data-action="logout" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+            </header>
+            <section id="content" class="content-shell" tabindex="-1"></section>
+        </main>
+    </div>
+
+    <button id="fab" class="fab hidden" data-action="open-quick-create" title="Quick create">
+        <i class="fa-solid fa-plus"></i>
+    </button>
+
+    <aside id="quickPanel" class="quick-panel">
+        <div class="between" style="margin-bottom:12px;">
+            <h3 style="margin:0;">Quick Actions</h3>
+            <button class="icon-btn" data-action="toggle-quick" title="Close"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="list">
+            <button class="list-item" data-action="quick-note"><span><i class="fa-solid fa-note-sticky"></i> New note</span><span class="kbd">N</span></button>
+            <button class="list-item" data-action="quick-task"><span><i class="fa-solid fa-square-check"></i> New task</span><span class="kbd">T</span></button>
+            <button class="list-item" data-action="quick-expense"><span><i class="fa-solid fa-wallet"></i> New expense</span><span class="kbd">E</span></button>
+            <button class="list-item" data-action="lock-now"><span><i class="fa-solid fa-lock"></i> Lock workspace</span><span class="kbd">L</span></button>
+        </div>
+        <p class="tiny" style="margin:14px 0 0;">Shortcuts: Ctrl+K search, Ctrl+N note, Ctrl+L lock, ? quick panel.</p>
+    </aside>
+
+    <aside id="notificationCenter" class="notification-center">
+        <div class="between" style="margin-bottom:12px;">
+            <h3 style="margin:0;">Notification Center</h3>
+            <button class="icon-btn" data-action="toggle-notifications" title="Close"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="notificationList" class="list"></div>
+    </aside>
+
+    <div id="modalRoot" class="modal-root"></div>
+    <div id="focusOverlay" class="focus-overlay"></div>
+    <div id="toastRoot" class="toast-root"></div>
+    <input id="vaultUploader" class="hidden" type="file" multiple>
+    <input id="restoreInput" class="hidden" type="file" accept="application/json">
+
+    <script>
+        /* =========================================================
+           LIFE OS - STATE, HELPERS, AND DEFAULT DATA
+           ========================================================= */
+        const STORAGE_KEY = "lifeos_immortal_v1";
+        const SESSION_KEY = "lifeos_session_v1";
+        const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        const QUOTES = [
+            "Small consistent wins compound into a completely different life.",
+            "Your future self is built in the quiet minutes nobody sees.",
+            "Clarity first. Momentum second. Magic after that.",
+            "Study like your attention is a rare resource, because it is.",
+            "The dashboard is not the work. It is the runway."
+        ];
+        const MENU = [
+            { id: "dashboard", icon: "fa-house", label: "Dashboard", desc: "Your daily command center", subs: ["Overview", "Today", "Shortcuts"] },
+            { id: "expenses", icon: "fa-wallet", label: "Expense Manager", desc: "Budget, income, spending, and goals", subs: ["Add Expense", "Expense History", "Budget", "Savings Goals", "Expense Analytics"] },
+            { id: "vault", icon: "fa-folder-open", label: "Personal Vault", desc: "Files, folders, favorites, and downloads", subs: ["Documents", "Images", "Notes", "Favorites", "Downloads"] },
+            { id: "notes", icon: "fa-note-sticky", label: "Notes", desc: "Rich notes, voice notes, and drawing", subs: ["All Notes", "Editor", "Favorites", "Voice Notes", "Drawing Canvas"] },
+            { id: "tasks", icon: "fa-square-check", label: "Task Manager", desc: "Tasks, goals, priorities, and recurring work", subs: ["Today", "All Tasks", "Daily Goals", "Weekly Goals", "Recurring"] },
+            { id: "productivity", icon: "fa-chart-line", label: "Productivity Manager", desc: "Pomodoro, habits, goals, and badges", subs: ["Pomodoro", "Focus Mode", "Habit Tracker", "Goal Tracker", "Achievements"] },
+            { id: "clock", icon: "fa-clock", label: "Clock Utilities", desc: "Clocks, stopwatch, alarms, and timer", subs: ["Digital Clock", "Stopwatch", "Alarm", "Timer", "World Clock"] },
+            { id: "planner", icon: "fa-calendar-days", label: "Planner & Timetable", desc: "Calendar, events, deadlines, and classes", subs: ["Daily Planner", "Weekly Planner", "Calendar", "Events", "Timetable"] },
+            { id: "analytics", icon: "fa-chart-pie", label: "Analytics", desc: "Life, productivity, expense, and storage insights", subs: ["Overview", "Productivity", "Expenses", "Tasks", "Storage"] },
+            { id: "recycle", icon: "fa-recycle", label: "Recycle Bin", desc: "Restore or permanently delete removed items", subs: ["Deleted Items", "Restore Center", "Recently Deleted"] },
+            { id: "settings", icon: "fa-gear", label: "Settings", desc: "Theme, password, backup, and reset", subs: ["Theme", "Password", "Notifications", "Backup", "Reset"] }
+        ];
+
+        let state;
+        let ui = {
+            section: "dashboard",
+            sub: "Overview",
+            selectedNote: null,
+            selectedFolder: "root",
+            expenseQuery: "",
+            expenseType: "all",
+            taskQuery: "",
+            taskFilter: "all",
+            timerMode: "focus",
+            timerSeconds: 25 * 60,
+            timerRunning: false,
+            stopwatchSeconds: 0,
+            stopwatchRunning: false,
+            countdownSeconds: 5 * 60,
+            countdownRunning: false,
+            drawing: false
+        };
+        let charts = {};
+        let intervals = {};
+        let inactivityTimer = null;
+
+        const $ = (selector, root = document) => root.querySelector(selector);
+        const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+        const byId = id => document.getElementById(id);
+        const uid = prefix => `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+        const today = () => new Date().toISOString().slice(0, 10);
+        const nowIso = () => new Date().toISOString();
+        const fmtDate = value => value ? new Date(value).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) : "No date";
+        const fmtTime = value => new Date(value).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
+        const money = value => Number(value || 0).toLocaleString(undefined, { style: "currency", currency: "USD" });
+        const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+        const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char]));
+
+        state = loadState();
+
+        function defaultState() {
+            const todayKey = today();
+            return {
+                auth: {
+                    passwordHash: "",
+                    pinHash: "",
+                    remember: false,
+                    pinEnabled: false
+                },
+                settings: {
+                    theme: "dark",
+                    autoLockMinutes: 15,
+                    notifications: true,
+                    monthlyBudget: 500,
+                    currency: "USD"
+                },
+                notifications: [],
+                expenses: [
+                    { id: uid("txn"), type: "income", title: "Scholarship", amount: 250, category: "Education", date: todayKey, note: "Monthly student income", createdAt: nowIso() },
+                    { id: uid("txn"), type: "expense", title: "Books", amount: 42, category: "Study", date: todayKey, note: "Reference material", createdAt: nowIso() },
+                    { id: uid("txn"), type: "expense", title: "Lunch", amount: 12, category: "Food", date: todayKey, note: "Campus cafeteria", createdAt: nowIso() }
+                ],
+                savingsGoals: [
+                    { id: uid("goal"), title: "New Laptop Fund", target: 1200, saved: 280, deadline: "", color: "#44c7ff" }
+                ],
+                folders: [
+                    { id: "root", parentId: null, name: "My Vault", color: "linear-gradient(135deg,#44c7ff,#77f2c1)", favorite: false, pinned: true, locked: false, createdAt: nowIso() },
+                    { id: uid("folder"), parentId: "root", name: "Documents", color: "linear-gradient(135deg,#ffd166,#ff8c66)", favorite: true, pinned: true, locked: false, createdAt: nowIso() },
+                    { id: uid("folder"), parentId: "root", name: "Private", color: "linear-gradient(135deg,#ff6680,#9f7aea)", favorite: false, pinned: false, locked: true, createdAt: nowIso() }
+                ],
+                files: [],
+                notes: [
+                    { id: uid("note"), title: "Welcome to LIFE OS", content: "<h2>Your workspace is alive.</h2><p>Use notes, tasks, vault files, expenses, planner, and analytics from one single local file.</p>", tags: ["home", "system"], favorite: true, pinned: true, updatedAt: nowIso(), createdAt: nowIso() }
+                ],
+                tasks: [
+                    { id: uid("task"), title: "Review today timetable", category: "Study", priority: "High", due: todayKey, completed: false, recurring: "None", goal: "Daily", createdAt: nowIso() },
+                    { id: uid("task"), title: "Log expenses", category: "Personal", priority: "Medium", due: todayKey, completed: false, recurring: "Daily", goal: "Daily", createdAt: nowIso() },
+                    { id: uid("task"), title: "Read 20 pages", category: "Study", priority: "High", due: todayKey, completed: true, recurring: "None", goal: "Weekly", createdAt: nowIso() }
+                ],
+                habits: [
+                    { id: uid("habit"), title: "Deep Study", color: "#44c7ff", history: { [todayKey]: true } },
+                    { id: uid("habit"), title: "Exercise", color: "#77f2c1", history: {} }
+                ],
+                productivityGoals: [
+                    { id: uid("prodgoal"), title: "Focus Hours", target: 20, progress: 4, unit: "hours" }
+                ],
+                focusSessions: [
+                    { id: uid("focus"), minutes: 25, date: todayKey, label: "Seed focus session" }
+                ],
+                events: [
+                    { id: uid("event"), title: "Assignment deadline", date: todayKey, time: "18:00", type: "Deadline", note: "Submit before dinner." }
+                ],
+                timetable: [
+                    { id: uid("class"), day: currentDayName(), subject: "Mathematics", start: "09:00", end: "10:00", room: "A-204", teacher: "Dr. Rao", color: "rgba(68,199,255,0.24)" },
+                    { id: uid("class"), day: currentDayName(), subject: "Physics Lab", start: "11:00", end: "12:30", room: "Lab 3", teacher: "Prof. Mehta", color: "rgba(119,242,193,0.24)" }
+                ],
+                recycle: []
+            };
+        }
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return defaultState();
+                const parsed = JSON.parse(raw);
+                return mergeState(defaultState(), parsed);
+            } catch (error) {
+                console.warn("State load failed", error);
+                return defaultState();
+            }
+        }
+
+        function mergeState(base, incoming) {
+            const output = { ...base, ...incoming };
+            output.auth = { ...base.auth, ...(incoming.auth || {}) };
+            output.settings = { ...base.settings, ...(incoming.settings || {}) };
+            for (const key of ["notifications", "expenses", "savingsGoals", "folders", "files", "notes", "tasks", "habits", "productivityGoals", "focusSessions", "events", "timetable", "recycle"]) {
+                output[key] = Array.isArray(incoming[key]) ? incoming[key] : base[key];
+            }
+            return output;
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            } catch (error) {
+                toast("Storage is full. Export a backup or remove large files.", "error");
+            }
+        }
+
+        async function hashText(text) {
+            if (window.crypto && crypto.subtle) {
+                const encoded = new TextEncoder().encode(text);
+                const buffer = await crypto.subtle.digest("SHA-256", encoded);
+                return Array.from(new Uint8Array(buffer)).map(byte => byte.toString(16).padStart(2, "0")).join("");
+            }
+            return btoa(unescape(encodeURIComponent(text))).split("").reverse().join("");
+        }
+
+        function currentDayName() {
+            const day = new Date().getDay();
+            return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day];
+        }
+
+        function itemById(collection, id) {
+            return state[collection].find(item => item.id === id);
+        }
+
+        /* =========================================================
+           APP BOOT, AUTH, AND SESSION LOCKING
+           ========================================================= */
+        document.addEventListener("DOMContentLoaded", init);
+
+        function init() {
+            document.body.dataset.theme = state.settings.theme;
+            setupAuthScreen();
+            attachEventHandlers();
+            setTimeout(() => {
+                byId("loader").classList.add("hidden");
+                const session = JSON.parse(sessionStorage.getItem(SESSION_KEY) || "null");
+                if (state.auth.passwordHash && state.auth.remember && session?.unlocked) {
+                    unlockApp(false);
+                } else {
+                    showAuth();
+                }
+            }, 450);
+        }
+
+        function showAuth(message = "") {
+            byId("app").classList.add("hidden");
+            byId("fab").classList.add("hidden");
+            byId("authScreen").classList.remove("hidden");
+            byId("authError").textContent = message;
+            setupAuthScreen();
+            stopIntervals();
+        }
+
+        function setupAuthScreen() {
+            const firstRun = !state.auth.passwordHash;
+            byId("authHint").textContent = firstRun ? "Create a private password to protect your personal workspace." : "Enter your password to unlock your life dashboard.";
+            byId("authSubmit").textContent = firstRun ? "Create Password" : "Unlock Dashboard";
+            byId("confirmWrap").classList.toggle("hidden", !firstRun);
+            byId("rememberInput").checked = !!state.auth.remember;
+            byId("passwordInput").value = "";
+            byId("confirmInput").value = "";
+        }
+
+        async function handleAuthSubmit(event) {
+            event.preventDefault();
+            const firstRun = !state.auth.passwordHash;
+            const password = byId("passwordInput").value.trim();
+            const confirm = byId("confirmInput").value.trim();
+            const remember = byId("rememberInput").checked;
+            byId("authError").textContent = "";
+            if (password.length < 4) return authFail("Use at least 4 characters.");
+            if (firstRun) {
+                if (password !== confirm) return authFail("Passwords do not match.");
+                state.auth.passwordHash = await hashText(password);
+                state.auth.remember = remember;
+                saveState();
+                toast("Password created. Welcome to LIFE OS.", "success");
+                unlockApp(remember);
+                return;
+            }
+            const hash = await hashText(password);
+            if (hash !== state.auth.passwordHash) return authFail("Incorrect Password");
+            state.auth.remember = remember;
+            saveState();
+            unlockApp(remember);
+        }
+
+        function authFail(message) {
+            byId("authError").textContent = message;
+            const card = $(".auth-card");
+            card.classList.remove("shake");
+            void card.offsetWidth;
+            card.classList.add("shake");
+        }
+
+        function unlockApp(remember) {
+            sessionStorage.setItem(SESSION_KEY, JSON.stringify({ unlocked: true, at: nowIso() }));
+            byId("authScreen").classList.add("hidden");
+            byId("app").classList.remove("hidden");
+            byId("fab").classList.remove("hidden");
+            renderApp();
+            startIntervals();
+            resetInactivityTimer();
+            if (remember) toast("Remember me enabled for this browser session.", "success");
+        }
+
+        function lockApp() {
+            sessionStorage.removeItem(SESSION_KEY);
+            showAuth("Workspace locked.");
+        }
+
+        function logout() {
+            sessionStorage.removeItem(SESSION_KEY);
+            toast("Logged out securely.", "success");
+            showAuth();
+        }
+
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            const minutes = Number(state.settings.autoLockMinutes || 0);
+            if (!minutes) return;
+            inactivityTimer = setTimeout(() => {
+                toast("Auto-lock activated after inactivity.", "warning");
+                lockApp();
+            }, minutes * 60 * 1000);
+        }
+
+        /* =========================================================
+           GLOBAL EVENTS AND KEYBOARD SHORTCUTS
+           ========================================================= */
+        function attachEventHandlers() {
+            byId("authForm").addEventListener("submit", handleAuthSubmit);
+            byId("showPasswordInput").addEventListener("change", event => {
+                const type = event.target.checked ? "text" : "password";
+                byId("passwordInput").type = type;
+                byId("confirmInput").type = type;
+            });
+            document.addEventListener("click", handleAction);
+            document.addEventListener("input", handleInput);
+            document.addEventListener("change", handleChange);
+            document.addEventListener("submit", handleSubmit);
+            document.addEventListener("keydown", handleKeyboard);
+            ["mousemove", "keydown", "click", "touchstart"].forEach(event => document.addEventListener(event, resetInactivityTimer, { passive: true }));
+            byId("vaultUploader").addEventListener("change", event => uploadFiles(event.target.files));
+            byId("restoreInput").addEventListener("change", restoreBackupFile);
+        }
+
+        async function handleAction(event) {
+            const target = event.target.closest("[data-action]");
+            if (!target) return;
+            const action = target.dataset.action;
+            const id = target.dataset.id;
+            const collection = target.dataset.collection;
+            if (action === "switch-section") switchSection(target.dataset.section);
+            if (action === "switch-sub") switchSub(target.dataset.sub);
+            if (action === "toggle-sidebar") document.body.classList.toggle("sidebar-collapsed");
+            if (action === "toggle-mobile-main") byId("mainSidebar").classList.toggle("open");
+            if (action === "toggle-mobile-sub") byId("subSidebar").classList.toggle("open");
+            if (action === "toggle-theme") toggleTheme();
+            if (action === "toggle-quick") byId("quickPanel").classList.toggle("open");
+            if (action === "toggle-notifications") toggleNotificationCenter();
+            if (action === "logout") logout();
+            if (action === "lock-now") lockApp();
+            if (action === "open-quick-create") openQuickCreate();
+            if (action === "quick-note") quickNote();
+            if (action === "quick-task") quickTask();
+            if (action === "quick-expense") quickExpense();
+            if (action === "edit-expense") openExpenseModal(id);
+            if (action === "delete-expense") softDelete("expenses", id, "Expense deleted.");
+            if (action === "export-expenses") exportExpenses();
+            if (action === "delete-goal") softDelete("savingsGoals", id, "Savings goal deleted.");
+            if (action === "open-folder") openFolder(id);
+            if (action === "new-folder") openFolderModal();
+            if (action === "rename-folder") openFolderModal(id);
+            if (action === "delete-folder") deleteFolder(id);
+            if (action === "toggle-folder-prop") toggleFolderProp(id, target.dataset.prop);
+            if (action === "upload-files") byId("vaultUploader").click();
+            if (action === "preview-file") previewFile(id);
+            if (action === "download-file") downloadFile(id);
+            if (action === "delete-file") softDelete("files", id, "File moved to recycle bin.");
+            if (action === "new-note") createNote();
+            if (action === "select-note") selectNote(id);
+            if (action === "delete-note") softDelete("notes", id, "Note moved to recycle bin.");
+            if (action === "toggle-note-prop") toggleNoteProp(id, target.dataset.prop);
+            if (action === "format-note") formatNote(target.dataset.command, target.dataset.value);
+            if (action === "voice-note") startVoiceNote();
+            if (action === "clear-drawing") clearDrawing();
+            if (action === "save-drawing") saveDrawingToNote();
+            if (action === "toggle-task") toggleTask(id);
+            if (action === "edit-task") openTaskModal(id);
+            if (action === "delete-task") softDelete("tasks", id, "Task moved to recycle bin.");
+            if (action === "pomodoro-mode") setPomodoroMode(target.dataset.mode);
+            if (action === "pomodoro-toggle") togglePomodoro();
+            if (action === "pomodoro-reset") resetPomodoro();
+            if (action === "toggle-habit") toggleHabit(id);
+            if (action === "delete-habit") removeItem("habits", id, "Habit deleted.");
+            if (action === "delete-prod-goal") removeItem("productivityGoals", id, "Goal deleted.");
+            if (action === "goal-progress") changeGoalProgress(id, Number(target.dataset.delta || 0));
+            if (action === "focus-mode") showFocusMode();
+            if (action === "close-focus") byId("focusOverlay").classList.remove("active");
+            if (action === "stopwatch-toggle") ui.stopwatchRunning = !ui.stopwatchRunning;
+            if (action === "stopwatch-reset") ui.stopwatchSeconds = 0;
+            if (action === "timer-toggle") ui.countdownRunning = !ui.countdownRunning;
+            if (action === "timer-reset") resetCountdown();
+            if (action === "delete-alarm") removeItem("alarms", id, "Alarm deleted.");
+            if (action === "delete-event") softDelete("events", id, "Event moved to recycle bin.");
+            if (action === "edit-event") openEventModal(id);
+            if (action === "edit-class") openClassModal(id);
+            if (action === "delete-class") removeItem("timetable", id, "Class deleted.");
+            if (action === "restore-item") restoreItem(id);
+            if (action === "permanent-delete") permanentDelete(id);
+            if (action === "empty-recycle") emptyRecycle();
+            if (action === "export-backup") exportBackup();
+            if (action === "restore-backup") byId("restoreInput").click();
+            if (action === "reset-app") resetApp();
+            if (action === "close-modal") closeModal();
+            if (action === "search-open") openSearchResult(id);
+            if (action === "clear-notifications") clearNotifications();
+            if (action === "request-notification-permission") requestNotificationPermission();
+            const keepMobileMenus = ["toggle-mobile-main", "toggle-mobile-sub"].includes(action);
+            if (!keepMobileMenus && target.closest(".modal-root") === null && window.innerWidth <= 920) {
+                byId("mainSidebar").classList.remove("open");
+                byId("subSidebar").classList.remove("open");
+            }
+        }
+
+        function handleInput(event) {
+            const target = event.target;
+            if (target.id === "globalSearch") renderSearch(target.value);
+            if (target.dataset.filter === "expense-query") {
+                ui.expenseQuery = target.value.toLowerCase();
+                renderContent();
+            }
+            if (target.dataset.filter === "task-query") {
+                ui.taskQuery = target.value.toLowerCase();
+                renderContent();
+            }
+            if (target.id === "noteTitle") updateCurrentNote("title", target.value);
+            if (target.id === "noteTags") updateCurrentNote("tags", target.value.split(",").map(tag => tag.trim()).filter(Boolean));
+            if (target.id === "noteEditor") updateCurrentNote("content", target.innerHTML);
+            if (target.id === "monthlyBudgetInput") {
+                state.settings.monthlyBudget = Number(target.value || 0);
+                saveState();
+                renderContent();
+            }
+            if (target.id === "timerMinutes") {
+                ui.countdownSeconds = Math.max(1, Number(target.value || 1)) * 60;
+                updateClockDisplays();
+            }
+        }
+
+        function handleChange(event) {
+            const target = event.target;
+            if (target.dataset.filter === "expense-type") {
+                ui.expenseType = target.value;
+                renderContent();
+            }
+            if (target.dataset.filter === "task-filter") {
+                ui.taskFilter = target.value;
+                renderContent();
+            }
+            if (target.id === "autoLockMinutes") {
+                state.settings.autoLockMinutes = Number(target.value || 0);
+                saveState();
+                resetInactivityTimer();
+                toast("Auto-lock updated.", "success");
+            }
+            if (target.id === "notificationsToggle") {
+                state.settings.notifications = target.checked;
+                saveState();
+                toast("Notification preference saved.", "success");
+            }
+        }
+
+        async function handleSubmit(event) {
+            const form = event.target;
+            if (!form.dataset.form) return;
+            event.preventDefault();
+            const data = Object.fromEntries(new FormData(form).entries());
+            if (form.dataset.form === "expense") saveExpense(data, form.dataset.id);
+            if (form.dataset.form === "savings") saveSavingsGoal(data);
+            if (form.dataset.form === "folder") saveFolder(data, form.dataset.id);
+            if (form.dataset.form === "task") saveTask(data, form.dataset.id);
+            if (form.dataset.form === "habit") saveHabit(data);
+            if (form.dataset.form === "prod-goal") saveProductivityGoal(data);
+            if (form.dataset.form === "event") saveEvent(data, form.dataset.id);
+            if (form.dataset.form === "class") saveClass(data, form.dataset.id);
+            if (form.dataset.form === "alarm") saveAlarm(data);
+            if (form.dataset.form === "password") await changePassword(data);
+            if (form.dataset.form === "pin") await changePin(data);
+            closeModal();
+        }
+
+        function handleKeyboard(event) {
+            if (event.ctrlKey && event.key.toLowerCase() === "k") {
+                event.preventDefault();
+                byId("globalSearch").focus();
+            }
+            if (event.ctrlKey && event.key.toLowerCase() === "n") {
+                event.preventDefault();
+                quickNote();
+            }
+            if (event.ctrlKey && event.key.toLowerCase() === "l") {
+                event.preventDefault();
+                lockApp();
+            }
+            if (event.key === "?" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
+                byId("quickPanel").classList.toggle("open");
+            }
+            if (event.key === "Escape") {
+                closeModal();
+                byId("quickPanel").classList.remove("open");
+                byId("notificationCenter").classList.remove("open");
+                byId("searchResults").classList.add("hidden");
+            }
+        }
+
+        /* =========================================================
+           SHELL RENDERING
+           ========================================================= */
+        function renderApp() {
+            renderMainSidebar();
+            renderSubSidebar();
+            renderHeader();
+            renderContent();
+            renderNotifications();
+        }
+
+        function renderMainSidebar() {
+            byId("mainSidebar").innerHTML = `
+                <div class="sidebar-head">
+                    <div class="logo"><i class="fa-solid fa-infinity"></i></div>
+                    <div class="brand-copy">
+                        <div class="brand-title">LIFE OS</div>
+                        <div class="brand-subtitle">Immortal Ultimate</div>
+                    </div>
+                    <button class="icon-btn collapse-btn" data-action="toggle-sidebar" title="Collapse"><i class="fa-solid fa-angles-left"></i></button>
+                </div>
+                <div class="nav-scroll">
+                    ${MENU.map(item => `
+                        <button class="nav-btn ${ui.section === item.id ? "active" : ""}" data-action="switch-section" data-section="${item.id}" title="${item.label}">
+                            <i class="fa-solid ${item.icon}"></i>
+                            <span class="nav-label">${item.label}</span>
+                        </button>
+                    `).join("")}
+                </div>
+            `;
+        }
+
+        function renderSubSidebar() {
+            const section = MENU.find(item => item.id === ui.section);
+            byId("subSidebar").innerHTML = `
+                <h3 class="sub-title">${section.label}</h3>
+                <p class="sub-desc">${section.desc}</p>
+                <div class="sub-scroll">
+                    ${section.subs.map(sub => `
+                        <button class="sub-btn ${ui.sub === sub ? "active" : ""}" data-action="switch-sub" data-sub="${sub}">
+                            <i class="fa-solid fa-circle-dot"></i>
+                            <span>${sub}</span>
+                        </button>
+                    `).join("")}
+                </div>
+            `;
+        }
+
+        function renderHeader() {
+            const section = MENU.find(item => item.id === ui.section);
+            byId("pageTitle").textContent = section.label;
+            byId("pageSubtitle").textContent = ui.sub || section.desc;
+        }
+
+        function switchSection(sectionId) {
+            const section = MENU.find(item => item.id === sectionId);
+            if (!section) return;
+            ui.section = sectionId;
+            ui.sub = section.subs[0];
+            renderApp();
+        }
+
+        function switchSub(sub) {
+            ui.sub = sub;
+            renderSubSidebar();
+            renderHeader();
+            renderContent();
+        }
+
+        function renderContent() {
+            destroyCharts();
+            const content = byId("content");
+            if (ui.section === "dashboard") content.innerHTML = renderDashboard();
+            if (ui.section === "expenses") content.innerHTML = renderExpenses();
+            if (ui.section === "vault") content.innerHTML = renderVault();
+            if (ui.section === "notes") content.innerHTML = renderNotes();
+            if (ui.section === "tasks") content.innerHTML = renderTasks();
+            if (ui.section === "productivity") content.innerHTML = renderProductivity();
+            if (ui.section === "clock") content.innerHTML = renderClock();
+            if (ui.section === "planner") content.innerHTML = renderPlanner();
+            if (ui.section === "analytics") content.innerHTML = renderAnalytics();
+            if (ui.section === "recycle") content.innerHTML = renderRecycle();
+            if (ui.section === "settings") content.innerHTML = renderSettings();
+            requestAnimationFrame(() => {
+                mountCharts();
+                initDrawingCanvas();
+                wireDragAndDrop();
+                updateClockDisplays();
+            });
+        }
+
+        /* =========================================================
+           DASHBOARD
+           ========================================================= */
+        function renderDashboard() {
+            const metrics = getMetrics();
+            const todaysTasks = state.tasks.filter(task => task.due === today()).slice(0, 5);
+            const todaysClasses = state.timetable.filter(item => item.day === currentDayName()).sort((a, b) => a.start.localeCompare(b.start));
+            const upcomingEvents = state.events.filter(event => event.date >= today()).sort((a, b) => `${a.date}${a.time}`.localeCompare(`${b.date}${b.time}`)).slice(0, 4);
+            return `
+                <div class="card dashboard-clock-card">
+                    <div>
+                        <div class="card-head" style="margin-bottom:8px;"><h3>Live Clock</h3></div>
+                        <div id="dashClock" class="clock-time">--:--</div>
+                    </div>
+                    <div class="dashboard-clock-meta">
+                        <span class="tag accent">${currentDayName()}</span>
+                        <span class="muted">${new Date().toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })}</span>
+                    </div>
+                </div>
+                <div class="grid four">
+                    ${metricCard("Today's Tasks", `${metrics.todayDone}/${metrics.todayTotal}`, "fa-list-check", `${metrics.todayTotal ? Math.round(metrics.todayDone / metrics.todayTotal * 100) : 0}% complete`, "accent")}
+                    ${metricCard("Balance", money(metrics.balance), "fa-wallet", `${money(metrics.income)} income`, metrics.balance >= 0 ? "ok" : "danger")}
+                    ${metricCard("Productivity", `${metrics.productivity}%`, "fa-fire", `${metrics.streak} day study streak`, "warn")}
+                    ${metricCard("Storage", `${metrics.storageKb} KB`, "fa-database", `${state.files.length} saved files`, "accent")}
+                </div>
+                <div class="grid two" style="margin-top:14px;">
+                    <div class="card">
+                        <div class="card-head"><h3>Motivation</h3><i class="fa-solid fa-sparkles"></i></div>
+                        <p style="font-size:1.15rem;line-height:1.55;margin:0;">${QUOTES[new Date().getDate() % QUOTES.length]}</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-head"><h3>Weekly Progress</h3><span class="tag ok">${metrics.weeklyCompletion}%</span></div>
+                        <canvas id="dashProgressChart" height="160"></canvas>
+                    </div>
+                </div>
+                <div class="grid two" style="margin-top:14px;">
+                    <div class="card">
+                        <div class="card-head">
+                            <h3>Today's Tasks</h3>
+                            <button class="pill-btn" data-action="quick-task"><i class="fa-solid fa-plus"></i> Add</button>
+                        </div>
+                        <div class="list">${todaysTasks.length ? todaysTasks.map(taskMini).join("") : emptyState("fa-square-check", "No tasks due today.")}</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-head">
+                            <h3>Today's Timetable</h3>
+                            <span class="tag accent">${todaysClasses.length} classes</span>
+                        </div>
+                        <div class="list">${todaysClasses.length ? todaysClasses.map(classMini).join("") : emptyState("fa-calendar", "No classes scheduled today.")}</div>
+                    </div>
+                </div>
+                <div class="grid three" style="margin-top:14px;">
+                    <div class="card">
+                        <div class="card-head"><h3>Upcoming Events</h3><button class="pill-btn" onclick="document.dispatchEvent(new CustomEvent('lifeos-route-events'))"><i class="fa-solid fa-calendar-plus"></i></button></div>
+                        <div class="list">${upcomingEvents.length ? upcomingEvents.map(eventMini).join("") : emptyState("fa-calendar-days", "No upcoming events.")}</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-head"><h3>Notes Preview</h3><button class="pill-btn" data-action="quick-note"><i class="fa-solid fa-plus"></i></button></div>
+                        <div class="list">${state.notes.slice(0, 4).map(noteMini).join("") || emptyState("fa-note-sticky", "No notes yet.")}</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-head"><h3>Recent Files</h3><button class="pill-btn" data-action="upload-files"><i class="fa-solid fa-upload"></i></button></div>
+                        <div class="list">${state.files.slice(-4).reverse().map(fileMini).join("") || emptyState("fa-folder-open", "Upload files into your vault.")}</div>
+                    </div>
+                </div>
+                <div class="card" style="margin-top:14px;">
+                    <div class="card-head"><h3>Quick Shortcuts</h3><span class="tiny">Fast jumps for daily workflows</span></div>
+                    <div class="grid auto">
+                        ${quickShortcut("expenses", "Add Expense", "fa-wallet", "Log money")}
+                        ${quickShortcut("notes", "Editor", "fa-pen", "Capture idea")}
+                        ${quickShortcut("tasks", "Today", "fa-check", "Plan today")}
+                        ${quickShortcut("productivity", "Pomodoro", "fa-stopwatch", "Start focus")}
+                        ${quickShortcut("planner", "Timetable", "fa-calendar-days", "Classes")}
+                    </div>
+                </div>
+            `;
+        }
+
+        function metricCard(title, value, icon, subtitle, tone) {
+            return `
+                <div class="card">
+                    <div class="between">
+                        <span class="tag ${tone}"><i class="fa-solid ${icon}"></i> ${title}</span>
+                    </div>
+                    <div class="metric">${value}</div>
+                    <div class="muted">${subtitle}</div>
+                </div>
+            `;
+        }
+
+        function getMetrics() {
+            const tx = monthlyTransactions();
+            const income = tx.filter(item => item.type === "income").reduce((sum, item) => sum + Number(item.amount), 0);
+            const expense = tx.filter(item => item.type === "expense").reduce((sum, item) => sum + Number(item.amount), 0);
+            const todayTasks = state.tasks.filter(task => task.due === today());
+            const done = state.tasks.filter(task => task.completed).length;
+            const productivity = state.tasks.length ? Math.round(done / state.tasks.length * 60 + Math.min(40, state.focusSessions.length * 5)) : Math.min(100, state.focusSessions.length * 10);
+            return {
+                income,
+                expense,
+                balance: income - expense,
+                todayTotal: todayTasks.length,
+                todayDone: todayTasks.filter(task => task.completed).length,
+                productivity: clamp(productivity, 0, 100),
+                weeklyCompletion: weeklyTaskCompletion(),
+                streak: studyStreak(),
+                storageKb: Math.round(JSON.stringify(state.files).length / 1024)
+            };
+        }
+
+        function monthlyTransactions() {
+            const month = today().slice(0, 7);
+            return state.expenses.filter(item => item.date && item.date.startsWith(month));
+        }
+
+        function taskMini(task) {
+            return `
+                <div class="list-item">
+                    <div class="list-main ${task.completed ? "task-complete" : ""}">
+                        <strong>${escapeHtml(task.title)}</strong>
+                        <span class="tiny">${task.category} - ${task.priority}</span>
+                    </div>
+                    <button class="icon-btn" data-action="toggle-task" data-id="${task.id}" title="Toggle"><i class="fa-solid ${task.completed ? "fa-rotate-left" : "fa-check"}"></i></button>
+                </div>
+            `;
+        }
+
+        function classMini(item) {
+            return `
+                <div class="list-item">
+                    <div class="list-main">
+                        <strong>${escapeHtml(item.subject)}</strong>
+                        <span class="tiny">${item.start} - ${item.end} - ${escapeHtml(item.room)} - ${escapeHtml(item.teacher)}</span>
+                    </div>
+                    <span class="tag accent">${item.day}</span>
+                </div>
+            `;
+        }
+
+        function eventMini(event) {
+            return `
+                <div class="list-item">
+                    <div class="list-main">
+                        <strong>${escapeHtml(event.title)}</strong>
+                        <span class="tiny">${fmtDate(event.date)} ${event.time || ""} - ${event.type}</span>
+                    </div>
+                    <span class="tag warn">${event.type}</span>
+                </div>
+            `;
+        }
+
+        function noteMini(note) {
+            return `
+                <button class="list-item" data-action="select-note" data-id="${note.id}">
+                    <span class="list-main">
+                        <strong>${note.pinned ? '<i class="fa-solid fa-thumbtack"></i> ' : ""}${escapeHtml(note.title)}</strong>
+                        <span class="tiny">${fmtDate(note.updatedAt)} - ${(note.tags || []).join(", ") || "untagged"}</span>
+                    </span>
+                </button>
+            `;
+        }
+
+        function fileMini(file) {
+            return `
+                <button class="list-item" data-action="preview-file" data-id="${file.id}">
+                    <span class="list-main">
+                        <strong>${fileIcon(file.type)} ${escapeHtml(file.name)}</strong>
+                        <span class="tiny">${formatBytes(file.size)} - ${fmtDate(file.createdAt)}</span>
+                    </span>
+                </button>
+            `;
+        }
+
+        function quickShortcut(section, sub, icon, label) {
+            return `
+                <button class="list-item" data-action="switch-section" data-section="${section}" onclick="setTimeout(()=>{ui.sub='${sub}';renderApp()},0)">
+                    <span><i class="fa-solid ${icon}"></i> ${sub}</span>
+                    <span class="tiny">${label}</span>
+                </button>
+            `;
+        }
+
+        /* =========================================================
+           EXPENSE MANAGER
+           ========================================================= */
+        function renderExpenses() {
+            const metrics = getMetrics();
+            const view = ui.sub;
+            if (view === "Add Expense") return `
+                <div class="grid four">
+                    ${metricCard("Income", money(metrics.income), "fa-arrow-trend-up", "This month", "ok")}
+                    ${metricCard("Expense", money(metrics.expense), "fa-arrow-trend-down", "This month", "danger")}
+                    ${metricCard("Balance", money(metrics.balance), "fa-scale-balanced", "Income minus expense", metrics.balance >= 0 ? "ok" : "danger")}
+                    ${metricCard("Budget Left", money(state.settings.monthlyBudget - metrics.expense), "fa-piggy-bank", `${money(state.settings.monthlyBudget)} budget`, "warn")}
+                </div>
+                <div class="card" style="margin-top:14px;">
+                    <div class="card-head"><h3>Add Transaction</h3><span class="tag accent">LocalStorage</span></div>
+                    ${expenseForm()}
+                </div>
+            `;
+            if (view === "Budget") return renderBudget(metrics);
+            if (view === "Savings Goals") return renderSavingsGoals();
+            if (view === "Expense Analytics") return `
+                <div class="grid two">
+                    <div class="card"><div class="card-head"><h3>Category Spending</h3></div><canvas id="expensePie"></canvas></div>
+                    <div class="card"><div class="card-head"><h3>Monthly Flow</h3></div><canvas id="expenseBar"></canvas></div>
+                </div>
+                <div class="card" style="margin-top:14px;"><div class="card-head"><h3>Expense Trends</h3></div><canvas id="expenseTrend"></canvas></div>
+            `;
+            return renderExpenseHistory();
+        }
+
+        function expenseForm(expense = {}) {
+            return `
+                <form class="form-grid" data-form="expense" data-id="${expense.id || ""}">
+                    <input name="title" placeholder="Title" value="${escapeHtml(expense.title || "")}" required>
+                    <select name="type">
+                        <option value="expense" ${expense.type === "expense" ? "selected" : ""}>Expense</option>
+                        <option value="income" ${expense.type === "income" ? "selected" : ""}>Income</option>
+                    </select>
+                    <input name="amount" type="number" min="0" step="0.01" placeholder="Amount" value="${expense.amount || ""}" required>
+                    <select name="category">
+                        ${["Food", "Study", "Travel", "Bills", "Entertainment", "Health", "Education", "Savings", "Other"].map(cat => `<option ${expense.category === cat ? "selected" : ""}>${cat}</option>`).join("")}
+                    </select>
+                    <input name="date" type="date" value="${expense.date || today()}" required>
+                    <input name="note" placeholder="Note" value="${escapeHtml(expense.note || "")}">
+                    <div class="full actions">
+                        <button class="primary-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Transaction</button>
+                        <button class="ghost-btn" type="reset"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                    </div>
+                </form>
+            `;
+        }
+
+        function saveExpense(data, id) {
+            const payload = { ...data, amount: Number(data.amount || 0), createdAt: nowIso() };
+            if (id) {
+                const index = state.expenses.findIndex(item => item.id === id);
+                state.expenses[index] = { ...state.expenses[index], ...payload };
+                toast("Transaction updated.", "success");
+            } else {
+                state.expenses.unshift({ id: uid("txn"), ...payload });
+                toast("Transaction saved.", "success");
+            }
+            saveState();
+            renderContent();
+        }
+
+        function renderExpenseHistory() {
+            let filtered = state.expenses.filter(item => {
+                const text = `${item.title} ${item.category} ${item.note}`.toLowerCase();
+                const typeOk = ui.expenseType === "all" || item.type === ui.expenseType;
+                return text.includes(ui.expenseQuery) && typeOk;
+            });
+            return `
+                <div class="card">
+                    <div class="card-head">
+                        <h3>Expense History</h3>
+                        <div class="actions">
+                            <button class="pill-btn" data-action="export-expenses"><i class="fa-solid fa-file-export"></i> Export CSV</button>
+                            <button class="primary-btn" data-action="quick-expense"><i class="fa-solid fa-plus"></i> Add</button>
+                        </div>
+                    </div>
+                    <div class="form-grid" style="margin-bottom:12px;">
+                        <input data-filter="expense-query" value="${escapeHtml(ui.expenseQuery)}" placeholder="Search expenses...">
+                        <select data-filter="expense-type">
+                            <option value="all" ${ui.expenseType === "all" ? "selected" : ""}>All Types</option>
+                            <option value="income" ${ui.expenseType === "income" ? "selected" : ""}>Income</option>
+                            <option value="expense" ${ui.expenseType === "expense" ? "selected" : ""}>Expense</option>
+                        </select>
+                    </div>
+                    ${filtered.length ? `
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Title</th><th>Type</th><th>Category</th><th>Amount</th><th>Date</th><th>Actions</th></tr></thead>
+                            <tbody>
+                                ${filtered.map(item => `
+                                    <tr>
+                                        <td><strong>${escapeHtml(item.title)}</strong><div class="tiny">${escapeHtml(item.note || "")}</div></td>
+                                        <td><span class="tag ${item.type === "income" ? "ok" : "danger"}">${item.type}</span></td>
+                                        <td>${escapeHtml(item.category)}</td>
+                                        <td>${money(item.amount)}</td>
+                                        <td>${fmtDate(item.date)}</td>
+                                        <td class="actions">
+                                            <button class="icon-btn" data-action="edit-expense" data-id="${item.id}" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                                            <button class="icon-btn" data-action="delete-expense" data-id="${item.id}" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                `).join("")}
+                            </tbody>
+                        </table>
+                    </div>` : emptyState("fa-wallet", "No matching transactions.")}
+                </div>
+            `;
+        }
+
+        function renderBudget(metrics) {
+            const spent = metrics.expense;
+            const pct = state.settings.monthlyBudget ? clamp(Math.round(spent / state.settings.monthlyBudget * 100), 0, 999) : 0;
+            return `
+                <div class="grid two">
+                    <div class="card">
+                        <div class="card-head"><h3>Monthly Budget</h3><span class="tag ${pct > 90 ? "danger" : "ok"}">${pct}% used</span></div>
+                        <input id="monthlyBudgetInput" type="number" min="0" value="${state.settings.monthlyBudget}">
+                        <div class="progress" style="margin:16px 0;"><span style="--w:${clamp(pct, 0, 100)}%;"></span></div>
+                        <div class="grid three">
+                            ${metricCard("Budget", money(state.settings.monthlyBudget), "fa-piggy-bank", "Monthly cap", "accent")}
+                            ${metricCard("Spent", money(spent), "fa-receipt", "This month", "danger")}
+                            ${metricCard("Remaining", money(state.settings.monthlyBudget - spent), "fa-scale-balanced", "Available", "ok")}
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-head"><h3>Category Snapshot</h3></div>
+                        <canvas id="budgetCategoryChart"></canvas>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderSavingsGoals() {
+            return `
+                <div class="grid two">
+                    <div class="card">
+                        <div class="card-head"><h3>Add Savings Goal</h3></div>
+                        <form class="form-grid" data-form="savings">
+                            <input name="title" placeholder="Goal title" required>
+                            <input name="target" type="number" min="1" placeholder="Target amount" required>
+                            <input name="saved" type="number" min="0" placeholder="Already saved" required>
+                            <input name="deadline" type="date">
+                            <input name="color" type="color" value="#44c7ff">
+                            <button class="primary-btn" type="submit"><i class="fa-solid fa-plus"></i> Add Goal</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <div class="card-head"><h3>Goals</h3></div>
+                        <div class="list">
+                            ${state.savingsGoals.length ? state.savingsGoals.map(goal => {
+                                const pct = goal.target ? clamp(Math.round(goal.saved / goal.target * 100), 0, 100) : 0;
+                                return `
+                                    <div class="list-item">
+                                        <div class="list-main">
+                                            <strong>${escapeHtml(goal.title)}</strong>
+                                            <span class="tiny">${money(goal.saved)} of ${money(goal.target)} ${goal.deadline ? "- due " + fmtDate(goal.deadline) : ""}</span>
+                                            <div class="progress" style="margin-top:8px;"><span style="--w:${pct}%;background:${goal.color};"></span></div>
+                                        </div>
+                                        <button class="icon-btn" data-action="delete-goal" data-id="${goal.id}"><i class="fa-solid fa-trash"></i></button>
+                                    </div>
+                                `;
+                            }).join("") : emptyState("fa-piggy-bank", "No savings goals yet.")}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function saveSavingsGoal(data) {
+            state.savingsGoals.push({ id: uid("goal"), title: data.title, target: Number(data.target), saved: Number(data.saved), deadline: data.deadline, color: data.color || "#44c7ff" });
+            saveState();
+            toast("Savings goal added.", "success");
+            renderContent();
+        }
+
+        function openExpenseModal(id) {
+            openModal(`<h3>${id ? "Edit" : "Add"} Transaction</h3>${expenseForm(id ? itemById("expenses", id) : {})}`);
+        }
+
+        function exportExpenses() {
+            const header = ["Title", "Type", "Category", "Amount", "Date", "Note"];
+            const rows = state.expenses.map(item => [item.title, item.type, item.category, item.amount, item.date, item.note || ""]);
+            downloadText("lifeos-expenses.csv", [header, ...rows].map(row => row.map(value => `"${String(value).replaceAll('"', '""')}"`).join(",")).join("\n"), "text/csv");
+            toast("Expenses exported.", "success");
+        }
+
+        /* =========================================================
+           PERSONAL VAULT
+           ========================================================= */
+        function renderVault() {
+            const folder = state.folders.find(item => item.id === ui.selectedFolder) || state.folders[0];
+            const childFolders = state.folders.filter(item => item.parentId === folder.id);
+            let files = state.files.filter(file => file.folderId === folder.id);
+            if (ui.sub === "Images") files = state.files.filter(file => file.type.startsWith("image/"));
+            if (ui.sub === "Documents") files = state.files.filter(file => !file.type.startsWith("image/"));
+            if (ui.sub === "Favorites") files = state.files.filter(file => file.favorite);
+            if (ui.sub === "Downloads") files = state.files.slice().sort((a, b) => String(b.createdAt).localeCompare(a.createdAt));
+            return `
+                <div class="grid two">
+                    <div class="card">
+                        <div class="card-head">
+                            <h3>${escapeHtml(folder.name)}</h3>
+                            <div class="actions">
+                                <button class="pill-btn" data-action="new-folder"><i class="fa-solid fa-folder-plus"></i> Folder</button>
+                                <button class="primary-btn" data-action="upload-files"><i class="fa-solid fa-upload"></i> Upload</button>
+                            </div>
+                        </div>
+                        <div id="dropZone" class="drop-zone">
+                            <div>
+                                <i class="fa-solid fa-cloud-arrow-up" style="font-size:2rem;color:var(--accent);"></i>
+                                <p><strong>Drop PDFs, images, documents, ZIPs, or backups here</strong></p>
+                                <span class="muted">Files are encoded with FileReader and stored locally in this browser.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-head"><h3>Folder Tools</h3><span class="tag">${state.folders.length} folders</span></div>
+                        <div class="actions">
+                            <button class="ghost-btn" data-action="open-folder" data-id="root"><i class="fa-solid fa-house"></i> Root</button>
+                            ${folder.id !== "root" ? `<button class="ghost-btn" data-action="rename-folder" data-id="${folder.id}"><i class="fa-solid fa-pen"></i> Rename</button>` : ""}
+                            ${folder.id !== "root" ? `<button class="danger-btn" data-action="delete-folder" data-id="${folder.id}"><i class="fa-solid fa-trash"></i> Delete</button>` : ""}
+                        </div>
+                        <p class="muted">Drag files onto folders to organize. Locked folders require your password or PIN.</p>
+                    </div>
+                </div>
+                <div class="card" style="margin-top:14px;">
+                    <div class="card-head"><h3>Folders</h3><span class="tiny">Color-coded, pinned, favorite, private</span></div>
+                    <div class="vault-grid">
+                        ${childFolders.map(folderCard).join("") || emptyState("fa-folder", "No subfolders here.")}
+                    </div>
+                </div>
+                <div class="card" style="margin-top:14px;">
+                    <div class="card-head"><h3>Files</h3><span class="tag accent">${files.length} items</span></div>
+                    <div class="vault-grid">
+                        ${files.map(fileCard).join("") || emptyState("fa-file-arrow-up", "No files in this view.")}
+                    </div>
+                </div>
+            `;
+        }
+
+        function folderCard(folder) {
+            return `
+                <div class="folder-card" draggable="true" data-folder-drop="${folder.id}" style="--folder-color:${folder.color};">
+                    <button class="folder-icon" data-action="open-folder" data-id="${folder.id}"><i class="fa-solid ${folder.locked ? "fa-lock" : "fa-folder"}"></i></button>
+                    <div>
+                        <strong class="truncate">${folder.pinned ? '<i class="fa-solid fa-thumbtack"></i> ' : ""}${escapeHtml(folder.name)}</strong>
+                        <span class="tiny">${folder.favorite ? "Favorite - " : ""}${folder.locked ? "Private" : "Open"}</span>
+                    </div>
+                    <div class="actions">
+                        <button class="icon-btn" data-action="toggle-folder-prop" data-prop="favorite" data-id="${folder.id}" title="Favorite"><i class="fa-solid fa-star"></i></button>
+                        <button class="icon-btn" data-action="toggle-folder-prop" data-prop="pinned" data-id="${folder.id}" title="Pin"><i class="fa-solid fa-thumbtack"></i></button>
+                        <button class="icon-btn" data-action="toggle-folder-prop" data-prop="locked" data-id="${folder.id}" title="Lock"><i class="fa-solid fa-lock"></i></button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function fileCard(file) {
+            return `
+                <div class="file-card" draggable="true" data-file-id="${file.id}">
+                    <div class="file-icon"><i class="fa-solid ${fileIconClass(file.type)}"></i></div>
+                    <div>
+                        <strong class="truncate">${escapeHtml(file.name)}</strong>
+                        <span class="tiny">${formatBytes(file.size)} - ${file.type || "file"}</span>
+                    </div>
+                    <div class="actions">
+                        <button class="icon-btn" data-action="preview-file" data-id="${file.id}" title="Preview"><i class="fa-solid fa-eye"></i></button>
+                        <button class="icon-btn" data-action="download-file" data-id="${file.id}" title="Download"><i class="fa-solid fa-download"></i></button>
+                        <button class="icon-btn" data-action="delete-file" data-id="${file.id}" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function openFolder(id) {
+            const folder = state.folders.find(item => item.id === id);
+            if (!folder) return;
+            if (folder.locked) {
+                const secret = prompt("Enter password or PIN to unlock this private folder:");
+                if (!secret) return;
+                const hash = await hashText(secret);
+                if (hash !== state.auth.passwordHash && hash !== state.auth.pinHash) {
+                    toast("Folder lock denied.", "error");
+                    return;
+                }
+            }
+            ui.selectedFolder = id;
+            renderContent();
+        }
+
+        function openFolderModal(id) {
+            const folder = id ? state.folders.find(item => item.id === id) : {};
+            openModal(`
+                <h3>${id ? "Rename Folder" : "Create Folder"}</h3>
+                <form class="form-grid" data-form="folder" data-id="${id || ""}">
+                    <input name="name" placeholder="Folder name" value="${escapeHtml(folder.name || "")}" required>
+                    <input name="color" type="color" value="${folder.color?.match(/#[0-9a-fA-F]{6}/)?.[0] || "#44c7ff"}">
+                    <label class="checkline"><input name="favorite" type="checkbox" ${folder.favorite ? "checked" : ""}> Favorite</label>
+                    <label class="checkline"><input name="locked" type="checkbox" ${folder.locked ? "checked" : ""}> Lock folder</label>
+                    <button class="primary-btn full" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Folder</button>
+                </form>
+            `);
+        }
+
+        function saveFolder(data, id) {
+            const payload = {
+                name: data.name,
+                color: `linear-gradient(135deg, ${data.color || "#44c7ff"}, #77f2c1)`,
+                favorite: data.favorite === "on",
+                locked: data.locked === "on"
+            };
+            if (id) {
+                Object.assign(state.folders.find(item => item.id === id), payload);
+                toast("Folder updated.", "success");
+            } else {
+                state.folders.push({ id: uid("folder"), parentId: ui.selectedFolder, pinned: false, createdAt: nowIso(), ...payload });
+                toast("Folder created.", "success");
+            }
+            saveState();
+            renderContent();
+        }
+
+        function toggleFolderProp(id, prop) {
+            const folder = state.folders.find(item => item.id === id);
+            if (!folder || folder.id === "root") return;
+            folder[prop] = !folder[prop];
+            saveState();
+            renderContent();
+        }
+
+        function deleteFolder(id) {
+            if (!confirm("Move this folder and its files to the recycle bin?")) return;
+            const ids = collectFolderIds(id);
+            for (const folderId of ids) {
+                const folder = state.folders.find(item => item.id === folderId);
+                if (folder) moveToRecycle("folders", folderId, folder);
+                state.files.filter(file => file.folderId === folderId).forEach(file => moveToRecycle("files", file.id, file));
+            }
+            state.folders = state.folders.filter(item => !ids.includes(item.id));
+            state.files = state.files.filter(file => !ids.includes(file.folderId));
+            ui.selectedFolder = "root";
+            saveState();
+            toast("Folder moved to recycle bin.", "success");
+            renderContent();
+        }
+
+        function collectFolderIds(id) {
+            const ids = [id];
+            state.folders.filter(folder => folder.parentId === id).forEach(child => ids.push(...collectFolderIds(child.id)));
+            return ids;
+        }
+
+        function uploadFiles(files) {
+            Array.from(files || []).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    state.files.push({
+                        id: uid("file"),
+                        folderId: ui.selectedFolder,
+                        name: file.name,
+                        type: file.type || "application/octet-stream",
+                        size: file.size,
+                        dataUrl: reader.result,
+                        favorite: false,
+                        createdAt: nowIso()
+                    });
+                    saveState();
+                    renderContent();
+                    toast(`Uploaded ${file.name}.`, "success");
+                };
+                reader.readAsDataURL(file);
+            });
+            byId("vaultUploader").value = "";
+        }
+
+        function previewFile(id) {
+            const file = state.files.find(item => item.id === id);
+            if (!file) return;
+            const preview = file.type.startsWith("image/")
+                ? `<img src="${file.dataUrl}" alt="${escapeHtml(file.name)}" style="max-width:100%;border-radius:16px;">`
+                : file.type === "application/pdf"
+                    ? `<iframe src="${file.dataUrl}" style="width:100%;height:70vh;border:1px solid var(--border);border-radius:16px;"></iframe>`
+                    : `<div class="empty"><div><i class="fa-solid ${fileIconClass(file.type)}"></i><p>Preview is not available for this type.</p><button class="primary-btn" data-action="download-file" data-id="${file.id}"><i class="fa-solid fa-download"></i> Download</button></div></div>`;
+            openModal(`
+                <div class="between"><h3>${escapeHtml(file.name)}</h3><button class="icon-btn" data-action="close-modal"><i class="fa-solid fa-xmark"></i></button></div>
+                <p class="muted">${formatBytes(file.size)} - ${file.type}</p>
+                ${preview}
+            `);
+        }
+
+        function downloadFile(id) {
+            const file = state.files.find(item => item.id === id);
+            if (!file) return;
+            const link = document.createElement("a");
+            link.href = file.dataUrl;
+            link.download = file.name;
+            link.click();
+        }
+
+        function wireDragAndDrop() {
+            const zone = byId("dropZone");
+            if (zone) {
+                ["dragenter", "dragover"].forEach(type => zone.addEventListener(type, event => {
+                    event.preventDefault();
+                    zone.classList.add("drag");
+                }));
+                ["dragleave", "drop"].forEach(type => zone.addEventListener(type, event => {
+                    event.preventDefault();
+                    zone.classList.remove("drag");
+                }));
+                zone.addEventListener("drop", event => uploadFiles(event.dataTransfer.files));
+            }
+            $$("[data-file-id]").forEach(card => {
+                card.addEventListener("dragstart", event => event.dataTransfer.setData("lifeos-file", card.dataset.fileId));
+            });
+            $$("[data-folder-drop]").forEach(folder => {
+                folder.addEventListener("dragover", event => event.preventDefault());
+                folder.addEventListener("drop", event => {
+                    event.preventDefault();
+                    const fileId = event.dataTransfer.getData("lifeos-file");
+                    const file = state.files.find(item => item.id === fileId);
+                    if (file) {
+                        file.folderId = folder.dataset.folderDrop;
+                        saveState();
+                        renderContent();
+                        toast("File moved.", "success");
+                    }
+                });
+            });
+            $$("[data-class-id]").forEach(card => card.addEventListener("dragstart", event => event.dataTransfer.setData("lifeos-class", card.dataset.classId)));
+            $$("[data-day-drop]").forEach(day => {
+                day.addEventListener("dragover", event => event.preventDefault());
+                day.addEventListener("drop", event => {
+                    const classId = event.dataTransfer.getData("lifeos-class");
+                    const item = state.timetable.find(entry => entry.id === classId);
+                    if (item) {
+                        item.day = day.dataset.dayDrop;
+                        saveState();
+                        renderContent();
+                        toast("Class moved.", "success");
+                    }
+                });
+            });
+        }
+
+        function fileIconClass(type) {
+            if (type.startsWith("image/")) return "fa-file-image";
+            if (type.includes("pdf")) return "fa-file-pdf";
+            if (type.includes("zip") || type.includes("compressed")) return "fa-file-zipper";
+            if (type.includes("word") || type.includes("document")) return "fa-file-word";
+            return "fa-file";
+        }
+
+        function fileIcon(type) {
+            return `<i class="fa-solid ${fileIconClass(type)}"></i>`;
+        }
+
+        function formatBytes(bytes) {
+            if (!bytes) return "0 B";
+            const units = ["B", "KB", "MB", "GB"];
+            const i = Math.floor(Math.log(bytes) / Math.log(1024));
+            return `${(bytes / Math.pow(1024, i)).toFixed(i ? 1 : 0)} ${units[i]}`;
+        }
+
+        /* =========================================================
+           NOTES SYSTEM
+           ========================================================= */
+        function renderNotes() {
+            if (!ui.selectedNote && state.notes.length) ui.selectedNote = state.notes[0].id;
+            if (ui.sub === "Drawing Canvas") return renderDrawing();
+            if (ui.sub === "Voice Notes") return renderVoiceNotes();
+            const notes = state.notes
+                .filter(note => ui.sub !== "Favorites" || note.favorite)
+                .sort((a, b) => Number(b.pinned) - Number(a.pinned) || String(b.updatedAt).localeCompare(a.updatedAt));
+            const current = state.notes.find(note => note.id === ui.selectedNote) || notes[0];
+            return `
+                <div class="grid" style="grid-template-columns:minmax(220px,320px) minmax(0,1fr);">
+                    <div class="card">
+                        <div class="card-head">
+                            <h3>Notes</h3>
+                            <button class="icon-btn" data-action="new-note" title="New note"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                        <div class="list">
+                            ${notes.map(note => `
+                                <button class="note-card ${current?.id === note.id ? "active" : ""}" data-action="select-note" data-id="${note.id}">
+                                    <div>
+                                        <strong class="truncate">${note.pinned ? '<i class="fa-solid fa-thumbtack"></i> ' : ""}${escapeHtml(note.title)}</strong>
+                                        <span class="tiny">${fmtDate(note.updatedAt)} - ${(note.tags || []).join(", ") || "no tags"}</span>
+                                    </div>
+                                    <span class="tiny">${stripHtml(note.content).slice(0, 82)}</span>
+                                </button>
+                            `).join("") || emptyState("fa-note-sticky", "No notes yet.")}
+                        </div>
+                    </div>
+                    <div class="card">
+                        ${current ? renderEditor(current) : emptyState("fa-pen", "Create a note to start writing.")}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderEditor(note) {
+            const words = stripHtml(note.content).trim().split(/\s+/).filter(Boolean).length;
+            const chars = stripHtml(note.content).length;
+            return `
+                <div class="card-head">
+                    <h3>Rich Text Editor</h3>
+                    <div class="actions">
+                        <button class="icon-btn" data-action="toggle-note-prop" data-prop="favorite" data-id="${note.id}" title="Favorite"><i class="fa-solid fa-star"></i></button>
+                        <button class="icon-btn" data-action="toggle-note-prop" data-prop="pinned" data-id="${note.id}" title="Pin"><i class="fa-solid fa-thumbtack"></i></button>
+                        <button class="icon-btn" data-action="delete-note" data-id="${note.id}" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+                <div class="form-grid" style="margin-bottom:12px;">
+                    <input id="noteTitle" value="${escapeHtml(note.title)}" placeholder="Note title">
+                    <input id="noteTags" value="${escapeHtml((note.tags || []).join(", "))}" placeholder="Tags separated by commas">
+                </div>
+                <div class="editor-toolbar">
+                    ${editorButton("bold", "fa-bold")}
+                    ${editorButton("italic", "fa-italic")}
+                    ${editorButton("underline", "fa-underline")}
+                    ${editorButton("backColor", "fa-highlighter", "#ffd166")}
+                    ${editorButton("formatBlock", "fa-heading", "H2")}
+                    ${editorButton("insertUnorderedList", "fa-list-ul")}
+                    ${editorButton("insertOrderedList", "fa-list-ol")}
+                    ${editorButton("formatBlock", "fa-code", "PRE")}
+                    <button class="icon-btn" data-action="voice-note" title="Voice note"><i class="fa-solid fa-microphone"></i></button>
+                </div>
+                <div id="noteEditor" class="editor" contenteditable="true">${note.content}</div>
+                <div class="between" style="margin-top:12px;">
+                    <span class="tiny">Auto-saved - last edited ${fmtDate(note.updatedAt)}</span>
+                    <span class="tag">${words} words - ${chars} chars</span>
+                </div>
+            `;
+        }
+
+        function editorButton(command, icon, value = "") {
+            return `<button class="icon-btn" data-action="format-note" data-command="${command}" data-value="${value}" title="${command}"><i class="fa-solid ${icon}"></i></button>`;
+        }
+
+        function createNote() {
+            const note = { id: uid("note"), title: "Untitled Note", content: "<p></p>", tags: [], favorite: false, pinned: false, createdAt: nowIso(), updatedAt: nowIso() };
+            state.notes.unshift(note);
+            ui.selectedNote = note.id;
+            saveState();
+            toast("New note created.", "success");
+            ui.section = "notes";
+            ui.sub = "Editor";
+            renderApp();
+        }
+
+        function selectNote(id) {
+            ui.selectedNote = id;
+            ui.section = "notes";
+            if (ui.sub !== "Favorites") ui.sub = "Editor";
+            renderApp();
+        }
+
+        function updateCurrentNote(key, value) {
+            const note = state.notes.find(item => item.id === ui.selectedNote);
+            if (!note) return;
+            note[key] = value;
+            note.updatedAt = nowIso();
+            saveState();
+            const tag = $(".card .tag");
+            if (tag && key === "content") tag.textContent = `${stripHtml(value).trim().split(/\s+/).filter(Boolean).length} words - ${stripHtml(value).length} chars`;
+        }
+
+        function toggleNoteProp(id, prop) {
+            const note = state.notes.find(item => item.id === id);
+            if (!note) return;
+            note[prop] = !note[prop];
+            note.updatedAt = nowIso();
+            saveState();
+            renderContent();
+        }
+
+        function formatNote(command, value) {
+            byId("noteEditor")?.focus();
+            document.execCommand(command, false, value || null);
+            updateCurrentNote("content", byId("noteEditor").innerHTML);
+        }
+
+        function startVoiceNote() {
+            const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!Recognition) {
+                toast("Speech recognition is not available in this browser.", "error");
+                return;
+            }
+            const recognition = new Recognition();
+            recognition.lang = "en-US";
+            recognition.onresult = event => {
+                const text = Array.from(event.results).map(result => result[0].transcript).join(" ");
+                document.execCommand("insertText", false, text);
+                updateCurrentNote("content", byId("noteEditor").innerHTML);
+                toast("Voice note added.", "success");
+            };
+            recognition.start();
+            toast("Listening for voice note...", "success");
+        }
+
+        function renderVoiceNotes() {
+            return `
+                <div class="card">
+                    <div class="card-head"><h3>Voice Notes</h3><button class="primary-btn" data-action="voice-note"><i class="fa-solid fa-microphone"></i> Start Dictation</button></div>
+                    <p class="muted">Open a note in the editor, then start dictation. Your transcript is auto-saved into the current note.</p>
+                    ${state.notes.length ? `<div class="list">${state.notes.map(noteMini).join("")}</div>` : emptyState("fa-microphone", "Create a note before recording voice text.")}
+                </div>
+            `;
+        }
+
+        function renderDrawing() {
+            return `
+                <div class="card">
+                    <div class="card-head">
+                        <h3>Drawing Canvas</h3>
+                        <div class="actions">
+                            <input id="brushColor" type="color" value="#102033" style="width:48px;padding:4px;">
+                            <input id="brushSize" type="range" min="1" max="24" value="5" style="width:120px;">
+                            <button class="ghost-btn" data-action="clear-drawing"><i class="fa-solid fa-eraser"></i> Clear</button>
+                            <button class="primary-btn" data-action="save-drawing"><i class="fa-solid fa-floppy-disk"></i> Save to Note</button>
+                        </div>
+                    </div>
+                    <canvas id="drawingCanvas" class="drawing-board" width="1200" height="520"></canvas>
+                </div>
+            `;
+        }
+
+        function initDrawingCanvas() {
+            const canvas = byId("drawingCanvas");
+            if (!canvas || canvas.dataset.ready) return;
+            canvas.dataset.ready = "true";
+            const ctx = canvas.getContext("2d");
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            let drawing = false;
+            const point = event => {
+                const rect = canvas.getBoundingClientRect();
+                const touch = event.touches?.[0] || event;
+                return { x: (touch.clientX - rect.left) * (canvas.width / rect.width), y: (touch.clientY - rect.top) * (canvas.height / rect.height) };
+            };
+            const start = event => {
+                drawing = true;
+                const p = point(event);
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+            };
+            const move = event => {
+                if (!drawing) return;
+                event.preventDefault();
+                const p = point(event);
+                ctx.lineWidth = Number(byId("brushSize").value);
+                ctx.strokeStyle = byId("brushColor").value;
+                ctx.lineCap = "round";
+                ctx.lineTo(p.x, p.y);
+                ctx.stroke();
+            };
+            const end = () => drawing = false;
+            canvas.addEventListener("mousedown", start);
+            canvas.addEventListener("mousemove", move);
+            window.addEventListener("mouseup", end);
+            canvas.addEventListener("touchstart", start, { passive: false });
+            canvas.addEventListener("touchmove", move, { passive: false });
+            canvas.addEventListener("touchend", end);
+        }
+
+        function clearDrawing() {
+            const canvas = byId("drawingCanvas");
+            const ctx = canvas.getContext("2d");
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function saveDrawingToNote() {
+            const canvas = byId("drawingCanvas");
+            if (!canvas) return;
+            const note = state.notes.find(item => item.id === ui.selectedNote) || state.notes[0];
+            if (!note) return toast("Create a note before saving a drawing.", "error");
+            note.content += `<p><img src="${canvas.toDataURL("image/png")}" style="max-width:100%;border-radius:12px;"></p>`;
+            note.updatedAt = nowIso();
+            saveState();
+            toast("Drawing saved to current note.", "success");
+        }
+
+        function stripHtml(html) {
+            const div = document.createElement("div");
+            div.innerHTML = html || "";
+            return div.textContent || "";
+        }
+
+        /* =========================================================
+           TASK MANAGER
+           ========================================================= */
+        function renderTasks() {
+            let tasks = state.tasks.filter(task => {
+                const text = `${task.title} ${task.category} ${task.priority}`.toLowerCase();
+                const filterOk = ui.taskFilter === "all" || (ui.taskFilter === "completed" ? task.completed : !task.completed);
+                const viewOk = ui.sub === "Today" ? task.due === today() : ui.sub === "Recurring" ? task.recurring !== "None" : ui.sub.includes("Goals") ? task.goal === ui.sub.replace(" Goals", "") : true;
+                return text.includes(ui.taskQuery) && filterOk && viewOk;
+            });
+            return `
+                <div class="grid four">
+                    ${metricCard("All Tasks", state.tasks.length, "fa-list-check", "Total tasks", "accent")}
+                    ${metricCard("Completed", state.tasks.filter(t => t.completed).length, "fa-circle-check", "Finished", "ok")}
+                    ${metricCard("Due Today", state.tasks.filter(t => t.due === today()).length, "fa-calendar-day", "Today", "warn")}
+                    ${metricCard("High Priority", state.tasks.filter(t => t.priority === "High" && !t.completed).length, "fa-arrow-up", "Open", "danger")}
+                </div>
+                <div class="grid two" style="margin-top:14px;">
+                    <div class="card">
+                        <div class="card-head"><h3>Add Task</h3></div>
+                        ${taskForm()}
+                    </div>
+                    <div class="card">
+                        <div class="card-head"><h3>Task Filters</h3></div>
+                        <div class="form-grid">
+                            <input data-filter="task-query" value="${escapeHtml(ui.taskQuery)}" placeholder="Search tasks...">
+                            <select data-filter="task-filter">
+                                <option value="all" ${ui.taskFilter === "all" ? "selected" : ""}>All</option>
+                                <option value="open" ${ui.taskFilter === "open" ? "selected" : ""}>Open</option>
+                                <option value="completed" ${ui.taskFilter === "completed" ? "selected" : ""}>Completed</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="margin-top:14px;">
+                    <div class="card-head"><h3>${ui.sub} Tasks</h3><span class="tag">${tasks.length} items</span></div>
+                    <div class="list">${tasks.length ? tasks.map(taskRow).join("") : emptyState("fa-square-check", "No tasks match this view.")}</div>
+                </div>
+            `;
+        }
+
+        function taskForm(task = {}) {
+            return `
+                <form class="form-grid" data-form="task" data-id="${task.id || ""}">
+                    <input name="title" placeholder="Task title" value="${escapeHtml(task.title || "")}" required>
+                    <input name="category" placeholder="Category" value="${escapeHtml(task.category || "Study")}" required>
+                    <select name="priority">
+                        ${["Low", "Medium", "High"].map(value => `<option ${task.priority === value ? "selected" : ""}>${value}</option>`).join("")}
+                    </select>
+                    <input name="due" type="date" value="${task.due || today()}">
+                    <select name="goal">
+                        ${["Daily", "Weekly", "None"].map(value => `<option ${task.goal === value ? "selected" : ""}>${value}</option>`).join("")}
+                    </select>
+                    <select name="recurring">
+                        ${["None", "Daily", "Weekly", "Monthly"].map(value => `<option ${task.recurring === value ? "selected" : ""}>${value}</option>`).join("")}
+                    </select>
+                    <button class="primary-btn full" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Task</button>
+                </form>
+            `;
+        }
+
+        function taskRow(task) {
+            return `
+                <div class="list-item">
+                    <div class="row" style="min-width:0;">
+                        <button class="icon-btn" data-action="toggle-task" data-id="${task.id}" title="Complete"><i class="fa-solid ${task.completed ? "fa-circle-check" : "fa-circle"}"></i></button>
+                        <div class="list-main ${task.completed ? "task-complete" : ""}">
+                            <strong>${escapeHtml(task.title)}</strong>
+                            <span class="tiny">${task.category} - ${task.priority} - due ${fmtDate(task.due)} - ${task.recurring}</span>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <span class="tag ${task.priority === "High" ? "danger" : task.priority === "Medium" ? "warn" : "ok"}">${task.priority}</span>
+                        <button class="icon-btn" data-action="edit-task" data-id="${task.id}"><i class="fa-solid fa-pen"></i></button>
+                        <button class="icon-btn" data-action="delete-task" data-id="${task.id}"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function saveTask(data, id) {
+            const payload = { ...data, completed: false, createdAt: nowIso() };
+            if (id) {
+                const index = state.tasks.findIndex(item => item.id === id);
+                state.tasks[index] = { ...state.tasks[index], ...payload };
+                toast("Task updated.", "success");
+            } else {
+                state.tasks.unshift({ id: uid("task"), ...payload });
+                toast("Task added.", "success");
+            }
+            saveState();
+            renderContent();
+        }
+
+        function toggleTask(id) {
+            const task = state.tasks.find(item => item.id === id);
+            if (!task) return;
+            task.completed = !task.completed;
+            if (task.completed) task.completedAt = nowIso();
+            saveState();
+            toast(task.completed ? "Task completed." : "Task reopened.", "success");
+            renderContent();
+        }
+
+        function openTaskModal(id) {
+            openModal(`<h3>Edit Task</h3>${taskForm(itemById("tasks", id))}`);
+        }
+
+        /* =========================================================
+           PRODUCTIVITY MANAGER
+           ========================================================= */
+        function renderProductivity() {
+            if (ui.sub === "Habit Tracker") return renderHabits();
+            if (ui.sub === "Goal Tracker") return renderProductivityGoals();
+            if (ui.sub === "Achievements") return renderAchievements();
+            if (ui.sub === "Focus Mode") return `
+                <div class="card">
+                    <div class="card-head"><h3>Focus Mode</h3><button class="primary-btn" data-action="focus-mode"><i class="fa-solid fa-expand"></i> Launch Focus</button></div>
+                    <p class="muted">Focus mode clears the screen and keeps a Pomodoro timer front and center.</p>
+                    ${renderPomodoroCard()}
+                </div>
+            `;
+            return renderPomodoroCard();
+        }
+
+        function renderPomodoroCard() {
+            return `
+                <div class="grid two">
+                    <div class="card">
+                        <div class="card-head"><h3>Pomodoro Timer</h3><span class="tag accent">${ui.timerMode}</span></div>
+                        <div id="pomodoroTime" class="pomodoro-time">${formatSeconds(ui.timerSeconds)}</div>
+                        <div class="actions" style="justify-content:center;margin:16px 0;">
+                            <button class="pill-btn" data-action="pomodoro-mode" data-mode="focus">25 Focus</button>
+                            <button class="pill-btn" data-action="pomodoro-mode" data-mode="short">5 Break</button>
+                            <button class="pill-btn" data-action="pomodoro-mode" data-mode="long">15 Long</button>
+                        </div>
+                        <div class="actions" style="justify-content:center;">
+                            <button class="primary-btn" data-action="pomodoro-toggle"><i class="fa-solid ${ui.timerRunning ? "fa-pause" : "fa-play"}"></i> ${ui.timerRunning ? "Pause" : "Start"}</button>
+                            <button class="ghost-btn" data-action="pomodoro-reset"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-head"><h3>Daily Focus Analytics</h3></div>
+                        <canvas id="focusChart"></canvas>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderHabits() {
+            return `
+                <div class="grid two">
+                    <div class="card">
+                        <div class="card-head"><h3>Add Habit</h3></div>
+                        <form class="form-grid" data-form="habit">
+                            <input name="title" placeholder="Habit name" required>
+                            <input name="color" type="color" value="#44c7ff">
+                            <button class="primary-btn full" type="submit"><i class="fa-solid fa-plus"></i> Add Habit</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <div class="card-head"><h3>Habits</h3><span class="tag">${today()}</span></div>
+                        <div class="list">
+                            ${state.habits.map(habit => `
+                                <div class="list-item">
+                                    <div class="list-main">
+                                        <strong style="color:${habit.color};">${escapeHtml(habit.title)}</strong>
+                                        <span class="tiny">${Object.keys(habit.history || {}).length} tracked days</span>
+                                    </div>
+                                    <div class="actions">
+                                        <button class="icon-btn" data-action="toggle-habit" data-id="${habit.id}"><i class="fa-solid ${habit.history?.[today()] ? "fa-circle-check" : "fa-circle"}"></i></button>
+                                        <button class="icon-btn" data-action="delete-habit" data-id="${habit.id}"><i class="fa-solid fa-trash"></i></button>
+                                    </div>
+                                </div>
+                            `).join("") || emptyState("fa-fire", "No habits yet.")}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderProductivityGoals() {
+            return `
+                <div class="grid two">
+                    <div class="card">
+                        <div class="card-head"><h3>Add Goal</h3></div>
+                        <form class="form-grid" data-form="prod-goal">
+                            <input name="title" placeholder="Goal title" required>
+                            <input name="target" type="number" min="1" placeholder="Target" required>
+                            <input name="unit" placeholder="Unit" value="hours">
+                            <button class="primary-btn full" type="submit"><i class="fa-solid fa-plus"></i> Add Goal</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <div class="card-head"><h3>Goal Tracker</h3></div>
+                        <div class="list">
+                            ${state.productivityGoals.map(goal => {
+                                const pct = goal.target ? clamp(Math.round(goal.progress / goal.target * 100), 0, 100) : 0;
+                                return `
+                                    <div class="list-item">
+                                        <div class="list-main">
+                                            <strong>${escapeHtml(goal.title)}</strong>
+                                            <span class="tiny">${goal.progress}/${goal.target} ${escapeHtml(goal.unit)}</span>
+                                            <div class="progress" style="margin-top:8px;"><span style="--w:${pct}%;"></span></div>
+                                        </div>
+                                        <div class="actions">
+                                            <button class="icon-btn" data-action="goal-progress" data-id="${goal.id}" data-delta="-1"><i class="fa-solid fa-minus"></i></button>
+                                            <button class="icon-btn" data-action="goal-progress" data-id="${goal.id}" data-delta="1"><i class="fa-solid fa-plus"></i></button>
+                                            <button class="icon-btn" data-action="delete-prod-goal" data-id="${goal.id}"><i class="fa-solid fa-trash"></i></button>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join("") || emptyState("fa-bullseye", "No productivity goals yet.")}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAchievements() {
+            const metrics = getMetrics();
+            const badges = [
+                { title: "First Launch", active: true, icon: "fa-rocket" },
+                { title: "Task Finisher", active: state.tasks.some(task => task.completed), icon: "fa-circle-check" },
+                { title: "Budget Keeper", active: metrics.expense <= state.settings.monthlyBudget, icon: "fa-piggy-bank" },
+                { title: "Focus Starter", active: state.focusSessions.length > 0, icon: "fa-stopwatch" },
+                { title: "Vault Builder", active: state.files.length > 0, icon: "fa-folder-open" },
+                { title: "Streak Maker", active: metrics.streak >= 3, icon: "fa-fire" }
+            ];
+            return `<div class="grid three">${badges.map(badge => `
+                <div class="card" style="opacity:${badge.active ? 1 : 0.46};">
+                    <div class="brand-mark"><i class="fa-solid ${badge.icon}"></i></div>
+                    <h3>${badge.title}</h3>
+                    <p class="muted">${badge.active ? "Unlocked" : "Locked"}</p>
+                </div>
+            `).join("")}</div>`;
+        }
+
+        function saveHabit(data) {
+            state.habits.push({ id: uid("habit"), title: data.title, color: data.color || "#44c7ff", history: {} });
+            saveState();
+            toast("Habit added.", "success");
+            renderContent();
+        }
+
+        function toggleHabit(id) {
+            const habit = state.habits.find(item => item.id === id);
+            if (!habit) return;
+            habit.history ||= {};
+            habit.history[today()] = !habit.history[today()];
+            saveState();
+            renderContent();
+        }
+
+        function saveProductivityGoal(data) {
+            state.productivityGoals.push({ id: uid("prodgoal"), title: data.title, target: Number(data.target), progress: 0, unit: data.unit || "units" });
+            saveState();
+            toast("Goal added.", "success");
+            renderContent();
+        }
+
+        function changeGoalProgress(id, delta) {
+            const goal = state.productivityGoals.find(item => item.id === id);
+            if (!goal) return;
+            goal.progress = clamp(Number(goal.progress || 0) + delta, 0, Number(goal.target || 9999));
+            saveState();
+            renderContent();
+        }
+
+        function setPomodoroMode(mode) {
+            ui.timerMode = mode;
+            ui.timerSeconds = mode === "focus" ? 25 * 60 : mode === "short" ? 5 * 60 : 15 * 60;
+            ui.timerRunning = false;
+            renderContent();
+        }
+
+        function togglePomodoro() {
+            ui.timerRunning = !ui.timerRunning;
+            renderContent();
+        }
+
+        function resetPomodoro() {
+            setPomodoroMode(ui.timerMode);
+        }
+
+        function showFocusMode() {
+            byId("focusOverlay").innerHTML = `
+                <div class="modal-card">
+                    <h2>Focus Mode</h2>
+                    <div id="focusTime" class="pomodoro-time">${formatSeconds(ui.timerSeconds)}</div>
+                    <p class="muted">One task. One timer. One clean block of attention.</p>
+                    <div class="actions" style="justify-content:center;">
+                        <button class="primary-btn" data-action="pomodoro-toggle"><i class="fa-solid fa-play"></i> Start/Pause</button>
+                        <button class="ghost-btn" data-action="close-focus"><i class="fa-solid fa-compress"></i> Exit</button>
+                    </div>
+                </div>`;
+            byId("focusOverlay").classList.add("active");
+        }
+
+        /* =========================================================
+           CLOCK UTILITIES
+           ========================================================= */
+        function renderClock() {
+            if (ui.sub === "Stopwatch") return `
+                <div class="card">
+                    <div class="card-head"><h3>Stopwatch</h3></div>
+                    <div id="stopwatchDisplay" class="pomodoro-time">${formatSeconds(ui.stopwatchSeconds)}</div>
+                    <div class="actions" style="justify-content:center;">
+                        <button class="primary-btn" data-action="stopwatch-toggle"><i class="fa-solid ${ui.stopwatchRunning ? "fa-pause" : "fa-play"}"></i> ${ui.stopwatchRunning ? "Pause" : "Start"}</button>
+                        <button class="ghost-btn" data-action="stopwatch-reset"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                    </div>
+                </div>`;
+            if (ui.sub === "Timer") return `
+                <div class="card">
+                    <div class="card-head"><h3>Countdown Timer</h3></div>
+                    <input id="timerMinutes" type="number" min="1" value="${Math.max(1, Math.round(ui.countdownSeconds / 60))}" style="max-width:180px;margin:0 auto 14px;display:block;">
+                    <div id="countdownDisplay" class="pomodoro-time">${formatSeconds(ui.countdownSeconds)}</div>
+                    <div class="actions" style="justify-content:center;">
+                        <button class="primary-btn" data-action="timer-toggle"><i class="fa-solid ${ui.countdownRunning ? "fa-pause" : "fa-play"}"></i> ${ui.countdownRunning ? "Pause" : "Start"}</button>
+                        <button class="ghost-btn" data-action="timer-reset"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                    </div>
+                </div>`;
+            if (ui.sub === "Alarm") return renderAlarms();
+            if (ui.sub === "World Clock") return renderWorldClock();
+            return `
+                <div class="grid two">
+                    <div class="card">
+                        <div class="card-head"><h3>Digital Clock</h3><span class="tag accent">${Intl.DateTimeFormat().resolvedOptions().timeZone}</span></div>
+                        <div id="digitalClock" class="clock-time">--:--</div>
+                        <p id="dateDisplay" class="muted" style="text-align:center;"></p>
+                    </div>
+                    <div class="card">
+                        <div class="card-head"><h3>Analog Clock</h3></div>
+                        <div class="analog-clock">
+                            <span id="hourHand" class="hand hour"></span>
+                            <span id="minuteHand" class="hand minute"></span>
+                            <span id="secondHand" class="hand second"></span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAlarms() {
+            state.alarms ||= [];
+            return `
+                <div class="grid two">
+                    <div class="card">
+                        <div class="card-head"><h3>Add Alarm</h3></div>
+                        <form class="form-grid" data-form="alarm">
+                            <input name="label" placeholder="Alarm label" required>
+                            <input name="time" type="time" required>
+                            <button class="primary-btn full" type="submit"><i class="fa-solid fa-bell"></i> Save Alarm</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <div class="card-head"><h3>Alarms</h3></div>
+                        <div class="list">${state.alarms.map(alarm => `
+                            <div class="list-item">
+                                <div><strong>${escapeHtml(alarm.label)}</strong><div class="tiny">${alarm.time}</div></div>
+                                <button class="icon-btn" data-action="delete-alarm" data-id="${alarm.id}"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        `).join("") || emptyState("fa-bell", "No alarms set.")}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderWorldClock() {
+            const zones = ["Asia/Kolkata", "UTC", "America/New_York", "Europe/London", "Asia/Tokyo", "Australia/Sydney"];
+            return `<div class="grid three">${zones.map(zone => `
+                <div class="card">
+                    <div class="card-head"><h3>${zone.replace("_", " ")}</h3></div>
+                    <div class="metric small" data-world-zone="${zone}">--:--</div>
+                    <span class="tiny">${new Date().toLocaleDateString(undefined, { timeZone: zone })}</span>
+                </div>
+            `).join("")}</div>`;
+        }
+
+        function saveAlarm(data) {
+            state.alarms ||= [];
+            state.alarms.push({ id: uid("alarm"), label: data.label, time: data.time, lastTriggered: "" });
+            saveState();
+            toast("Alarm saved.", "success");
+            renderContent();
+        }
+
+        function resetCountdown() {
+            ui.countdownRunning = false;
+            ui.countdownSeconds = Math.max(1, Number(byId("timerMinutes")?.value || 5)) * 60;
+            updateClockDisplays();
+        }
+
+        /* =========================================================
+           PLANNER AND TIMETABLE
+           ========================================================= */
+        function renderPlanner() {
+            if (ui.sub === "Calendar") return renderCalendar();
+            if (ui.sub === "Timetable") return renderTimetable();
+            if (ui.sub === "Events") return renderEvents();
+            const dayEvents = state.events.filter(event => ui.sub === "Daily Planner" ? event.date === today() : event.date >= today()).slice(0, ui.sub === "Daily Planner" ? 99 : 7);
+            return `
+                <div class="grid two">
+                    <div class="card">
+                        <div class="card-head"><h3>${ui.sub}</h3><button class="primary-btn" onclick="ui.sub='Events';renderApp();"><i class="fa-solid fa-calendar-plus"></i> Add Event</button></div>
+                        <div class="list">${dayEvents.map(eventMini).join("") || emptyState("fa-calendar", "No events in this planner view.")}</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-head"><h3>Current / Next Class</h3></div>
+                        ${currentClassCard()}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderEvents() {
+            return `
+                <div class="grid two">
+                    <div class="card">
+                        <div class="card-head"><h3>Add Event</h3></div>
+                        ${eventForm()}
+                    </div>
+                    <div class="card">
+                        <div class="card-head"><h3>Events and Deadlines</h3></div>
+                        <div class="list">${state.events.sort((a, b) => `${a.date}${a.time}`.localeCompare(`${b.date}${b.time}`)).map(event => `
+                            <div class="list-item">
+                                <div class="list-main">
+                                    <strong>${escapeHtml(event.title)}</strong>
+                                    <span class="tiny">${fmtDate(event.date)} ${event.time || ""} - ${event.type}</span>
+                                </div>
+                                <div class="actions">
+                                    <button class="icon-btn" data-action="edit-event" data-id="${event.id}"><i class="fa-solid fa-pen"></i></button>
+                                    <button class="icon-btn" data-action="delete-event" data-id="${event.id}"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            </div>
+                        `).join("") || emptyState("fa-calendar-plus", "No events yet.")}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function eventForm(event = {}) {
+            return `
+                <form class="form-grid" data-form="event" data-id="${event.id || ""}">
+                    <input name="title" placeholder="Event title" value="${escapeHtml(event.title || "")}" required>
+                    <select name="type">${["Event", "Deadline", "Reminder", "Exam"].map(type => `<option ${event.type === type ? "selected" : ""}>${type}</option>`).join("")}</select>
+                    <input name="date" type="date" value="${event.date || today()}" required>
+                    <input name="time" type="time" value="${event.time || "09:00"}">
+                    <input class="full" name="note" placeholder="Notes" value="${escapeHtml(event.note || "")}">
+                    <button class="primary-btn full" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Event</button>
+                </form>
+            `;
+        }
+
+        function renderCalendar() {
+            const date = new Date();
+            const year = date.getFullYear();
+            const month = date.getMonth();
+            const first = new Date(year, month, 1);
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const blanks = first.getDay();
+            let cells = [];
+            for (let i = 0; i < blanks; i++) cells.push(`<div class="calendar-cell muted"> </div>`);
+            for (let day = 1; day <= daysInMonth; day++) {
+                const key = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+                const events = state.events.filter(event => event.date === key);
+                cells.push(`
+                    <div class="calendar-cell ${key === today() ? "today" : ""}">
+                        <strong>${day}</strong>
+                        ${events.map(event => `<div class="tag warn" style="margin-top:6px;">${escapeHtml(event.title)}</div>`).join("")}
+                    </div>
+                `);
+            }
+            return `<div class="card"><div class="card-head"><h3>${date.toLocaleDateString(undefined, { month: "long", year: "numeric" })}</h3></div><div class="calendar">${cells.join("")}</div></div>`;
+        }
+
+        function renderTimetable() {
+            return `
+                <div class="card">
+                    <div class="card-head"><h3>Timetable Manager</h3><button class="primary-btn" onclick="openClassModal()"><i class="fa-solid fa-plus"></i> Add Class</button></div>
+                    <div class="timetable-grid">
+                        ${DAYS.map(day => `
+                            <div class="day-column" data-day-drop="${day}">
+                                <div class="between"><strong>${day}</strong><span class="tag">${state.timetable.filter(item => item.day === day).length}</span></div>
+                                ${state.timetable.filter(item => item.day === day).sort((a,b)=>a.start.localeCompare(b.start)).map(item => `
+                                    <div class="class-card" draggable="true" data-class-id="${item.id}" style="--class-color:${item.color};">
+                                        <strong>${escapeHtml(item.subject)}</strong>
+                                        <div class="tiny">${item.start}-${item.end}</div>
+                                        <div class="tiny">${escapeHtml(item.room)} - ${escapeHtml(item.teacher)}</div>
+                                        <div class="actions" style="margin-top:8px;">
+                                            <button class="icon-btn" data-action="edit-class" data-id="${item.id}"><i class="fa-solid fa-pen"></i></button>
+                                            <button class="icon-btn" data-action="delete-class" data-id="${item.id}"><i class="fa-solid fa-trash"></i></button>
+                                        </div>
+                                    </div>
+                                `).join("")}
+                            </div>
+                        `).join("")}
+                    </div>
+                </div>
+            `;
+        }
+
+        function classForm(item = {}) {
+            return `
+                <form class="form-grid" data-form="class" data-id="${item.id || ""}">
+                    <input name="subject" placeholder="Subject" value="${escapeHtml(item.subject || "")}" required>
+                    <select name="day">${DAYS.map(day => `<option ${item.day === day ? "selected" : ""}>${day}</option>`).join("")}</select>
+                    <input name="start" type="time" value="${item.start || "09:00"}" required>
+                    <input name="end" type="time" value="${item.end || "10:00"}" required>
+                    <input name="room" placeholder="Room number" value="${escapeHtml(item.room || "")}">
+                    <input name="teacher" placeholder="Teacher name" value="${escapeHtml(item.teacher || "")}">
+                    <input name="color" type="color" value="${item.color?.match(/#[0-9a-fA-F]{6}/)?.[0] || "#44c7ff"}">
+                    <button class="primary-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Class</button>
+                </form>
+            `;
+        }
+
+        function saveEvent(data, id) {
+            const payload = { ...data };
+            if (id) Object.assign(state.events.find(item => item.id === id), payload);
+            else state.events.push({ id: uid("event"), ...payload });
+            saveState();
+            toast("Event saved.", "success");
+            renderContent();
+        }
+
+        function openEventModal(id) {
+            openModal(`<h3>Edit Event</h3>${eventForm(itemById("events", id))}`);
+        }
+
+        function saveClass(data, id) {
+            const payload = { ...data, color: `${data.color}33` };
+            if (id) Object.assign(state.timetable.find(item => item.id === id), payload);
+            else state.timetable.push({ id: uid("class"), ...payload });
+            saveState();
+            toast("Class saved.", "success");
+            renderContent();
+        }
+
+        function openClassModal(id) {
+            openModal(`<h3>${id ? "Edit" : "Add"} Class</h3>${classForm(id ? itemById("timetable", id) : {})}`);
+        }
+
+        function currentClassCard() {
+            const classes = state.timetable.filter(item => item.day === currentDayName()).sort((a, b) => a.start.localeCompare(b.start));
+            const minutesNow = new Date().getHours() * 60 + new Date().getMinutes();
+            const current = classes.find(item => toMinutes(item.start) <= minutesNow && toMinutes(item.end) >= minutesNow);
+            const next = classes.find(item => toMinutes(item.start) > minutesNow);
+            return `
+                ${current ? `<div class="list-item"><div><strong>Current: ${escapeHtml(current.subject)}</strong><div class="tiny">${current.start}-${current.end} - ${current.room}</div></div></div>` : `<div class="list-item"><span class="muted">No current class</span></div>`}
+                ${next ? `<div class="list-item"><div><strong>Next: ${escapeHtml(next.subject)}</strong><div class="tiny">${next.start}-${next.end} - ${next.room}</div></div></div>` : `<div class="list-item"><span class="muted">No more classes today</span></div>`}
+                <div class="list" style="margin-top:10px;">${classes.map(classMini).join("") || emptyState("fa-calendar-day", "No classes today.")}</div>
+            `;
+        }
+
+        function toMinutes(time) {
+            const [h, m] = String(time).split(":").map(Number);
+            return h * 60 + m;
+        }
+
+        /* =========================================================
+           ANALYTICS
+           ========================================================= */
+        function renderAnalytics() {
+            const metrics = getMetrics();
+            return `
+                <div class="grid four">
+                    ${metricCard("Productivity", `${metrics.productivity}%`, "fa-chart-line", "Composite score", "accent")}
+                    ${metricCard("Task Completion", `${weeklyTaskCompletion()}%`, "fa-list-check", "This week", "ok")}
+                    ${metricCard("Study Streak", metrics.streak, "fa-fire", "Consecutive days", "warn")}
+                    ${metricCard("Storage", `${metrics.storageKb} KB`, "fa-database", "Local vault", "accent")}
+                </div>
+                <div class="grid two" style="margin-top:14px;">
+                    <div class="card"><div class="card-head"><h3>Productivity Graph</h3></div><canvas id="analyticsProductivity"></canvas></div>
+                    <div class="card"><div class="card-head"><h3>Task Completion</h3></div><canvas id="analyticsTasks"></canvas></div>
+                    <div class="card"><div class="card-head"><h3>Expense Categories</h3></div><canvas id="analyticsExpenses"></canvas></div>
+                    <div class="card"><div class="card-head"><h3>Storage Usage</h3></div><canvas id="analyticsStorage"></canvas></div>
+                </div>
+            `;
+        }
+
+        function weeklyTaskCompletion() {
+            const start = new Date();
+            start.setDate(start.getDate() - 6);
+            const tasks = state.tasks.filter(task => !task.due || new Date(task.due) >= start);
+            return tasks.length ? Math.round(tasks.filter(task => task.completed).length / tasks.length * 100) : 0;
+        }
+
+        function studyStreak() {
+            let streak = 0;
+            for (let i = 0; i < 365; i++) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const key = date.toISOString().slice(0, 10);
+                const active = state.focusSessions.some(s => s.date === key) || state.tasks.some(t => t.completed && (t.completedAt || t.due || "").startsWith(key));
+                if (active) streak++;
+                else if (i > 0) break;
+            }
+            return streak;
+        }
+
+        /* =========================================================
+           RECYCLE BIN
+           ========================================================= */
+        function renderRecycle() {
+            const items = state.recycle.slice().sort((a, b) => b.deletedAt.localeCompare(a.deletedAt));
+            return `
+                <div class="card">
+                    <div class="card-head">
+                        <h3>Recycle Bin</h3>
+                        <button class="danger-btn" data-action="empty-recycle"><i class="fa-solid fa-trash-can"></i> Empty Bin</button>
+                    </div>
+                    <div class="list">${items.length ? items.map(item => `
+                        <div class="list-item">
+                            <div class="list-main">
+                                <strong>${escapeHtml(item.label)}</strong>
+                                <span class="tiny">${item.type} - deleted ${fmtDate(item.deletedAt)}</span>
+                            </div>
+                            <div class="actions">
+                                <button class="pill-btn" data-action="restore-item" data-id="${item.recycleId}"><i class="fa-solid fa-rotate-left"></i> Restore</button>
+                                <button class="icon-btn" data-action="permanent-delete" data-id="${item.recycleId}"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `).join("") : emptyState("fa-recycle", "Recycle bin is empty.")}</div>
+                </div>
+            `;
+        }
+
+        function softDelete(collection, id, message) {
+            const index = state[collection].findIndex(item => item.id === id);
+            if (index < 0) return;
+            const [item] = state[collection].splice(index, 1);
+            moveToRecycle(collection, id, item);
+            saveState();
+            toast(message || "Moved to recycle bin.", "success");
+            renderApp();
+        }
+
+        function moveToRecycle(type, originalId, item) {
+            state.recycle.push({
+                recycleId: uid("recycle"),
+                type,
+                originalId,
+                label: item.title || item.name || item.subject || item.label || "Deleted item",
+                item,
+                deletedAt: nowIso()
+            });
+        }
+
+        function restoreItem(recycleId) {
+            const index = state.recycle.findIndex(item => item.recycleId === recycleId);
+            if (index < 0) return;
+            const [entry] = state.recycle.splice(index, 1);
+            state[entry.type] ||= [];
+            state[entry.type].push(entry.item);
+            saveState();
+            toast("Item restored.", "success");
+            renderContent();
+        }
+
+        function permanentDelete(recycleId) {
+            state.recycle = state.recycle.filter(item => item.recycleId !== recycleId);
+            saveState();
+            toast("Item permanently deleted.", "success");
+            renderContent();
+        }
+
+        function emptyRecycle() {
+            if (!confirm("Permanently delete all recycled items?")) return;
+            state.recycle = [];
+            saveState();
+            toast("Recycle bin emptied.", "success");
+            renderContent();
+        }
+
+        /* =========================================================
+           SETTINGS, BACKUP, AND SECURITY
+           ========================================================= */
+        function renderSettings() {
+            if (ui.sub === "Password") return renderPasswordSettings();
+            if (ui.sub === "Notifications") return renderNotificationSettings();
+            if (ui.sub === "Backup") return renderBackupSettings();
+            if (ui.sub === "Reset") return renderResetSettings();
+            return `
+                <div class="grid two">
+                    <div class="card">
+                        <div class="card-head"><h3>Theme</h3><span class="tag">${state.settings.theme}</span></div>
+                        <button class="primary-btn" data-action="toggle-theme"><i class="fa-solid fa-circle-half-stroke"></i> Toggle Dark / Light Mode</button>
+                    </div>
+                    <div class="card">
+                        <div class="card-head"><h3>Auto-Lock</h3></div>
+                        <label class="tiny">Minutes before locking after inactivity</label>
+                        <input id="autoLockMinutes" type="number" min="0" value="${state.settings.autoLockMinutes}">
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderPasswordSettings() {
+            return `
+                <div class="grid two">
+                    <div class="card">
+                        <div class="card-head"><h3>Change Password</h3></div>
+                        <form class="form-grid" data-form="password">
+                            <input name="oldPassword" type="password" placeholder="Old password" required>
+                            <input name="newPassword" type="password" placeholder="New password" required>
+                            <input class="full" name="confirmPassword" type="password" placeholder="Confirm new password" required>
+                            <button class="primary-btn full" type="submit"><i class="fa-solid fa-key"></i> Change Password</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <div class="card-head"><h3>PIN Lock</h3><span class="tag ${state.auth.pinHash ? "ok" : "warn"}">${state.auth.pinHash ? "Enabled" : "Not set"}</span></div>
+                        <form class="form-grid" data-form="pin">
+                            <input name="password" type="password" placeholder="Current password" required>
+                            <input name="pin" type="password" inputmode="numeric" placeholder="New PIN" required>
+                            <button class="primary-btn full" type="submit"><i class="fa-solid fa-lock"></i> Save PIN</button>
+                        </form>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderNotificationSettings() {
+            return `
+                <div class="card">
+                    <div class="card-head"><h3>Notifications</h3><button class="ghost-btn" data-action="clear-notifications"><i class="fa-solid fa-broom"></i> Clear Center</button></div>
+                    <label class="checkline"><input id="notificationsToggle" type="checkbox" ${state.settings.notifications ? "checked" : ""}> Enable toast and reminder alerts</label>
+                    <div style="margin-top:14px;"><button class="primary-btn" data-action="request-notification-permission"><i class="fa-solid fa-bell"></i> Enable Browser Notifications</button></div>
+                    <div class="list" style="margin-top:14px;">${state.notifications.slice(0, 12).map(notificationItem).join("") || emptyState("fa-bell", "No notifications yet.")}</div>
+                </div>
+            `;
+        }
+
+        function renderBackupSettings() {
+            return `
+                <div class="grid two">
+                    <div class="card">
+                        <div class="card-head"><h3>Export Backup</h3></div>
+                        <p class="muted">Download all LIFE OS data as JSON. This includes notes, tasks, vault metadata, and uploaded file data URLs.</p>
+                        <button class="primary-btn" data-action="export-backup"><i class="fa-solid fa-download"></i> Download Backup</button>
+                    </div>
+                    <div class="card">
+                        <div class="card-head"><h3>Restore Backup</h3></div>
+                        <p class="muted">Restore from a LIFE OS JSON backup. Current local data will be replaced after confirmation.</p>
+                        <button class="ghost-btn" data-action="restore-backup"><i class="fa-solid fa-upload"></i> Restore JSON</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderResetSettings() {
+            return `
+                <div class="card">
+                    <div class="card-head"><h3>Reset LIFE OS</h3><span class="tag danger">Destructive</span></div>
+                    <p class="muted">This clears all local data in this browser and returns the app to first-run setup.</p>
+                    <button class="danger-btn" data-action="reset-app"><i class="fa-solid fa-triangle-exclamation"></i> Reset Everything</button>
+                </div>
+            `;
+        }
+
+        async function changePassword(data) {
+            if (await hashText(data.oldPassword) !== state.auth.passwordHash) return toast("Old password is incorrect.", "error");
+            if (data.newPassword.length < 4) return toast("New password is too short.", "error");
+            if (data.newPassword !== data.confirmPassword) return toast("New passwords do not match.", "error");
+            state.auth.passwordHash = await hashText(data.newPassword);
+            saveState();
+            toast("Password changed.", "success");
+        }
+
+        async function changePin(data) {
+            if (await hashText(data.password) !== state.auth.passwordHash) return toast("Password verification failed.", "error");
+            if (!/^[0-9]{4,8}$/.test(data.pin)) return toast("PIN must be 4 to 8 digits.", "error");
+            state.auth.pinHash = await hashText(data.pin);
+            state.auth.pinEnabled = true;
+            saveState();
+            toast("PIN saved.", "success");
+        }
+
+        function toggleTheme() {
+            state.settings.theme = state.settings.theme === "dark" ? "light" : "dark";
+            document.body.dataset.theme = state.settings.theme;
+            saveState();
+            renderContent();
+        }
+
+        function exportBackup() {
+            downloadText(`lifeos-backup-${today()}.json`, JSON.stringify(state, null, 2), "application/json");
+            toast("Backup downloaded.", "success");
+        }
+
+        function restoreBackupFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = () => {
+                try {
+                    const parsed = JSON.parse(reader.result);
+                    if (!confirm("Restore this backup and replace current LIFE OS data?")) return;
+                    state = mergeState(defaultState(), parsed);
+                    saveState();
+                    toast("Backup restored.", "success");
+                    renderApp();
+                } catch {
+                    toast("Invalid backup file.", "error");
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = "";
+        }
+
+        function resetApp() {
+            if (!confirm("Reset all LIFE OS data permanently?")) return;
+            localStorage.removeItem(STORAGE_KEY);
+            sessionStorage.removeItem(SESSION_KEY);
+            state = defaultState();
+            toast("App reset. Create a new password.", "warning");
+            showAuth();
+        }
+
+        /* =========================================================
+           NOTIFICATIONS, SEARCH, MODALS, AND UTILITIES
+           ========================================================= */
+        function toast(message, type = "success") {
+            if (!state.settings.notifications && type !== "error") return;
+            const root = byId("toastRoot");
+            const div = document.createElement("div");
+            div.className = "toast";
+            div.innerHTML = `<div class="between"><strong>${escapeHtml(message)}</strong><span class="tag ${type === "error" ? "danger" : type === "warning" ? "warn" : "ok"}">${type}</span></div>`;
+            root.appendChild(div);
+            state.notifications.unshift({ id: uid("notice"), message, type, at: nowIso() });
+            state.notifications = state.notifications.slice(0, 50);
+            saveState();
+            renderNotifications();
+            setTimeout(() => div.remove(), 3200);
+        }
+
+        function renderNotifications() {
+            const list = byId("notificationList");
+            if (!list) return;
+            list.innerHTML = state.notifications.slice(0, 10).map(notificationItem).join("") || emptyState("fa-bell", "No notifications yet.");
+        }
+
+        function notificationItem(item) {
+            return `<div class="list-item"><div><strong>${escapeHtml(item.message)}</strong><div class="tiny">${fmtDate(item.at)} ${fmtTime(item.at)}</div></div><span class="tag ${item.type === "error" ? "danger" : item.type === "warning" ? "warn" : "ok"}">${item.type}</span></div>`;
+        }
+
+        function toggleNotificationCenter() {
+            renderNotifications();
+            byId("notificationCenter").classList.toggle("open");
+        }
+
+        function clearNotifications() {
+            state.notifications = [];
+            saveState();
+            renderNotifications();
+            renderContent();
+        }
+
+        async function requestNotificationPermission() {
+            if (!("Notification" in window)) return toast("Browser notifications are unavailable.", "error");
+            const permission = await Notification.requestPermission();
+            toast(`Notification permission: ${permission}`, permission === "granted" ? "success" : "warning");
+        }
+
+        function renderSearch(query) {
+            const box = byId("searchResults");
+            const q = query.trim().toLowerCase();
+            if (!q) {
+                box.classList.add("hidden");
+                return;
+            }
+            const results = [];
+            state.notes.forEach(item => (`${item.title} ${stripHtml(item.content)} ${(item.tags || []).join(" ")}`.toLowerCase().includes(q)) && results.push({ id: item.id, type: "note", title: item.title, section: "notes", sub: "Editor" }));
+            state.tasks.forEach(item => (`${item.title} ${item.category}`.toLowerCase().includes(q)) && results.push({ id: item.id, type: "task", title: item.title, section: "tasks", sub: "All Tasks" }));
+            state.expenses.forEach(item => (`${item.title} ${item.category} ${item.note}`.toLowerCase().includes(q)) && results.push({ id: item.id, type: "expense", title: item.title, section: "expenses", sub: "Expense History" }));
+            state.files.forEach(item => (`${item.name} ${item.type}`.toLowerCase().includes(q)) && results.push({ id: item.id, type: "file", title: item.name, section: "vault", sub: "Documents" }));
+            state.events.forEach(item => (`${item.title} ${item.type}`.toLowerCase().includes(q)) && results.push({ id: item.id, type: "event", title: item.title, section: "planner", sub: "Events" }));
+            box.innerHTML = results.slice(0, 8).map(result => `
+                <button class="search-item" data-action="search-open" data-id="${result.type}:${result.id}:${result.section}:${result.sub}">
+                    <strong>${escapeHtml(result.title)}</strong><div class="tiny">${result.type} - ${result.section}</div>
+                </button>
+            `).join("") || `<div class="empty"><div><i class="fa-solid fa-magnifying-glass"></i>No results</div></div>`;
+            box.classList.remove("hidden");
+        }
+
+        function openSearchResult(payload) {
+            const [type, id, section, sub] = payload.split(":");
+            ui.section = section;
+            ui.sub = sub;
+            if (type === "note") ui.selectedNote = id;
+            const file = type === "file" ? state.files.find(item => item.id === id) : null;
+            if (file) ui.selectedFolder = file.folderId;
+            byId("globalSearch").value = "";
+            byId("searchResults").classList.add("hidden");
+            renderApp();
+        }
+
+        function openModal(html) {
+            byId("modalRoot").innerHTML = `<div class="modal-card">${html}<div style="margin-top:14px;"><button class="ghost-btn" data-action="close-modal"><i class="fa-solid fa-xmark"></i> Close</button></div></div>`;
+            byId("modalRoot").classList.add("active");
+        }
+
+        function closeModal() {
+            byId("modalRoot").classList.remove("active");
+            byId("modalRoot").innerHTML = "";
+        }
+
+        function emptyState(icon, text) {
+            return `<div class="empty"><div><i class="fa-solid ${icon}"></i><p>${text}</p></div></div>`;
+        }
+
+        function downloadText(filename, text, type) {
+            const blob = new Blob([text], { type });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = filename;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function removeItem(collection, id, message) {
+            state[collection] = (state[collection] || []).filter(item => item.id !== id);
+            saveState();
+            toast(message || "Deleted.", "success");
+            renderContent();
+        }
+
+        function openQuickCreate() {
+            openModal(`
+                <h3>Quick Create</h3>
+                <div class="grid three">
+                    <button class="list-item" data-action="quick-note"><span><i class="fa-solid fa-note-sticky"></i> Note</span></button>
+                    <button class="list-item" data-action="quick-task"><span><i class="fa-solid fa-square-check"></i> Task</span></button>
+                    <button class="list-item" data-action="quick-expense"><span><i class="fa-solid fa-wallet"></i> Expense</span></button>
+                </div>
+            `);
+        }
+
+        function quickNote() {
+            closeModal();
+            createNote();
+        }
+
+        function quickTask() {
+            closeModal();
+            ui.section = "tasks";
+            ui.sub = "Today";
+            renderApp();
+        }
+
+        function quickExpense() {
+            closeModal();
+            ui.section = "expenses";
+            ui.sub = "Add Expense";
+            renderApp();
+        }
+
+        /* =========================================================
+           CHARTS AND LIVE INTERVALS
+           ========================================================= */
+        function startIntervals() {
+            stopIntervals();
+            intervals.clock = setInterval(() => {
+                if (ui.timerRunning) {
+                    ui.timerSeconds = Math.max(0, ui.timerSeconds - 1);
+                    if (ui.timerSeconds === 0) {
+                        ui.timerRunning = false;
+                        state.focusSessions.push({ id: uid("focus"), minutes: ui.timerMode === "focus" ? 25 : 5, date: today(), label: ui.timerMode });
+                        saveState();
+                        toast("Pomodoro complete.", "success");
+                    }
+                }
+                if (ui.stopwatchRunning) ui.stopwatchSeconds++;
+                if (ui.countdownRunning) {
+                    ui.countdownSeconds = Math.max(0, ui.countdownSeconds - 1);
+                    if (ui.countdownSeconds === 0) {
+                        ui.countdownRunning = false;
+                        toast("Timer finished.", "warning");
+                    }
+                }
+                checkAlarms();
+                checkReminders();
+                updateClockDisplays();
+            }, 1000);
+        }
+
+        function stopIntervals() {
+            Object.values(intervals).forEach(clearInterval);
+            intervals = {};
+        }
+
+        function updateClockDisplays() {
+            const now = new Date();
+            const time = now.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+            ["dashClock", "digitalClock"].forEach(id => { if (byId(id)) byId(id).textContent = time; });
+            if (byId("dateDisplay")) byId("dateDisplay").textContent = now.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+            if (byId("pomodoroTime")) byId("pomodoroTime").textContent = formatSeconds(ui.timerSeconds);
+            if (byId("focusTime")) byId("focusTime").textContent = formatSeconds(ui.timerSeconds);
+            if (byId("stopwatchDisplay")) byId("stopwatchDisplay").textContent = formatSeconds(ui.stopwatchSeconds);
+            if (byId("countdownDisplay")) byId("countdownDisplay").textContent = formatSeconds(ui.countdownSeconds);
+            const seconds = now.getSeconds();
+            const minutes = now.getMinutes();
+            const hours = now.getHours() % 12;
+            if (byId("secondHand")) byId("secondHand").style.transform = `translateX(-50%) rotate(${seconds * 6}deg)`;
+            if (byId("minuteHand")) byId("minuteHand").style.transform = `translateX(-50%) rotate(${minutes * 6 + seconds * 0.1}deg)`;
+            if (byId("hourHand")) byId("hourHand").style.transform = `translateX(-50%) rotate(${hours * 30 + minutes * 0.5}deg)`;
+            $$("[data-world-zone]").forEach(el => {
+                el.textContent = now.toLocaleTimeString(undefined, { timeZone: el.dataset.worldZone, hour: "2-digit", minute: "2-digit" });
+            });
+        }
+
+        function formatSeconds(seconds) {
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = seconds % 60;
+            return h ? `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}` : `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+        }
+
+        function checkAlarms() {
+            state.alarms ||= [];
+            const key = new Date().toTimeString().slice(0, 5);
+            state.alarms.forEach(alarm => {
+                if (alarm.time === key && alarm.lastTriggered !== today()) {
+                    alarm.lastTriggered = today();
+                    saveState();
+                    toast(`Alarm: ${alarm.label}`, "warning");
+                    if (Notification.permission === "granted") new Notification(`LIFE OS Alarm: ${alarm.label}`);
+                }
+            });
+        }
+
+        function checkReminders() {
+            const now = new Date();
+            state.events.forEach(event => {
+                if (!event.time || event.notifiedAt === today()) return;
+                const due = new Date(`${event.date}T${event.time}`);
+                if (Math.abs(due - now) < 60000) {
+                    event.notifiedAt = today();
+                    saveState();
+                    toast(`Reminder: ${event.title}`, "warning");
+                }
+            });
+        }
+
+        function mountCharts() {
+            if (!window.Chart) return;
+            if (byId("dashProgressChart")) chart("dashProgressChart", "line", labels7(), taskSeries(), "Weekly completed tasks");
+            if (byId("expensePie")) pieChart("expensePie", categoryTotals());
+            if (byId("expenseBar")) barChart("expenseBar", ["Income", "Expense", "Balance"], [getMetrics().income, getMetrics().expense, getMetrics().balance]);
+            if (byId("expenseTrend")) chart("expenseTrend", "line", monthLabels(), monthlyExpenseSeries(), "Monthly expenses");
+            if (byId("budgetCategoryChart")) pieChart("budgetCategoryChart", categoryTotals());
+            if (byId("focusChart")) chart("focusChart", "bar", labels7(), focusSeries(), "Focus minutes");
+            if (byId("analyticsProductivity")) chart("analyticsProductivity", "line", labels7(), focusSeries(), "Focus minutes");
+            if (byId("analyticsTasks")) barChart("analyticsTasks", ["Open", "Done"], [state.tasks.filter(t => !t.completed).length, state.tasks.filter(t => t.completed).length]);
+            if (byId("analyticsExpenses")) pieChart("analyticsExpenses", categoryTotals());
+            if (byId("analyticsStorage")) barChart("analyticsStorage", ["Notes", "Tasks", "Files", "Vault KB"], [state.notes.length, state.tasks.length, state.files.length, getMetrics().storageKb]);
+        }
+
+        function chart(id, type, labels, data, label) {
+            const ctx = byId(id);
+            charts[id] = new Chart(ctx, {
+                type,
+                data: { labels, datasets: [{ label, data, borderColor: "#44c7ff", backgroundColor: "rgba(68,199,255,0.22)", tension: 0.38, fill: true }] },
+                options: chartOptions()
+            });
+        }
+
+        function pieChart(id, totals) {
+            charts[id] = new Chart(byId(id), {
+                type: "doughnut",
+                data: { labels: Object.keys(totals), datasets: [{ data: Object.values(totals), backgroundColor: ["#44c7ff", "#77f2c1", "#ffd166", "#ff6680", "#9f7aea", "#38bdf8", "#fb7185"] }] },
+                options: chartOptions()
+            });
+        }
+
+        function barChart(id, labels, data) {
+            charts[id] = new Chart(byId(id), {
+                type: "bar",
+                data: { labels, datasets: [{ label: "Value", data, backgroundColor: "rgba(119,242,193,0.52)", borderColor: "#77f2c1", borderWidth: 1 }] },
+                options: chartOptions()
+            });
+        }
+
+        function chartOptions() {
+            return {
+                responsive: true,
+                plugins: { legend: { labels: { color: getComputedStyle(document.body).getPropertyValue("--text") } } },
+                scales: {
+                    x: { ticks: { color: getComputedStyle(document.body).getPropertyValue("--muted") }, grid: { color: "rgba(255,255,255,0.08)" } },
+                    y: { ticks: { color: getComputedStyle(document.body).getPropertyValue("--muted") }, grid: { color: "rgba(255,255,255,0.08)" } }
+                }
+            };
+        }
+
+        function destroyCharts() {
+            Object.values(charts).forEach(chart => chart.destroy());
+            charts = {};
+        }
+
+        function labels7() {
+            return Array.from({ length: 7 }, (_, i) => {
+                const d = new Date();
+                d.setDate(d.getDate() - (6 - i));
+                return d.toLocaleDateString(undefined, { weekday: "short" });
+            });
+        }
+
+        function taskSeries() {
+            return labels7().map((_, i) => {
+                const d = new Date();
+                d.setDate(d.getDate() - (6 - i));
+                const key = d.toISOString().slice(0, 10);
+                return state.tasks.filter(task => task.completed && (task.completedAt || task.due || "").startsWith(key)).length;
+            });
+        }
+
+        function focusSeries() {
+            return labels7().map((_, i) => {
+                const d = new Date();
+                d.setDate(d.getDate() - (6 - i));
+                const key = d.toISOString().slice(0, 10);
+                return state.focusSessions.filter(session => session.date === key).reduce((sum, session) => sum + Number(session.minutes || 0), 0);
+            });
+        }
+
+        function monthLabels() {
+            return Array.from({ length: 6 }, (_, i) => {
+                const d = new Date();
+                d.setMonth(d.getMonth() - (5 - i));
+                return d.toLocaleDateString(undefined, { month: "short" });
+            });
+        }
+
+        function monthlyExpenseSeries() {
+            return monthLabels().map((_, i) => {
+                const d = new Date();
+                d.setMonth(d.getMonth() - (5 - i));
+                const key = d.toISOString().slice(0, 7);
+                return state.expenses.filter(item => item.type === "expense" && item.date.startsWith(key)).reduce((sum, item) => sum + Number(item.amount), 0);
+            });
+        }
+
+        function categoryTotals() {
+            const totals = {};
+            state.expenses.filter(item => item.type === "expense").forEach(item => totals[item.category] = (totals[item.category] || 0) + Number(item.amount));
+            return Object.keys(totals).length ? totals : { Empty: 1 };
+        }
+
+        document.addEventListener("lifeos-route-events", () => {
+            ui.section = "planner";
+            ui.sub = "Events";
+            renderApp();
+        });
+    </script>
+</body>
+</html>

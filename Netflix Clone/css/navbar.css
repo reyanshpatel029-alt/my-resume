@@ -1,0 +1,130 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 900;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1.2rem;
+  min-height: var(--nav-height);
+  padding: 0 clamp(1rem, 4vw, 4rem);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.22));
+  transition: min-height 220ms ease, background 220ms ease, box-shadow 220ms ease, backdrop-filter 220ms ease;
+}
+
+.navbar.scrolled,
+.navbar.compact {
+  min-height: 62px;
+  background: rgba(9, 9, 13, 0.82);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.24);
+}
+
+.brand {
+  display: inline-flex;
+  width: 126px;
+  min-width: 126px;
+  align-items: center;
+}
+
+.brand img {
+  width: 100%;
+  height: auto;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 1.4vw, 1.4rem);
+  min-width: 0;
+}
+
+.nav-menu a {
+  position: relative;
+  color: #dfdfe6;
+  font-size: 0.94rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: color 180ms ease;
+}
+
+.nav-menu a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.5rem;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: var(--netflix-red);
+  transition: transform 180ms ease;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+  color: #fff;
+}
+
+.nav-menu a:hover::after,
+.nav-menu a.active::after {
+  transform: scaleX(1);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.25rem;
+}
+
+.profile-pill {
+  display: inline-grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--netflix-red), #5e6cff 56%, var(--teal));
+  color: #fff;
+  font-weight: 900;
+  transition: transform 180ms ease, border-color 180ms ease;
+}
+
+.profile-pill:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.nav-toggle {
+  display: none;
+  border: 1px solid var(--line);
+}
+
+.nav-toggle span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  border-radius: 99px;
+  background: currentColor;
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+.nav-toggle span + span {
+  margin-top: 4px;
+}
+
+.nav-toggle.open span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.nav-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.open span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}

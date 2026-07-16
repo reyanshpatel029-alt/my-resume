@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en" data-page="home">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Netflix Clone | Home</title>
+    <link rel="icon" href="assets/logos/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="css/style.css?v=2" />
+    <link rel="stylesheet" href="css/navbar.css?v=2" />
+    <link rel="stylesheet" href="css/hero.css?v=2" />
+    <link rel="stylesheet" href="css/cards.css?v=2" />
+    <link rel="stylesheet" href="css/player.css?v=2" />
+    <link rel="stylesheet" href="css/responsive.css?v=2" />
+  </head>
+  <body>
+    <div class="page-loader" data-loader>
+      <span class="spinner" aria-hidden="true"></span>
+    </div>
+
+    <header class="navbar" data-navbar>
+      <a class="brand" href="index.html" aria-label="Netflix home">
+        <img src="assets/logos/netflix-wordmark.svg" alt="Netflix" />
+      </a>
+      <button class="icon-button nav-toggle" data-mobile-toggle aria-label="Open menu" title="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-menu" data-nav-menu aria-label="Main navigation">
+        <a href="index.html" data-nav-link>Home</a>
+        <a href="search.html?type=TV%20Show" data-nav-link>TV Shows</a>
+        <a href="search.html?type=Movie" data-nav-link>Movies</a>
+        <a href="search.html?category=trending" data-nav-link>New &amp; Popular</a>
+        <a href="search.html?category=my-list" data-nav-link>My List</a>
+        <a href="search.html?language=all" data-nav-link>Browse by Language</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="icon-button" href="search.html" aria-label="Search" title="Search" data-ripple>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 19.6-5.4-5.4a7.4 7.4 0 1 0-1.4 1.4L19.6 21zM4.8 10a5.2 5.2 0 1 1 10.4 0A5.2 5.2 0 0 1 4.8 10z"/></svg>
+        </a>
+        <button class="icon-button" data-notifications aria-label="Notifications" title="Notifications" data-ripple>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a2.5 2.5 0 0 0 2.4-1.8H9.6A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5-6.7V3a2 2 0 1 0-4 0v1.3A7 7 0 0 0 5 11v5l-2 2v1h18v-1z"/></svg>
+        </button>
+        <a class="profile-pill" href="profile.html" aria-label="Profiles" title="Profiles">
+          <span data-active-avatar>R</span>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" data-hero aria-label="Featured movie">
+        <div class="hero-backdrop" data-hero-backdrop></div>
+        <div class="hero-gradient"></div>
+        <div class="hero-content reveal">
+          <div class="eyebrow"><span class="rating-badge">N</span><span data-hero-type>Movie</span></div>
+          <h1 data-hero-title>Loading...</h1>
+          <p data-hero-description></p>
+          <div class="hero-meta">
+            <span data-hero-rating></span>
+            <span data-hero-year></span>
+            <span class="age-rating" data-hero-age></span>
+            <span data-hero-genre></span>
+          </div>
+          <div class="hero-actions">
+            <button class="button button-primary" data-hero-play data-ripple>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              Play
+            </button>
+            <button class="button button-secondary" data-hero-more data-ripple>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 17h2v-6h-2zm0-8h2V7h-2zm1 13a10 10 0 1 1 0-20 10 10 0 0 1 0 20z"/></svg>
+              More Info
+            </button>
+          </div>
+        </div>
+        <div class="hero-poster reveal" data-hero-poster-wrap>
+          <img data-hero-poster alt="" />
+        </div>
+      </section>
+
+      <section class="content-band" id="continue-watching" aria-label="Continue Watching"></section>
+      <section class="content-band" id="movie-rows" aria-label="Movie categories"></section>
+    </main>
+
+    <div class="modal" data-modal aria-hidden="true">
+      <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <button class="icon-button modal-close" data-modal-close aria-label="Close" title="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m18.3 5.7-1.4-1.4L12 9.2 7.1 4.3 5.7 5.7l4.9 4.9-4.9 4.9 1.4 1.4 4.9-4.9 4.9 4.9 1.4-1.4-4.9-4.9z"/></svg>
+        </button>
+        <div class="modal-body" data-modal-body></div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="#">FAQ</a>
+        <a href="#">Help Center</a>
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+        <a href="#">Contact</a>
+      </div>
+      <p>Netflix Clone built for frontend practice.</p>
+    </footer>
+
+    <div class="toast-stack" data-toast-stack aria-live="polite"></div>
+    <script src="data/movies.js?v=3"></script>
+    <script src="js/bundle.js?v=3"></script>
+  </body>
+</html>

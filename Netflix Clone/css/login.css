@@ -1,0 +1,203 @@
+.login-body,
+.profile-body {
+  min-height: 100vh;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.86), rgba(0, 0, 0, 0.48)),
+    url("https://image.tmdb.org/t/p/original/56v2KjBlU4XaOv9rVYEQypROD7P.jpg") center / cover fixed;
+}
+
+.login-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  min-height: var(--nav-height);
+  padding: 0 clamp(1rem, 4vw, 4rem);
+}
+
+.login-shell,
+.profile-shell {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: calc(var(--nav-height) + 2rem) 1rem 2rem;
+}
+
+.login-card {
+  width: min(450px, 100%);
+  padding: clamp(1.3rem, 4vw, 2.8rem);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius);
+  background: rgba(0, 0, 0, 0.76);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+}
+
+.login-card h1,
+.profile-shell h1 {
+  margin: 0 0 1.6rem;
+  color: #fff;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.field {
+  position: relative;
+  display: grid;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  color: #f1f1f4;
+}
+
+.field span {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.field input {
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius);
+  outline: 0;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  padding: 0 0.9rem;
+  transition: border-color 180ms ease, background 180ms ease;
+}
+
+.field input:focus {
+  border-color: rgba(255, 255, 255, 0.46);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.field small {
+  min-height: 1.1rem;
+  color: var(--amber);
+  font-size: 0.8rem;
+}
+
+.password-field input {
+  padding-right: 4.5rem;
+}
+
+.text-button,
+.link-button {
+  border: 0;
+  background: transparent;
+  color: #f3f3f6;
+  font-weight: 700;
+}
+
+.text-button {
+  position: absolute;
+  right: 0.8rem;
+  top: 2.3rem;
+  color: var(--muted);
+}
+
+.text-button:hover,
+.link-button:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0.4rem 0 1.2rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.checkbox-label input {
+  accent-color: var(--netflix-red);
+}
+
+.signup-copy {
+  margin: 1.3rem 0 0;
+  color: var(--muted);
+}
+
+.profile-shell {
+  text-align: center;
+}
+
+.profiles-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(120px, 1fr));
+  gap: clamp(0.8rem, 2vw, 1.4rem);
+  width: min(920px, 100%);
+}
+
+.profile-card {
+  display: grid;
+  gap: 0.8rem;
+  justify-items: center;
+  padding: 0.8rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--muted);
+  transition: color 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.profile-card:hover,
+.profile-card.active {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.28);
+  transform: translateY(-4px);
+}
+
+.avatar-tile {
+  display: grid;
+  width: 100%;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--netflix-red), #6068ff 52%, var(--teal));
+  color: #fff;
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 900;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32);
+}
+
+.profile-card.kids .avatar-tile {
+  background: linear-gradient(135deg, #ffbd4a, #28c76f 50%, #3aa0ff);
+}
+
+.profile-name {
+  display: flex;
+  min-height: 2.4rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.remove-profile {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+.profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}

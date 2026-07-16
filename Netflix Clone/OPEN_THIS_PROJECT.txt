@@ -1,0 +1,22 @@
+How to open this Netflix Clone
+
+1. Open this folder:
+   C:\Users\REYANSH\Documents\Codex\2026-07-05\i-want-to-build-a-netflix-2\outputs\Netflix Clone
+
+2. Double-click:
+   index.html
+
+3. Other pages:
+   login.html
+   profile.html
+   search.html
+   movie.html
+
+Important:
+This project now works from File Explorer because the pages use:
+data/movies.js
+js/bundle.js
+
+The older module files are still kept in the js folder for learning/reference,
+but the active connected version uses bundle.js so the browser does not block
+the app when opened with file://.

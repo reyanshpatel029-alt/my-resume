@@ -1,0 +1,5075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#08111f">
+  <title>Student Productivity OS - Immortal Version</title>
+  <style>
+/* ==========================================================================
+   Student Productivity OS - Immortal Version
+   Premium glassmorphism interface using only CSS3
+   ========================================================================== */
+
+/* Base tokens */
+:root {
+  --bg: #08111f;
+  --bg-soft: #0d1829;
+  --panel: rgba(255, 255, 255, 0.09);
+  --panel-strong: rgba(255, 255, 255, 0.15);
+  --panel-muted: rgba(255, 255, 255, 0.06);
+  --line: rgba(255, 255, 255, 0.17);
+  --line-strong: rgba(255, 255, 255, 0.28);
+  --text: #eef6ff;
+  --text-soft: #b9c7d9;
+  --muted: #7f91a8;
+  --accent: #5ddcff;
+  --accent-2: #a5ffcb;
+  --accent-3: #ffcf5a;
+  --danger: #ff6b8a;
+  --warning: #ffd166;
+  --success: #7dffb2;
+  --shadow: 0 18px 60px rgba(0, 0, 0, 0.32);
+  --shadow-soft: 0 12px 32px rgba(0, 0, 0, 0.22);
+  --radius: 8px;
+  --sidebar-width: 278px;
+  --sidebar-collapsed: 86px;
+  --topbar-height: 78px;
+  --transition: 180ms ease;
+  color-scheme: dark;
+}
+
+body.light-theme {
+  --bg: #eef5f9;
+  --bg-soft: #f7fbfd;
+  --panel: rgba(255, 255, 255, 0.68);
+  --panel-strong: rgba(255, 255, 255, 0.86);
+  --panel-muted: rgba(255, 255, 255, 0.48);
+  --line: rgba(34, 52, 75, 0.12);
+  --line-strong: rgba(34, 52, 75, 0.22);
+  --text: #0d1928;
+  --text-soft: #405269;
+  --muted: #6c7b8c;
+  --accent: #0079a8;
+  --accent-2: #00a870;
+  --accent-3: #c08200;
+  --danger: #d83763;
+  --warning: #a87300;
+  --success: #047a50;
+  --shadow: 0 18px 60px rgba(44, 62, 80, 0.16);
+  --shadow-soft: 0 10px 28px rgba(44, 62, 80, 0.12);
+  color-scheme: light;
+}
+
+/* Reset and global layout */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  transition: background var(--transition), color var(--transition);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text);
+  padding: 12px 13px;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+body.light-theme input,
+body.light-theme textarea,
+body.light-theme select {
+  background: rgba(255, 255, 255, 0.78);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: color-mix(in srgb, var(--accent), white 20%);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent), transparent 78%);
+}
+
+select option {
+  background: var(--bg-soft);
+  color: var(--text);
+}
+
+textarea {
+  resize: vertical;
+}
+
+label {
+  display: block;
+  color: var(--text-soft);
+  font-size: 0.86rem;
+  margin: 0 0 8px;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.12;
+}
+
+p {
+  color: var(--text-soft);
+}
+
+small {
+  color: var(--muted);
+}
+
+canvas {
+  width: 100%;
+}
+
+/* Background artwork */
+.ambient-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: -2;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(93, 220, 255, 0.22), transparent 28%),
+    radial-gradient(circle at 85% 8%, rgba(165, 255, 203, 0.16), transparent 24%),
+    radial-gradient(circle at 75% 88%, rgba(255, 207, 90, 0.14), transparent 26%),
+    linear-gradient(135deg, var(--bg), var(--bg-soft));
+}
+
+.mesh {
+  position: absolute;
+  width: 42vmax;
+  height: 42vmax;
+  border-radius: 50%;
+  filter: blur(64px);
+  opacity: 0.22;
+  animation: floatMesh 18s ease-in-out infinite alternate;
+}
+
+.mesh-one {
+  left: -12vmax;
+  top: 5vmax;
+  background: #5ddcff;
+}
+
+.mesh-two {
+  right: -13vmax;
+  top: -8vmax;
+  background: #a5ffcb;
+  animation-delay: -6s;
+}
+
+.mesh-three {
+  right: 20vmax;
+  bottom: -17vmax;
+  background: #ffcf5a;
+  animation-delay: -11s;
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.09;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to bottom, black, transparent 88%);
+}
+
+@keyframes floatMesh {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(6vmax, 4vmax, 0) scale(1.13);
+  }
+}
+
+/* Shared glass components */
+.glass-panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(145deg, var(--panel-strong), var(--panel-muted));
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.eyebrow {
+  margin-bottom: 8px;
+  color: var(--accent-2);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.primary-btn,
+.secondary-btn,
+.danger-btn,
+.ghost-icon,
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  border-radius: var(--radius);
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border-color var(--transition);
+}
+
+.primary-btn {
+  border: 1px solid color-mix(in srgb, var(--accent), white 22%);
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #06101b;
+  font-weight: 800;
+  padding: 0 18px;
+  box-shadow: 0 0 28px color-mix(in srgb, var(--accent), transparent 72%);
+}
+
+.secondary-btn {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  padding: 0 16px;
+}
+
+.danger-btn {
+  border: 1px solid color-mix(in srgb, var(--danger), white 12%);
+  background: color-mix(in srgb, var(--danger), transparent 84%);
+  color: var(--text);
+  padding: 0 16px;
+}
+
+.danger-btn.subtle {
+  min-height: 36px;
+  padding: 0 12px;
+  background: color-mix(in srgb, var(--danger), transparent 90%);
+}
+
+.ghost-icon,
+.icon-btn {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text);
+  padding: 0 12px;
+}
+
+.icon-btn {
+  width: 42px;
+  padding: 0;
+  font-weight: 900;
+}
+
+.primary-btn:hover,
+.secondary-btn:hover,
+.danger-btn:hover,
+.ghost-icon:hover,
+.icon-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.primary-btn.compact {
+  min-height: 40px;
+  padding-inline: 14px;
+}
+
+.full {
+  width: 100%;
+}
+
+/* Loader */
+.boot-loader {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 18px;
+  z-index: 50;
+  background: color-mix(in srgb, var(--bg), black 24%);
+  transition: opacity 300ms ease, visibility 300ms ease;
+}
+
+.boot-loader.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader-core {
+  display: flex;
+  gap: 8px;
+}
+
+.loader-core span {
+  width: 14px;
+  height: 42px;
+  border-radius: 999px;
+  background: var(--accent);
+  animation: loaderPulse 700ms ease-in-out infinite alternate;
+}
+
+.loader-core span:nth-child(2) {
+  background: var(--accent-2);
+  animation-delay: 120ms;
+}
+
+.loader-core span:nth-child(3) {
+  background: var(--accent-3);
+  animation-delay: 240ms;
+}
+
+@keyframes loaderPulse {
+  from {
+    transform: scaleY(0.45);
+    opacity: 0.45;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+/* Authentication */
+.auth-view {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+}
+
+.auth-card {
+  width: min(100%, 460px);
+  padding: 34px;
+  animation: panelEnter 400ms ease both;
+}
+
+.brand-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin-bottom: 18px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #06101b;
+  font-weight: 950;
+}
+
+.brand-mark.small {
+  width: 42px;
+  height: 42px;
+  margin: 0;
+}
+
+.auth-card h1 {
+  margin-bottom: 12px;
+  font-size: clamp(2rem, 6vw, 3rem);
+}
+
+.auth-copy {
+  margin-bottom: 28px;
+}
+
+.auth-form {
+  display: grid;
+  gap: 14px;
+}
+
+.password-wrap {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.form-error {
+  display: none;
+  margin: -2px 0 0;
+  color: var(--danger);
+  font-weight: 800;
+}
+
+.form-error.visible {
+  display: block;
+}
+
+.shake {
+  animation: shake 360ms ease;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-9px);
+  }
+  50% {
+    transform: translateX(9px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+}
+
+@keyframes panelEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Application shell */
+.app-shell {
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: fixed;
+  inset: 18px auto 18px 18px;
+  z-index: 20;
+  width: var(--sidebar-width);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  transition: width var(--transition), transform var(--transition);
+}
+
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed);
+}
+
+.sidebar-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.collapse-btn,
+.mobile-menu {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  font-weight: 900;
+}
+
+.mobile-menu {
+  display: none;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.sidebar-brand strong,
+.sidebar-brand small {
+  display: block;
+}
+
+.nav-list {
+  display: grid;
+  gap: 7px;
+  margin: 16px 0;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.nav-item {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text-soft);
+  text-align: left;
+  padding: 0 11px;
+  transition: background var(--transition), color var(--transition), transform var(--transition);
+}
+
+.nav-item span {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-item:hover,
+.nav-item.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+}
+
+.nav-item.active span {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #06101b;
+}
+
+.sidebar.collapsed .sidebar-brand div,
+.sidebar.collapsed .nav-item b,
+.sidebar.collapsed .sidebar-footer small,
+.sidebar.collapsed .danger-btn {
+  display: none;
+}
+
+.sidebar.collapsed .nav-item {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  padding: 0;
+}
+
+.sidebar-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.mini-streak {
+  display: grid;
+  gap: 2px;
+}
+
+.mini-streak span {
+  font-size: 1.45rem;
+  font-weight: 900;
+}
+
+.content-shell {
+  min-height: 100vh;
+  padding: 18px 18px 34px calc(var(--sidebar-width) + 36px);
+  transition: padding var(--transition);
+}
+
+.sidebar.collapsed + .content-shell {
+  padding-left: calc(var(--sidebar-collapsed) + 36px);
+}
+
+.topbar {
+  position: sticky;
+  top: 18px;
+  z-index: 15;
+  min-height: var(--topbar-height);
+  display: grid;
+  grid-template-columns: auto minmax(220px, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 16px;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.topbar h2 {
+  margin: 0;
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+}
+
+.global-search {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 8px;
+  max-width: 520px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.07);
+  padding: 0 12px;
+}
+
+.global-search input {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.notification-trigger {
+  position: relative;
+}
+
+.badge-dot {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--danger);
+}
+
+.main-content {
+  padding-top: 22px;
+}
+
+.app-section {
+  display: none;
+  animation: panelEnter 260ms ease both;
+}
+
+.app-section.active {
+  display: block;
+}
+
+/* Dashboard */
+.hero-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 26px;
+  min-height: 180px;
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-strip::after {
+  content: "";
+  position: absolute;
+  inset: auto -10% -80% 45%;
+  height: 160%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent), transparent 78%), transparent 64%);
+  pointer-events: none;
+}
+
+.hero-strip h1 {
+  max-width: 700px;
+  margin-bottom: 12px;
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+
+.hero-strip p:last-child {
+  max-width: 680px;
+  margin-bottom: 0;
+  font-size: 1.04rem;
+}
+
+.hero-actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.dashboard-grid,
+.three-column,
+.analytics-grid,
+.settings-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.dashboard-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.metric-card {
+  min-height: 150px;
+  padding: 18px;
+  transition: transform var(--transition), border-color var(--transition);
+}
+
+.metric-card:hover,
+.dashboard-panel:hover,
+.chart-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--line-strong);
+}
+
+.metric-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  margin-bottom: 16px;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.09);
+  color: var(--accent);
+  font-weight: 900;
+}
+
+.metric-card p {
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.metric-card h3 {
+  margin-bottom: 10px;
+  font-size: 1.8rem;
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.three-column {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dashboard-panel {
+  min-height: 250px;
+  padding: 18px;
+}
+
+.panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.panel-heading h3,
+.panel-heading p {
+  margin-bottom: 0;
+}
+
+.wrap-heading {
+  flex-wrap: wrap;
+}
+
+.compact-list,
+.subject-list,
+.assignment-list,
+.exam-list,
+.gpa-list,
+.note-list {
+  display: grid;
+  gap: 10px;
+}
+
+.empty-state {
+  display: grid;
+  place-items: center;
+  min-height: 130px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--muted);
+  text-align: center;
+  padding: 18px;
+}
+
+.progress-track {
+  width: 100%;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.progress-track span {
+  display: block;
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transition: width 280ms ease;
+}
+
+.donut-wrap {
+  display: grid;
+  place-items: center;
+  gap: 12px;
+  min-height: 170px;
+}
+
+.donut {
+  --percent: 0%;
+  display: grid;
+  place-items: center;
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle closest-side, color-mix(in srgb, var(--bg-soft), transparent 4%) 74%, transparent 75% 100%),
+    conic-gradient(var(--accent) var(--percent), rgba(255, 255, 255, 0.12) 0);
+}
+
+.donut span {
+  font-size: 1.6rem;
+  font-weight: 950;
+}
+
+.badge-wall {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
+  gap: 10px;
+}
+
+.achievement {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 13px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.achievement strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.achievement.locked {
+  opacity: 0.46;
+  filter: grayscale(0.8);
+}
+
+/* Shared module grids */
+.section-grid,
+.planner-layout,
+.pomodoro-layout,
+.timetable-layout,
+.notes-layout {
+  display: grid;
+  gap: 16px;
+}
+
+.section-grid {
+  grid-template-columns: minmax(280px, 390px) minmax(0, 1fr);
+}
+
+.planner-layout,
+.timetable-layout {
+  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+}
+
+.pomodoro-layout {
+  grid-template-columns: minmax(320px, 1fr) minmax(280px, 390px);
+}
+
+.notes-layout {
+  grid-template-columns: minmax(250px, 320px) minmax(0, 1fr);
+}
+
+.form-panel,
+.list-panel,
+.planner-board,
+.pomodoro-card,
+.pomodoro-settings,
+.timetable-panel,
+.notes-sidebar,
+.note-editor-panel,
+.chart-card,
+.insight-panel {
+  padding: 18px;
+}
+
+.form-panel {
+  align-self: start;
+  display: grid;
+  gap: 12px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.filter-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filter-row input,
+.filter-row select {
+  min-width: 160px;
+}
+
+.progress-meta {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+  color: var(--text-soft);
+}
+
+/* Item cards */
+.item-card {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.065);
+  padding: 13px;
+  transition: transform var(--transition), background var(--transition), border-color var(--transition);
+}
+
+.item-card:hover {
+  transform: translateY(-1px);
+  border-color: var(--line-strong);
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.item-card.dragging {
+  opacity: 0.55;
+  transform: scale(0.99);
+}
+
+.item-card.completed {
+  opacity: 0.68;
+}
+
+.item-card.completed .item-title {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+.item-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.item-title {
+  margin-bottom: 3px;
+  color: var(--text);
+  font-weight: 850;
+}
+
+.item-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.item-actions button {
+  min-height: 32px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text-soft);
+  padding: 0 10px;
+}
+
+.priority-pill,
+.status-pill,
+.type-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border-radius: 999px;
+  padding: 0 9px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.priority-high {
+  background: color-mix(in srgb, var(--danger), transparent 78%);
+  color: color-mix(in srgb, var(--danger), white 28%);
+}
+
+.priority-medium {
+  background: color-mix(in srgb, var(--warning), transparent 78%);
+  color: color-mix(in srgb, var(--warning), white 22%);
+}
+
+.priority-low {
+  background: color-mix(in srgb, var(--success), transparent 82%);
+  color: color-mix(in srgb, var(--success), white 12%);
+}
+
+.checkbox-btn {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: transparent;
+  color: transparent;
+  margin-top: 1px;
+}
+
+.checkbox-btn.checked {
+  border-color: var(--success);
+  background: var(--success);
+  color: #06101b;
+}
+
+/* Planner */
+.goal-box {
+  display: grid;
+  grid-template-columns: auto 78px;
+  align-items: center;
+  gap: 10px;
+}
+
+.goal-box label {
+  margin: 0;
+}
+
+.hour-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.hour-row {
+  display: grid;
+  grid-template-columns: 74px 1fr;
+  gap: 10px;
+  min-height: 54px;
+  align-items: stretch;
+}
+
+.hour-label {
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.hour-slot {
+  display: grid;
+  gap: 8px;
+}
+
+.planner-item {
+  display: grid;
+  gap: 6px;
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.07);
+  padding: 10px 12px;
+}
+
+.planner-item.done {
+  opacity: 0.58;
+}
+
+.planner-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* Pomodoro */
+.pomodoro-card {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  min-height: 560px;
+}
+
+.pomodoro-card h3 {
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+}
+
+.timer-ring {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(68vw, 330px);
+  aspect-ratio: 1;
+  margin: 20px 0;
+}
+
+.timer-ring svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.timer-ring circle {
+  fill: none;
+  stroke-width: 12;
+  stroke: rgba(255, 255, 255, 0.11);
+}
+
+#timerProgressCircle {
+  stroke: var(--accent);
+  stroke-linecap: round;
+  stroke-dasharray: 603;
+  stroke-dashoffset: 0;
+  filter: drop-shadow(0 0 14px color-mix(in srgb, var(--accent), transparent 55%));
+  transition: stroke-dashoffset 300ms linear;
+}
+
+.timer-display {
+  font-size: clamp(3.2rem, 10vw, 5.4rem);
+  font-weight: 950;
+}
+
+.timer-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.pomodoro-settings {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+}
+
+.range-line {
+  display: grid;
+  gap: 8px;
+}
+
+.stat-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.stat-stack div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 14px;
+}
+
+.stat-stack strong {
+  font-size: 1.55rem;
+}
+
+/* Attendance */
+.attendance-bar {
+  display: grid;
+  gap: 8px;
+}
+
+.attendance-top,
+.subject-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.warning-text {
+  color: var(--warning);
+  font-weight: 800;
+}
+
+.danger-text {
+  color: var(--danger);
+  font-weight: 800;
+}
+
+.success-text {
+  color: var(--success);
+  font-weight: 800;
+}
+
+/* Notes */
+.notes-sidebar {
+  align-self: start;
+  display: grid;
+  gap: 12px;
+  max-height: calc(100vh - 122px);
+  overflow: auto;
+}
+
+.note-list {
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.note-tab {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  text-align: left;
+  padding: 12px;
+}
+
+.note-tab.active {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent), transparent 88%);
+}
+
+.note-editor-panel {
+  min-height: calc(100vh - 122px);
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 12px;
+}
+
+.editor-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+}
+
+.editor-top input {
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  font-weight: 900;
+}
+
+.editor-actions,
+.format-toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.format-toolbar {
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.format-toolbar button {
+  min-height: 34px;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  padding: 0 12px;
+}
+
+.note-editor {
+  overflow: auto;
+  min-height: 420px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.055);
+  padding: 18px;
+  outline: none;
+  line-height: 1.65;
+}
+
+.note-editor:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent), transparent 82%);
+}
+
+.note-editor pre {
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(0, 0, 0, 0.26);
+  padding: 14px;
+}
+
+.editor-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+}
+
+/* Timetable */
+.next-class-pill {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-soft);
+  padding: 8px 12px;
+  font-weight: 800;
+}
+
+.timetable-grid {
+  display: grid;
+  grid-template-columns: 96px repeat(7, minmax(145px, 1fr));
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+
+.tt-head,
+.tt-time,
+.tt-cell {
+  min-height: 64px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.055);
+  padding: 10px;
+}
+
+.tt-head,
+.tt-time {
+  display: grid;
+  place-items: center;
+  color: var(--text-soft);
+  font-weight: 900;
+}
+
+.tt-cell {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  min-width: 145px;
+}
+
+.tt-entry {
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: linear-gradient(135deg, var(--entry-color), color-mix(in srgb, var(--entry-color), black 34%));
+  color: #06101b;
+  padding: 9px;
+  cursor: grab;
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--entry-color), transparent 76%);
+}
+
+.tt-entry.current {
+  outline: 3px solid color-mix(in srgb, var(--accent-3), transparent 20%);
+}
+
+.tt-entry strong,
+.tt-entry small {
+  display: block;
+  color: inherit;
+}
+
+.tt-entry-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.tt-entry-actions button {
+  min-height: 26px;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.35);
+  color: #06101b;
+  padding: 0 8px;
+}
+
+/* GPA and analytics */
+.gpa-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.gpa-summary > div {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 18px;
+}
+
+.gpa-summary h2 {
+  margin-bottom: 0;
+  font-size: 2.3rem;
+}
+
+.analytics-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.chart-card {
+  min-height: 320px;
+}
+
+.insight-panel {
+  margin-top: 16px;
+}
+
+.insight-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.insight-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 16px;
+}
+
+.insight-card strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 1.5rem;
+}
+
+/* Settings */
+.settings-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.switch-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+}
+
+.switch-line input {
+  width: 42px;
+  height: 22px;
+  accent-color: var(--accent);
+}
+
+/* Notification center and toasts */
+.notification-center {
+  position: fixed;
+  right: 20px;
+  top: 108px;
+  z-index: 30;
+  width: min(92vw, 380px);
+  max-height: min(72vh, 620px);
+  padding: 18px;
+  overflow: auto;
+  transform: translateX(calc(100% + 40px));
+  transition: transform 240ms ease;
+}
+
+.notification-center.open {
+  transform: translateX(0);
+}
+
+.notification-item {
+  display: grid;
+  gap: 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.07);
+  padding: 12px;
+}
+
+.toast-stack {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 80;
+  display: grid;
+  gap: 10px;
+  width: min(92vw, 380px);
+}
+
+.toast {
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: linear-gradient(145deg, var(--panel-strong), var(--panel-muted));
+  color: var(--text);
+  padding: 14px 16px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(20px);
+  animation: toastIn 260ms ease both;
+}
+
+.toast strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Quick actions */
+.floating-action {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 25;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #06101b;
+  font-size: 2rem;
+  font-weight: 900;
+  box-shadow: 0 0 34px color-mix(in srgb, var(--accent), transparent 52%);
+  transition: transform var(--transition);
+}
+
+.floating-action:hover {
+  transform: translateY(-3px) rotate(8deg);
+}
+
+.quick-menu {
+  position: fixed;
+  right: 22px;
+  bottom: 92px;
+  z-index: 25;
+  display: grid;
+  gap: 8px;
+  width: 170px;
+  padding: 10px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity var(--transition), visibility var(--transition), transform var(--transition);
+}
+
+.quick-menu.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.quick-menu button {
+  min-height: 38px;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+}
+
+/* Fullscreen focus */
+.focus-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 18px;
+  background:
+    radial-gradient(circle at 50% 15%, color-mix(in srgb, var(--accent), transparent 72%), transparent 42%),
+    color-mix(in srgb, var(--bg), black 18%);
+}
+
+.focus-time {
+  font-size: clamp(5rem, 16vw, 11rem);
+  font-weight: 950;
+}
+
+.focus-close {
+  position: absolute;
+  right: 24px;
+  top: 24px;
+}
+
+/* Skeleton and completion animations */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  min-height: 56px;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16), transparent);
+  animation: skeletonSweep 1.1s infinite;
+}
+
+@keyframes skeletonSweep {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.complete-pop {
+  animation: completePop 360ms ease;
+}
+
+@keyframes completePop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.025);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Global search results */
+.search-hit {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Responsive design */
+@media (max-width: 1180px) {
+  .dashboard-grid,
+  .insight-grid,
+  .settings-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .section-grid,
+  .planner-layout,
+  .pomodoro-layout,
+  .timetable-layout,
+  .notes-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .notes-sidebar {
+    max-height: none;
+  }
+
+  .note-editor-panel {
+    min-height: 620px;
+  }
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    transform: translateX(calc(-100% - 28px));
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .content-shell,
+  .sidebar.collapsed + .content-shell {
+    padding-left: 18px;
+  }
+
+  .mobile-menu {
+    display: inline-grid;
+    place-items: center;
+  }
+
+  .topbar {
+    grid-template-columns: 1fr auto;
+  }
+
+  .global-search {
+    grid-column: 1 / -1;
+    order: 3;
+    max-width: none;
+  }
+
+  .hero-strip,
+  .two-column,
+  .three-column,
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .auth-view,
+  .content-shell {
+    padding: 12px;
+  }
+
+  .sidebar {
+    inset: 12px auto 12px 12px;
+    width: min(86vw, 310px);
+  }
+
+  .topbar {
+    top: 12px;
+    padding: 12px;
+  }
+
+  .topbar-actions {
+    gap: 7px;
+  }
+
+  .topbar-actions .primary-btn {
+    display: none;
+  }
+
+  .hero-strip,
+  .metric-card,
+  .dashboard-panel,
+  .form-panel,
+  .list-panel,
+  .planner-board,
+  .pomodoro-card,
+  .pomodoro-settings,
+  .timetable-panel,
+  .notes-sidebar,
+  .note-editor-panel,
+  .chart-card,
+  .insight-panel,
+  .auth-card {
+    padding: 14px;
+  }
+
+  .dashboard-grid,
+  .settings-grid,
+  .gpa-summary,
+  .insight-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row,
+  .editor-top {
+    grid-template-columns: 1fr;
+  }
+
+  .password-wrap {
+    grid-template-columns: 1fr;
+  }
+
+  .hour-row {
+    grid-template-columns: 58px 1fr;
+  }
+
+  .notification-center {
+    right: 12px;
+    top: 118px;
+  }
+
+  .toast-stack {
+    right: 12px;
+    bottom: 84px;
+  }
+
+  .floating-action {
+    right: 14px;
+    bottom: 14px;
+  }
+
+  .quick-menu {
+    right: 14px;
+    bottom: 82px;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <!-- Animated background layer -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="mesh mesh-one"></div>
+    <div class="mesh mesh-two"></div>
+    <div class="mesh mesh-three"></div>
+    <div class="grain"></div>
+  </div>
+
+  <!-- Loading shell -->
+  <div class="boot-loader" id="bootLoader">
+    <div class="loader-core">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <p>Launching Student Productivity OS</p>
+  </div>
+
+  <!-- Authentication view -->
+  <main class="auth-view" id="authView">
+    <section class="auth-card glass-panel" id="setupPanel">
+      <div class="brand-mark">SP</div>
+      <p class="eyebrow">Immortal Version</p>
+      <h1>Build your study command center.</h1>
+      <p class="auth-copy">Create a local password. Everything stays in this browser with localStorage.</p>
+      <form id="setupForm" class="auth-form">
+        <label for="setupPassword">Create password</label>
+        <div class="password-wrap">
+          <input type="password" id="setupPassword" minlength="4" autocomplete="new-password" required>
+          <button class="ghost-icon" type="button" data-toggle-password="setupPassword" aria-label="Show password">Show</button>
+        </div>
+        <label for="setupPin">Optional PIN</label>
+        <input type="password" id="setupPin" maxlength="8" inputmode="numeric" placeholder="4-8 digits">
+        <button class="primary-btn" type="submit">Create Workspace</button>
+      </form>
+    </section>
+
+    <section class="auth-card glass-panel hidden" id="loginPanel">
+      <div class="brand-mark">SP</div>
+      <p class="eyebrow">Welcome Back</p>
+      <h1>Unlock your productivity OS.</h1>
+      <p class="auth-copy">Your dashboard, notes, routines, and analytics are waiting.</p>
+      <form id="loginForm" class="auth-form">
+        <label for="loginPassword">Password or PIN</label>
+        <div class="password-wrap">
+          <input type="password" id="loginPassword" autocomplete="current-password" required>
+          <button class="ghost-icon" type="button" data-toggle-password="loginPassword" aria-label="Show password">Show</button>
+        </div>
+        <p class="form-error" id="loginError">Incorrect Password</p>
+        <button class="primary-btn" type="submit">Enter Dashboard</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Main application shell -->
+  <div class="app-shell hidden" id="appShell">
+    <!-- Floating sidebar -->
+    <aside class="sidebar glass-panel" id="sidebar">
+      <div class="sidebar-top">
+        <button class="collapse-btn" id="collapseSidebar" aria-label="Collapse sidebar">☰</button>
+        <div class="sidebar-brand">
+          <span class="brand-mark small">SP</span>
+          <div>
+            <strong>Student OS</strong>
+            <small>Immortal</small>
+          </div>
+        </div>
+      </div>
+      <nav class="nav-list" aria-label="Primary navigation">
+        <button class="nav-item active" data-section="dashboard"><span>⌂</span><b>Dashboard</b></button>
+        <button class="nav-item" data-section="tasks"><span>✓</span><b>Tasks</b></button>
+        <button class="nav-item" data-section="planner"><span>◷</span><b>Daily Planner</b></button>
+        <button class="nav-item" data-section="pomodoro"><span>⏱</span><b>Pomodoro</b></button>
+        <button class="nav-item" data-section="attendance"><span>%</span><b>Attendance</b></button>
+        <button class="nav-item" data-section="assignments"><span>□</span><b>Assignments</b></button>
+        <button class="nav-item" data-section="notes"><span>✎</span><b>Notes</b></button>
+        <button class="nav-item" data-section="exams"><span>◬</span><b>Exams</b></button>
+        <button class="nav-item" data-section="gpa"><span>Σ</span><b>GPA</b></button>
+        <button class="nav-item" data-section="timetable"><span>▦</span><b>Timetable</b></button>
+        <button class="nav-item" data-section="analytics"><span>⌁</span><b>Analytics</b></button>
+        <button class="nav-item" data-section="settings"><span>⚙</span><b>Settings</b></button>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="mini-streak">
+          <span id="sidebarStreak">0</span>
+          <small>day streak</small>
+        </div>
+        <button class="danger-btn subtle" id="logoutBtn">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Content shell -->
+    <div class="content-shell">
+      <!-- Sticky topbar -->
+      <header class="topbar glass-panel">
+        <div class="topbar-left">
+          <button class="mobile-menu" id="mobileMenu" aria-label="Open menu">☰</button>
+          <div>
+            <p class="eyebrow" id="todayLabel">Today</p>
+            <h2 id="sectionTitle">Dashboard</h2>
+          </div>
+        </div>
+        <div class="global-search">
+          <span>⌕</span>
+          <input type="search" id="globalSearch" placeholder="Search tasks, notes, assignments...">
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">☾</button>
+          <button class="icon-btn notification-trigger" id="notificationButton" aria-label="Notifications">
+            ◌
+            <span class="badge-dot hidden" id="notificationDot"></span>
+          </button>
+          <button class="primary-btn compact" id="quickAddBtn">Quick Add</button>
+        </div>
+      </header>
+
+      <!-- Notification center -->
+      <aside class="notification-center glass-panel" id="notificationCenter">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Alerts</p>
+            <h3>Notification Center</h3>
+          </div>
+          <button class="ghost-icon" id="clearNotifications">Clear</button>
+        </div>
+        <div class="notification-list" id="notificationList"></div>
+      </aside>
+
+      <!-- Sections -->
+      <main class="main-content" id="mainContent">
+        <!-- Dashboard -->
+        <section class="app-section active" id="dashboardSection" data-title="Dashboard">
+          <div class="hero-strip glass-panel">
+            <div>
+              <p class="eyebrow">Focus Briefing</p>
+              <h1 id="welcomeTitle">Good day, Student.</h1>
+              <p id="dailyQuote">Small progress compounds into impossible momentum.</p>
+            </div>
+            <div class="hero-actions">
+              <button class="primary-btn" data-section-link="pomodoro">Start Focus</button>
+              <button class="secondary-btn" id="randomQuoteBtn">New Quote</button>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <article class="metric-card glass-panel">
+              <span class="metric-icon">✓</span>
+              <p>Today's Tasks</p>
+              <h3 id="dashTodayTasks">0 / 0</h3>
+              <div class="progress-track"><span id="dashTaskProgress"></span></div>
+            </article>
+            <article class="metric-card glass-panel">
+              <span class="metric-icon">▦</span>
+              <p>Next Class</p>
+              <h3 id="dashNextClass">No class</h3>
+              <small id="dashNextClassMeta">Add timetable entries</small>
+            </article>
+            <article class="metric-card glass-panel">
+              <span class="metric-icon">%</span>
+              <p>Attendance</p>
+              <h3 id="dashAttendance">0%</h3>
+              <div class="progress-track"><span id="dashAttendanceProgress"></span></div>
+            </article>
+            <article class="metric-card glass-panel">
+              <span class="metric-icon">⏱</span>
+              <p>Focus Time</p>
+              <h3 id="dashFocusTime">0h</h3>
+              <small id="dashPomodoroStats">0 sessions completed</small>
+            </article>
+          </div>
+
+          <div class="two-column">
+            <article class="glass-panel dashboard-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Today</p>
+                  <h3>Priority Tasks</h3>
+                </div>
+                <button class="ghost-icon" data-section-link="tasks">Open</button>
+              </div>
+              <div class="compact-list" id="dashboardTasks"></div>
+            </article>
+            <article class="glass-panel dashboard-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Today</p>
+                  <h3>Timetable</h3>
+                </div>
+                <button class="ghost-icon" data-section-link="timetable">Open</button>
+              </div>
+              <div class="compact-list" id="dashboardTimetable"></div>
+            </article>
+          </div>
+
+          <div class="three-column">
+            <article class="glass-panel dashboard-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Exams</p>
+                  <h3>Countdown</h3>
+                </div>
+              </div>
+              <div class="compact-list" id="dashboardExams"></div>
+            </article>
+            <article class="glass-panel dashboard-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Assignments</p>
+                  <h3>Progress</h3>
+                </div>
+              </div>
+              <div class="donut-wrap">
+                <div class="donut" id="assignmentDonut"><span id="assignmentPercent">0%</span></div>
+                <p id="assignmentSummary">No assignments yet</p>
+              </div>
+            </article>
+            <article class="glass-panel dashboard-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Level</p>
+                  <h3>Achievements</h3>
+                </div>
+              </div>
+              <div class="badge-wall" id="achievementBadges"></div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Tasks -->
+        <section class="app-section" id="tasksSection" data-title="Tasks">
+          <div class="section-grid">
+            <form class="glass-panel form-panel" id="taskForm">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Todoist Grade</p>
+                  <h3>Add Task</h3>
+                </div>
+              </div>
+              <input type="hidden" id="taskId">
+              <label for="taskTitle">Task title</label>
+              <input type="text" id="taskTitle" required placeholder="Revise calculus chapter 4">
+              <div class="form-row">
+                <div>
+                  <label for="taskDue">Due date</label>
+                  <input type="date" id="taskDue">
+                </div>
+                <div>
+                  <label for="taskPriority">Priority</label>
+                  <select id="taskPriority">
+                    <option value="high">High</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="low">Low</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div>
+                  <label for="taskCategory">Category</label>
+                  <input type="text" id="taskCategory" placeholder="Study">
+                </div>
+                <div>
+                  <label for="taskRecurring">Recurring</label>
+                  <select id="taskRecurring">
+                    <option value="none">None</option>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                  </select>
+                </div>
+              </div>
+              <label for="dailyGoal">Daily goal</label>
+              <input type="number" id="dailyGoal" min="1" max="50" value="5">
+              <button class="primary-btn" type="submit">Save Task</button>
+            </form>
+
+            <div class="glass-panel list-panel">
+              <div class="panel-heading wrap-heading">
+                <div>
+                  <p class="eyebrow">Tasks</p>
+                  <h3>Mission Queue</h3>
+                </div>
+                <div class="filter-row">
+                  <input type="search" id="taskSearch" placeholder="Search">
+                  <select id="taskFilter">
+                    <option value="all">All</option>
+                    <option value="today">Today</option>
+                    <option value="active">Active</option>
+                    <option value="completed">Completed</option>
+                    <option value="high">High Priority</option>
+                  </select>
+                </div>
+              </div>
+              <div class="progress-meta">
+                <span id="taskProgressLabel">0% complete</span>
+                <div class="progress-track"><span id="taskProgressBar"></span></div>
+              </div>
+              <div class="task-list sortable-list" id="taskList"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Daily Planner -->
+        <section class="app-section" id="plannerSection" data-title="Daily Planner">
+          <div class="planner-layout">
+            <form class="glass-panel form-panel" id="plannerForm">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Hour Wise</p>
+                  <h3>Plan The Day</h3>
+                </div>
+              </div>
+              <label for="plannerDate">Date</label>
+              <input type="date" id="plannerDate">
+              <div class="form-row">
+                <div>
+                  <label for="plannerTime">Time</label>
+                  <input type="time" id="plannerTime" value="09:00">
+                </div>
+                <div>
+                  <label for="plannerType">Type</label>
+                  <select id="plannerType">
+                    <option value="study">Study</option>
+                    <option value="class">Class</option>
+                    <option value="break">Break</option>
+                    <option value="personal">Personal</option>
+                  </select>
+                </div>
+              </div>
+              <label for="plannerTitle">Schedule item</label>
+              <input type="text" id="plannerTitle" required placeholder="Physics revision sprint">
+              <label for="plannerNotes">Notes</label>
+              <textarea id="plannerNotes" rows="4" placeholder="Goal, resources, focus task"></textarea>
+              <button class="primary-btn" type="submit">Add To Planner</button>
+            </form>
+            <div class="glass-panel planner-board">
+              <div class="panel-heading wrap-heading">
+                <div>
+                  <p class="eyebrow">Daily Flow</p>
+                  <h3 id="plannerBoardTitle">Today</h3>
+                </div>
+                <div class="goal-box">
+                  <label for="plannerGoal">Focus goals</label>
+                  <input type="number" id="plannerGoal" min="1" max="24" value="4">
+                </div>
+              </div>
+              <div class="progress-meta">
+                <span id="plannerCompletion">0% planned items done</span>
+                <div class="progress-track"><span id="plannerProgress"></span></div>
+              </div>
+              <div class="hour-grid" id="hourGrid"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Pomodoro -->
+        <section class="app-section" id="pomodoroSection" data-title="Pomodoro">
+          <div class="pomodoro-layout">
+            <article class="glass-panel pomodoro-card">
+              <p class="eyebrow">Deep Work Engine</p>
+              <h3 id="pomodoroMode">Focus Session</h3>
+              <div class="timer-ring" id="timerRing">
+                <svg viewBox="0 0 220 220" aria-hidden="true">
+                  <circle cx="110" cy="110" r="96"></circle>
+                  <circle cx="110" cy="110" r="96" id="timerProgressCircle"></circle>
+                </svg>
+                <div class="timer-display" id="timerDisplay">25:00</div>
+              </div>
+              <div class="timer-controls">
+                <button class="primary-btn" id="startPauseTimer">Start</button>
+                <button class="secondary-btn" id="resetTimer">Reset</button>
+                <button class="secondary-btn" id="focusModeBtn">Fullscreen</button>
+              </div>
+            </article>
+            <aside class="glass-panel pomodoro-settings">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Timer Settings</p>
+                  <h3>Customize Flow</h3>
+                </div>
+              </div>
+              <div class="range-line">
+                <label for="focusDuration">Focus minutes</label>
+                <input type="number" id="focusDuration" min="5" max="120" value="25">
+              </div>
+              <div class="range-line">
+                <label for="breakDuration">Break minutes</label>
+                <input type="number" id="breakDuration" min="1" max="45" value="5">
+              </div>
+              <div class="stat-stack">
+                <div><strong id="pomodoroSessions">0</strong><span>sessions</span></div>
+                <div><strong id="pomodoroMinutes">0</strong><span>minutes</span></div>
+                <div><strong id="pomodoroToday">0</strong><span>today</span></div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <!-- Attendance -->
+        <section class="app-section" id="attendanceSection" data-title="Attendance">
+          <div class="section-grid">
+            <form class="glass-panel form-panel" id="attendanceForm">
+              <input type="hidden" id="attendanceId">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Class Health</p>
+                  <h3>Add Subject</h3>
+                </div>
+              </div>
+              <label for="attendanceSubject">Subject</label>
+              <input type="text" id="attendanceSubject" required placeholder="Computer Networks">
+              <div class="form-row">
+                <div>
+                  <label for="attendedClasses">Attended</label>
+                  <input type="number" id="attendedClasses" min="0" value="0">
+                </div>
+                <div>
+                  <label for="totalClasses">Total</label>
+                  <input type="number" id="totalClasses" min="0" value="0">
+                </div>
+              </div>
+              <label for="attendanceGoal">Goal percentage</label>
+              <input type="number" id="attendanceGoal" min="1" max="100" value="75">
+              <button class="primary-btn" type="submit">Save Attendance</button>
+            </form>
+            <div class="glass-panel list-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Analytics</p>
+                  <h3>Attendance Tracker</h3>
+                </div>
+              </div>
+              <div class="subject-list" id="attendanceList"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Assignments -->
+        <section class="app-section" id="assignmentsSection" data-title="Assignments">
+          <div class="section-grid">
+            <form class="glass-panel form-panel" id="assignmentForm">
+              <input type="hidden" id="assignmentId">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Deadlines</p>
+                  <h3>Add Assignment</h3>
+                </div>
+              </div>
+              <label for="assignmentTitle">Assignment</label>
+              <input type="text" id="assignmentTitle" required placeholder="Lab record submission">
+              <div class="form-row">
+                <div>
+                  <label for="assignmentSubject">Subject</label>
+                  <input type="text" id="assignmentSubject" placeholder="Physics">
+                </div>
+                <div>
+                  <label for="assignmentDeadline">Deadline</label>
+                  <input type="date" id="assignmentDeadline">
+                </div>
+              </div>
+              <label for="assignmentPriority">Priority</label>
+              <select id="assignmentPriority">
+                <option value="high">High</option>
+                <option value="medium" selected>Medium</option>
+                <option value="low">Low</option>
+              </select>
+              <button class="primary-btn" type="submit">Save Assignment</button>
+            </form>
+            <div class="glass-panel list-panel">
+              <div class="panel-heading wrap-heading">
+                <div>
+                  <p class="eyebrow">Tracker</p>
+                  <h3>Assignments</h3>
+                </div>
+                <select id="assignmentFilter">
+                  <option value="all">All</option>
+                  <option value="pending">Pending</option>
+                  <option value="completed">Completed</option>
+                  <option value="overdue">Overdue</option>
+                </select>
+              </div>
+              <div class="assignment-list" id="assignmentList"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Notes -->
+        <section class="app-section" id="notesSection" data-title="Notes">
+          <div class="notes-layout">
+            <aside class="glass-panel notes-sidebar">
+              <button class="primary-btn full" id="newNoteBtn">New Note</button>
+              <input type="search" id="noteSearch" placeholder="Search notes">
+              <div class="note-list" id="noteList"></div>
+            </aside>
+            <article class="glass-panel note-editor-panel">
+              <div class="editor-top">
+                <input type="text" id="noteTitle" placeholder="Untitled note">
+                <div class="editor-actions">
+                  <button class="ghost-icon" id="pinNoteBtn">Pin</button>
+                  <button class="ghost-icon" id="favoriteNoteBtn">Favorite</button>
+                  <button class="danger-btn subtle" id="deleteNoteBtn">Delete</button>
+                </div>
+              </div>
+              <div class="format-toolbar" aria-label="Note formatting">
+                <button data-command="bold"><b>B</b></button>
+                <button data-command="italic"><i>I</i></button>
+                <button data-command="underline"><u>U</u></button>
+                <button data-command="insertUnorderedList">• List</button>
+                <button data-command="formatBlock" data-value="H2">H2</button>
+                <button data-command="formatBlock" data-value="PRE">Code</button>
+              </div>
+              <div class="note-editor" id="noteEditor" contenteditable="true" spellcheck="true"></div>
+              <div class="editor-footer">
+                <span id="noteWordCount">0 words</span>
+                <span id="noteSaveStatus">Auto-saved</span>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Exams -->
+        <section class="app-section" id="examsSection" data-title="Exams">
+          <div class="section-grid">
+            <form class="glass-panel form-panel" id="examForm">
+              <input type="hidden" id="examId">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Countdown</p>
+                  <h3>Add Exam</h3>
+                </div>
+              </div>
+              <label for="examSubject">Subject</label>
+              <input type="text" id="examSubject" required placeholder="Mathematics">
+              <div class="form-row">
+                <div>
+                  <label for="examDate">Date</label>
+                  <input type="date" id="examDate">
+                </div>
+                <div>
+                  <label for="examTime">Time</label>
+                  <input type="time" id="examTime" value="09:00">
+                </div>
+              </div>
+              <label for="examPriority">Priority</label>
+              <select id="examPriority">
+                <option value="high">High</option>
+                <option value="medium" selected>Medium</option>
+                <option value="low">Low</option>
+              </select>
+              <button class="primary-btn" type="submit">Save Exam</button>
+            </form>
+            <div class="glass-panel list-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Live Timers</p>
+                  <h3>Exam Countdown</h3>
+                </div>
+              </div>
+              <div class="exam-list" id="examList"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- GPA -->
+        <section class="app-section" id="gpaSection" data-title="GPA Calculator">
+          <div class="section-grid">
+            <form class="glass-panel form-panel" id="gpaForm">
+              <input type="hidden" id="gpaId">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Grades</p>
+                  <h3>Add Subject Result</h3>
+                </div>
+              </div>
+              <label for="gpaSubject">Subject</label>
+              <input type="text" id="gpaSubject" required placeholder="Operating Systems">
+              <div class="form-row">
+                <div>
+                  <label for="gpaSemester">Semester</label>
+                  <input type="number" id="gpaSemester" min="1" max="12" value="1">
+                </div>
+                <div>
+                  <label for="gpaCredits">Credits</label>
+                  <input type="number" id="gpaCredits" min="1" max="10" value="3">
+                </div>
+              </div>
+              <div class="form-row">
+                <div>
+                  <label for="gpaMarks">Marks</label>
+                  <input type="number" id="gpaMarks" min="0" max="100" value="85">
+                </div>
+                <div>
+                  <label for="gpaGrade">Grade point</label>
+                  <input type="number" id="gpaGrade" min="0" max="10" step="0.1" value="9">
+                </div>
+              </div>
+              <button class="primary-btn" type="submit">Add Grade</button>
+            </form>
+            <div class="glass-panel list-panel">
+              <div class="gpa-summary">
+                <div>
+                  <p class="eyebrow">Current GPA</p>
+                  <h2 id="currentGpa">0.00</h2>
+                </div>
+                <div>
+                  <p class="eyebrow">CGPA</p>
+                  <h2 id="currentCgpa">0.00</h2>
+                </div>
+              </div>
+              <div class="gpa-list" id="gpaList"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Timetable -->
+        <section class="app-section" id="timetableSection" data-title="Weekly Timetable">
+          <div class="timetable-layout">
+            <form class="glass-panel form-panel" id="timetableForm">
+              <input type="hidden" id="timetableId">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Weekly Grid</p>
+                  <h3>Add Class</h3>
+                </div>
+              </div>
+              <label for="timetableSubject">Subject</label>
+              <input type="text" id="timetableSubject" required placeholder="Data Structures">
+              <div class="form-row">
+                <div>
+                  <label for="timetableDay">Day</label>
+                  <select id="timetableDay">
+                    <option>Monday</option>
+                    <option>Tuesday</option>
+                    <option>Wednesday</option>
+                    <option>Thursday</option>
+                    <option>Friday</option>
+                    <option>Saturday</option>
+                    <option>Sunday</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="timetableColor">Color</label>
+                  <input type="color" id="timetableColor" value="#5ddcff">
+                </div>
+              </div>
+              <div class="form-row">
+                <div>
+                  <label for="timetableStart">Start</label>
+                  <input type="time" id="timetableStart" value="09:00">
+                </div>
+                <div>
+                  <label for="timetableEnd">End</label>
+                  <input type="time" id="timetableEnd" value="10:00">
+                </div>
+              </div>
+              <div class="form-row">
+                <div>
+                  <label for="timetableRoom">Room</label>
+                  <input type="text" id="timetableRoom" placeholder="A-204">
+                </div>
+                <div>
+                  <label for="timetableTeacher">Teacher</label>
+                  <input type="text" id="timetableTeacher" placeholder="Dr. Rao">
+                </div>
+              </div>
+              <button class="primary-btn" type="submit">Save Class</button>
+            </form>
+            <div class="glass-panel timetable-panel">
+              <div class="panel-heading wrap-heading">
+                <div>
+                  <p class="eyebrow">Current Week</p>
+                  <h3>Timetable Manager</h3>
+                </div>
+                <div class="next-class-pill" id="nextClassPill">No upcoming class</div>
+              </div>
+              <div class="timetable-grid" id="timetableGrid"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Analytics -->
+        <section class="app-section" id="analyticsSection" data-title="Analytics">
+          <div class="analytics-grid">
+            <article class="glass-panel chart-card">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Weekly</p>
+                  <h3>Study Hours</h3>
+                </div>
+              </div>
+              <canvas id="studyHoursChart" height="220"></canvas>
+            </article>
+            <article class="glass-panel chart-card">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Productivity</p>
+                  <h3>Task Completion</h3>
+                </div>
+              </div>
+              <canvas id="taskChart" height="220"></canvas>
+            </article>
+            <article class="glass-panel chart-card">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Attendance</p>
+                  <h3>Subject Health</h3>
+                </div>
+              </div>
+              <canvas id="attendanceChart" height="220"></canvas>
+            </article>
+            <article class="glass-panel chart-card">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Assignments</p>
+                  <h3>Completion Stats</h3>
+                </div>
+              </div>
+              <canvas id="assignmentChart" height="220"></canvas>
+            </article>
+          </div>
+          <div class="glass-panel insight-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Insights</p>
+                <h3>Productivity Overview</h3>
+              </div>
+            </div>
+            <div class="insight-grid" id="insightGrid"></div>
+          </div>
+        </section>
+
+        <!-- Settings -->
+        <section class="app-section" id="settingsSection" data-title="Settings">
+          <div class="settings-grid">
+            <form class="glass-panel form-panel" id="passwordForm">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Security</p>
+                  <h3>Change Password</h3>
+                </div>
+              </div>
+              <label for="oldPassword">Old password</label>
+              <input type="password" id="oldPassword" required>
+              <label for="newPassword">New password</label>
+              <input type="password" id="newPassword" minlength="4" required>
+              <button class="primary-btn" type="submit">Update Password</button>
+            </form>
+            <form class="glass-panel form-panel" id="pinForm">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">PIN Lock</p>
+                  <h3>Quick Unlock</h3>
+                </div>
+              </div>
+              <label class="switch-line">
+                <span>Enable PIN login</span>
+                <input type="checkbox" id="pinEnabled">
+              </label>
+              <label for="pinValue">PIN</label>
+              <input type="password" id="pinValue" maxlength="8" inputmode="numeric">
+              <button class="primary-btn" type="submit">Save PIN</button>
+            </form>
+            <div class="glass-panel form-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Preferences</p>
+                  <h3>Workspace Controls</h3>
+                </div>
+              </div>
+              <label class="switch-line">
+                <span>Auto-lock after inactivity</span>
+                <input type="checkbox" id="autoLockEnabled">
+              </label>
+              <label for="autoLockMinutes">Minutes before lock</label>
+              <input type="number" id="autoLockMinutes" min="1" max="120" value="15">
+              <button class="secondary-btn" id="exportDataBtn">Export Data</button>
+              <button class="danger-btn" id="resetDataBtn">Reset Workspace</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Floating quick add menu -->
+    <div class="quick-menu glass-panel" id="quickMenu">
+      <button data-quick="task">Task</button>
+      <button data-quick="assignment">Assignment</button>
+      <button data-quick="note">Note</button>
+      <button data-quick="exam">Exam</button>
+      <button data-quick="class">Class</button>
+    </div>
+    <button class="floating-action" id="floatingAction" aria-label="Quick add">+</button>
+  </div>
+
+  <!-- Toast notifications -->
+  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+  <!-- Fullscreen focus overlay -->
+  <div class="focus-overlay hidden" id="focusOverlay">
+    <button class="icon-btn focus-close" id="closeFocusOverlay" aria-label="Close focus mode">×</button>
+    <p class="eyebrow">Focus Mode</p>
+    <div class="focus-time" id="focusOverlayTime">25:00</div>
+    <p id="focusOverlayMode">Stay with one task.</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" async onload="window.StudentOSChartReady && window.StudentOSChartReady()"></script>
+  <script>
+/* ==========================================================================
+   Student Productivity OS - Immortal Version
+   Vanilla JavaScript application layer using localStorage and Browser APIs
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Constants, state, and utility helpers
+   -------------------------------------------------------------------------- */
+
+const STORAGE_KEY = "student-productivity-os:data:v1";
+const AUTH_KEY = "student-productivity-os:auth:v1";
+const REMINDER_KEY = "student-productivity-os:reminders:v1";
+
+const DAY_NAMES = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday"
+];
+
+const TIMETABLE_DAYS = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday"
+];
+
+const HOURS = Array.from({ length: 18 }, (_, index) => index + 6);
+
+const QUOTES = [
+  "Small progress compounds into impossible momentum.",
+  "Discipline makes the hard thing feel familiar.",
+  "One focused hour can rescue an entire day.",
+  "Clarity comes after motion, not before it.",
+  "Protect your attention like it is your scholarship.",
+  "A planned day is a quieter mind.",
+  "Finish one thing cleanly before you chase the next.",
+  "Consistency is the study hack that never expires.",
+  "Your future self is built in ordinary sessions.",
+  "Deep work turns confusion into confidence."
+];
+
+const ACHIEVEMENTS = [
+  {
+    id: "first-task",
+    name: "First Win",
+    description: "Complete one task",
+    test: data => data.tasks.some(task => task.completed)
+  },
+  {
+    id: "five-tasks",
+    name: "Task Pilot",
+    description: "Complete five tasks",
+    test: data => data.tasks.filter(task => task.completed).length >= 5
+  },
+  {
+    id: "focus-starter",
+    name: "Focus Starter",
+    description: "Complete one focus session",
+    test: data => data.pomodoro.sessions >= 1
+  },
+  {
+    id: "streak-three",
+    name: "Three Day Run",
+    description: "Reach a 3 day streak",
+    test: data => getStudyStreak(data) >= 3
+  },
+  {
+    id: "attendance-hero",
+    name: "Attendance Hero",
+    description: "Average attendance above 85%",
+    test: data => getAverageAttendance(data.attendance) >= 85
+  },
+  {
+    id: "planner",
+    name: "Day Architect",
+    description: "Plan five daily items",
+    test: data => data.planner.length >= 5
+  }
+];
+
+const state = {
+  data: createDefaultData(),
+  auth: {},
+  activeSection: "dashboard",
+  selectedNoteId: null,
+  noteSaveTimer: null,
+  timerInterval: null,
+  countdownInterval: null,
+  reminderInterval: null,
+  inactivityTimer: null,
+  pomodoro: {
+    running: false,
+    mode: "focus",
+    remaining: 25 * 60,
+    total: 25 * 60
+  },
+  charts: {},
+  draggedTaskId: null,
+  draggedTimetableId: null
+};
+
+function createDefaultData() {
+  return {
+    settings: {
+      theme: "dark",
+      autoLockEnabled: true,
+      autoLockMinutes: 15,
+      pinEnabled: false,
+      dailyGoal: 5,
+      plannerGoal: 4,
+      sidebarCollapsed: false
+    },
+    tasks: [],
+    planner: [],
+    attendance: [],
+    assignments: [],
+    notes: [],
+    exams: [],
+    grades: [],
+    timetable: [],
+    pomodoro: {
+      sessions: 0,
+      totalMinutes: 0,
+      todaySessions: {},
+      focusByDay: {},
+      lastStudyDate: null
+    },
+    notifications: []
+  };
+}
+
+const $ = selector => document.querySelector(selector);
+const $$ = selector => Array.from(document.querySelectorAll(selector));
+
+function uid(prefix = "id") {
+  return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+function todayISO() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function toISODate(date) {
+  return date.toISOString().slice(0, 10);
+}
+
+function formatDate(value) {
+  if (!value) return "No date";
+  const date = new Date(`${value}T00:00:00`);
+  return date.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  });
+}
+
+function formatTime(value) {
+  if (!value) return "";
+  const [hours, minutes] = value.split(":").map(Number);
+  const date = new Date();
+  date.setHours(hours, minutes, 0, 0);
+  return date.toLocaleTimeString(undefined, {
+    hour: "numeric",
+    minute: "2-digit"
+  });
+}
+
+function minuteValue(time) {
+  if (!time) return 0;
+  const [hours, minutes] = time.split(":").map(Number);
+  return hours * 60 + minutes;
+}
+
+function minutesToClock(minutes) {
+  const hours = Math.floor(minutes / 60).toString().padStart(2, "0");
+  const mins = (minutes % 60).toString().padStart(2, "0");
+  return `${hours}:${mins}`;
+}
+
+function getTodayName() {
+  return DAY_NAMES[new Date().getDay()];
+}
+
+function clamp(number, min, max) {
+  return Math.min(Math.max(number, min), max);
+}
+
+function percent(part, total) {
+  if (!total) return 0;
+  return Math.round((part / total) * 100);
+}
+
+function escapeHTML(value = "") {
+  return String(value).replace(/[&<>"']/g, match => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "\"": "&quot;",
+    "'": "&#039;"
+  }[match]));
+}
+
+function stripHTML(html = "") {
+  const holder = document.createElement("div");
+  holder.innerHTML = html;
+  return holder.textContent || holder.innerText || "";
+}
+
+function wordCount(text = "") {
+  return text.trim().split(/\s+/).filter(Boolean).length;
+}
+
+function isSameDay(dateA, dateB) {
+  return toISODate(dateA) === toISODate(dateB);
+}
+
+function isPastDate(value) {
+  if (!value) return false;
+  const target = new Date(`${value}T23:59:59`);
+  return target.getTime() < Date.now();
+}
+
+function daysUntil(value) {
+  if (!value) return Infinity;
+  const target = new Date(`${value}T00:00:00`);
+  const current = new Date(`${todayISO()}T00:00:00`);
+  return Math.ceil((target - current) / 86400000);
+}
+
+function safeParse(json, fallback) {
+  try {
+    return JSON.parse(json) ?? fallback;
+  } catch (error) {
+    return fallback;
+  }
+}
+
+function mergeData(saved) {
+  const defaults = createDefaultData();
+  return {
+    ...defaults,
+    ...saved,
+    settings: { ...defaults.settings, ...(saved?.settings || {}) },
+    pomodoro: { ...defaults.pomodoro, ...(saved?.pomodoro || {}) },
+    notifications: Array.isArray(saved?.notifications) ? saved.notifications : []
+  };
+}
+
+function loadData() {
+  const saved = safeParse(localStorage.getItem(STORAGE_KEY), null);
+  state.data = mergeData(saved || createDefaultData());
+}
+
+function saveData() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state.data));
+}
+
+function loadAuth() {
+  state.auth = safeParse(localStorage.getItem(AUTH_KEY), {});
+}
+
+function saveAuth() {
+  localStorage.setItem(AUTH_KEY, JSON.stringify(state.auth));
+}
+
+function getRememberedReminders() {
+  return safeParse(localStorage.getItem(REMINDER_KEY), {});
+}
+
+function setRememberedReminder(key) {
+  const remembered = getRememberedReminders();
+  remembered[key] = todayISO();
+  localStorage.setItem(REMINDER_KEY, JSON.stringify(remembered));
+}
+
+function wasReminderShown(key) {
+  const remembered = getRememberedReminders();
+  return remembered[key] === todayISO();
+}
+
+async function hashText(text) {
+  if (window.crypto?.subtle && window.TextEncoder) {
+    const encoded = new TextEncoder().encode(text);
+    const buffer = await crypto.subtle.digest("SHA-256", encoded);
+    return Array.from(new Uint8Array(buffer))
+      .map(byte => byte.toString(16).padStart(2, "0"))
+      .join("");
+  }
+
+  let hash = 2166136261;
+  for (let index = 0; index < text.length; index += 1) {
+    hash ^= text.charCodeAt(index);
+    hash += (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) + (hash << 24);
+  }
+  return `fallback-${(hash >>> 0).toString(16)}`;
+}
+
+/* --------------------------------------------------------------------------
+   Initialization
+   -------------------------------------------------------------------------- */
+
+document.addEventListener("DOMContentLoaded", initApp);
+window.StudentOSChartReady = () => {
+  if (!document.getElementById("appShell")?.classList.contains("hidden")) {
+    renderAnalytics();
+  }
+};
+
+function initApp() {
+  loadData();
+  loadAuth();
+  applyTheme();
+  hydrateControls();
+  bindAuthEvents();
+  bindNavigationEvents();
+  bindTaskEvents();
+  bindPlannerEvents();
+  bindPomodoroEvents();
+  bindAttendanceEvents();
+  bindAssignmentEvents();
+  bindNoteEvents();
+  bindExamEvents();
+  bindGpaEvents();
+  bindTimetableEvents();
+  bindSettingsEvents();
+  bindQuickActions();
+  bindKeyboardShortcuts();
+  initAuthView();
+  startClockLabels();
+  startReminderLoop();
+  setTimeout(() => $("#bootLoader")?.classList.add("fade-out"), 650);
+}
+
+function hydrateControls() {
+  $("#dailyGoal").value = state.data.settings.dailyGoal || 5;
+  $("#plannerGoal").value = state.data.settings.plannerGoal || 4;
+  $("#autoLockEnabled").checked = Boolean(state.data.settings.autoLockEnabled);
+  $("#autoLockMinutes").value = state.data.settings.autoLockMinutes || 15;
+  $("#pinEnabled").checked = Boolean(state.data.settings.pinEnabled);
+  $("#focusDuration").value = Math.round(state.pomodoro.total / 60) || 25;
+  $("#breakDuration").value = state.data.settings.breakDuration || 5;
+  $("#plannerDate").value = todayISO();
+  if (state.data.settings.sidebarCollapsed) {
+    $("#sidebar").classList.add("collapsed");
+  }
+}
+
+function initAuthView() {
+  const hasPassword = Boolean(state.auth.passwordHash);
+  $("#setupPanel").classList.toggle("hidden", hasPassword);
+  $("#loginPanel").classList.toggle("hidden", !hasPassword);
+  $("#authView").classList.remove("hidden");
+  $("#appShell").classList.add("hidden");
+}
+
+function openApplication() {
+  $("#authView").classList.add("hidden");
+  $("#appShell").classList.remove("hidden");
+  renderAll();
+  resetInactivityTimer();
+  showToast("Workspace unlocked", "Your student command center is ready.");
+}
+
+function lockApplication() {
+  clearInterval(state.timerInterval);
+  state.timerInterval = null;
+  state.pomodoro.running = false;
+  $("#startPauseTimer").textContent = "Start";
+  $("#appShell").classList.add("hidden");
+  $("#authView").classList.remove("hidden");
+  $("#setupPanel").classList.add("hidden");
+  $("#loginPanel").classList.remove("hidden");
+  $("#loginPassword").value = "";
+  $("#loginPassword").focus();
+  showToast("Workspace locked", "Unlock again to continue.");
+}
+
+function renderAll() {
+  renderDashboard();
+  renderTasks();
+  renderPlanner();
+  renderPomodoroStats();
+  renderAttendance();
+  renderAssignments();
+  renderNotes();
+  renderExams();
+  renderGpa();
+  renderTimetable();
+  renderNotifications();
+  renderAnalytics();
+  updateSectionTitle();
+}
+
+/* --------------------------------------------------------------------------
+   Authentication, password, PIN, and auto-lock
+   -------------------------------------------------------------------------- */
+
+function bindAuthEvents() {
+  $("#setupForm").addEventListener("submit", handleSetup);
+  $("#loginForm").addEventListener("submit", handleLogin);
+  $$("[data-toggle-password]").forEach(button => {
+    button.addEventListener("click", () => togglePassword(button.dataset.togglePassword, button));
+  });
+
+  ["click", "keydown", "mousemove", "touchstart", "scroll"].forEach(eventName => {
+    document.addEventListener(eventName, resetInactivityTimer, { passive: true });
+  });
+}
+
+async function handleSetup(event) {
+  event.preventDefault();
+  const password = $("#setupPassword").value.trim();
+  const pin = $("#setupPin").value.trim();
+
+  if (password.length < 4) {
+    showToast("Password too short", "Use at least four characters.");
+    return;
+  }
+
+  state.auth.passwordHash = await hashText(password);
+  if (pin) {
+    state.auth.pinHash = await hashText(pin);
+    state.data.settings.pinEnabled = true;
+  }
+  saveAuth();
+  saveData();
+  openApplication();
+}
+
+async function handleLogin(event) {
+  event.preventDefault();
+  const input = $("#loginPassword").value;
+  const hashed = await hashText(input);
+  const passwordMatches = hashed === state.auth.passwordHash;
+  const pinMatches = state.data.settings.pinEnabled && hashed === state.auth.pinHash;
+
+  if (passwordMatches || pinMatches) {
+    $("#loginError").classList.remove("visible");
+    openApplication();
+    return;
+  }
+
+  $("#loginError").classList.add("visible");
+  $("#loginPanel").classList.remove("shake");
+  requestAnimationFrame(() => $("#loginPanel").classList.add("shake"));
+}
+
+function togglePassword(inputId, button) {
+  const input = document.getElementById(inputId);
+  const show = input.type === "password";
+  input.type = show ? "text" : "password";
+  button.textContent = show ? "Hide" : "Show";
+}
+
+function resetInactivityTimer() {
+  clearTimeout(state.inactivityTimer);
+
+  if ($("#appShell").classList.contains("hidden")) return;
+  if (!state.data.settings.autoLockEnabled) return;
+
+  const minutes = Number(state.data.settings.autoLockMinutes || 15);
+  state.inactivityTimer = setTimeout(lockApplication, minutes * 60 * 1000);
+}
+
+function bindSettingsEvents() {
+  $("#passwordForm").addEventListener("submit", handlePasswordChange);
+  $("#pinForm").addEventListener("submit", handlePinChange);
+  $("#autoLockEnabled").addEventListener("change", event => {
+    state.data.settings.autoLockEnabled = event.target.checked;
+    saveData();
+    resetInactivityTimer();
+  });
+  $("#autoLockMinutes").addEventListener("change", event => {
+    state.data.settings.autoLockMinutes = clamp(Number(event.target.value) || 15, 1, 120);
+    event.target.value = state.data.settings.autoLockMinutes;
+    saveData();
+    resetInactivityTimer();
+  });
+  $("#themeToggle").addEventListener("click", toggleTheme);
+  $("#logoutBtn").addEventListener("click", lockApplication);
+  $("#exportDataBtn").addEventListener("click", exportData);
+  $("#resetDataBtn").addEventListener("click", resetWorkspace);
+}
+
+async function handlePasswordChange(event) {
+  event.preventDefault();
+  const oldPassword = $("#oldPassword").value;
+  const newPassword = $("#newPassword").value.trim();
+  const oldHash = await hashText(oldPassword);
+
+  if (oldHash !== state.auth.passwordHash) {
+    showToast("Incorrect password", "Old password verification failed.");
+    return;
+  }
+
+  if (newPassword.length < 4) {
+    showToast("Password too short", "Use at least four characters.");
+    return;
+  }
+
+  state.auth.passwordHash = await hashText(newPassword);
+  saveAuth();
+  event.target.reset();
+  showToast("Password updated", "Your local login password has changed.");
+}
+
+async function handlePinChange(event) {
+  event.preventDefault();
+  const enabled = $("#pinEnabled").checked;
+  const pin = $("#pinValue").value.trim();
+
+  if (enabled && pin.length < 4) {
+    showToast("PIN too short", "Use a PIN between four and eight digits.");
+    return;
+  }
+
+  state.data.settings.pinEnabled = enabled;
+  if (enabled) {
+    state.auth.pinHash = await hashText(pin);
+  } else {
+    delete state.auth.pinHash;
+  }
+  saveAuth();
+  saveData();
+  $("#pinValue").value = "";
+  showToast("PIN settings saved", enabled ? "PIN unlock is enabled." : "PIN unlock is disabled.");
+}
+
+function exportData(event) {
+  event.preventDefault();
+  const payload = JSON.stringify(state.data, null, 2);
+  const blob = new Blob([payload], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `student-productivity-os-${todayISO()}.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+  showToast("Data exported", "A JSON backup was generated.");
+}
+
+function resetWorkspace(event) {
+  event.preventDefault();
+  const confirmed = confirm("Reset all productivity data? Your password will remain.");
+  if (!confirmed) return;
+  state.data = createDefaultData();
+  saveData();
+  hydrateControls();
+  renderAll();
+  showToast("Workspace reset", "All dashboard data has been cleared.");
+}
+
+/* --------------------------------------------------------------------------
+   Navigation, theme, search, and shortcuts
+   -------------------------------------------------------------------------- */
+
+function bindNavigationEvents() {
+  $$(".nav-item").forEach(item => {
+    item.addEventListener("click", () => activateSection(item.dataset.section));
+  });
+
+  $$("[data-section-link]").forEach(button => {
+    button.addEventListener("click", () => activateSection(button.dataset.sectionLink));
+  });
+
+  $("#collapseSidebar").addEventListener("click", () => {
+    $("#sidebar").classList.toggle("collapsed");
+    state.data.settings.sidebarCollapsed = $("#sidebar").classList.contains("collapsed");
+    saveData();
+  });
+
+  $("#mobileMenu").addEventListener("click", () => {
+    $("#sidebar").classList.toggle("mobile-open");
+  });
+
+  $("#notificationButton").addEventListener("click", () => {
+    $("#notificationCenter").classList.toggle("open");
+  });
+
+  $("#clearNotifications").addEventListener("click", () => {
+    state.data.notifications = [];
+    saveData();
+    renderNotifications();
+  });
+
+  $("#globalSearch").addEventListener("input", handleGlobalSearch);
+  $("#randomQuoteBtn").addEventListener("click", () => {
+    $("#dailyQuote").textContent = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+  });
+}
+
+function activateSection(section) {
+  state.activeSection = section;
+  $$(".app-section").forEach(panel => panel.classList.remove("active"));
+  $(`#${section}Section`)?.classList.add("active");
+  $$(".nav-item").forEach(item => item.classList.toggle("active", item.dataset.section === section));
+  $("#sidebar").classList.remove("mobile-open");
+  updateSectionTitle();
+
+  if (section === "analytics") {
+    setTimeout(renderAnalytics, 80);
+  }
+}
+
+function updateSectionTitle() {
+  const active = $(`#${state.activeSection}Section`);
+  $("#sectionTitle").textContent = active?.dataset.title || "Dashboard";
+}
+
+function applyTheme() {
+  document.body.classList.toggle("light-theme", state.data.settings.theme === "light");
+  $("#themeToggle").textContent = state.data.settings.theme === "light" ? "☀" : "☾";
+}
+
+function toggleTheme() {
+  state.data.settings.theme = state.data.settings.theme === "light" ? "dark" : "light";
+  saveData();
+  applyTheme();
+  renderAnalytics();
+}
+
+function startClockLabels() {
+  const update = () => {
+    const date = new Date();
+    $("#todayLabel").textContent = date.toLocaleDateString(undefined, {
+      weekday: "long",
+      month: "short",
+      day: "numeric"
+    });
+    const hour = date.getHours();
+    const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+    $("#welcomeTitle").textContent = `${greeting}, Student.`;
+    renderTimetableWidgets();
+  };
+
+  update();
+  setInterval(update, 60000);
+}
+
+function handleGlobalSearch(event) {
+  const term = event.target.value.trim().toLowerCase();
+  $$(".search-hit").forEach(element => element.classList.remove("search-hit"));
+  if (!term) return;
+
+  const matchers = [
+    {
+      collection: state.data.tasks,
+      section: "tasks",
+      fields: ["title", "category"]
+    },
+    {
+      collection: state.data.assignments,
+      section: "assignments",
+      fields: ["title", "subject"]
+    },
+    {
+      collection: state.data.notes,
+      section: "notes",
+      fields: ["title", "body"]
+    },
+    {
+      collection: state.data.exams,
+      section: "exams",
+      fields: ["subject"]
+    }
+  ];
+
+  const found = matchers.find(group => group.collection.some(item =>
+    group.fields.some(field => String(item[field] || "").toLowerCase().includes(term))
+  ));
+
+  if (found) {
+    activateSection(found.section);
+    setTimeout(() => {
+      const card = $(".item-card, .note-tab");
+      card?.classList.add("search-hit");
+      card?.scrollIntoView({ block: "center", behavior: "smooth" });
+    }, 120);
+  }
+}
+
+function bindKeyboardShortcuts() {
+  document.addEventListener("keydown", event => {
+    if (event.target.matches("input, textarea, [contenteditable='true']")) return;
+
+    if (event.key === "/") {
+      event.preventDefault();
+      $("#globalSearch").focus();
+    }
+    if (event.key.toLowerCase() === "n") {
+      event.preventDefault();
+      toggleQuickMenu(true);
+    }
+    if (event.key.toLowerCase() === "p") {
+      event.preventDefault();
+      activateSection("pomodoro");
+    }
+    if (event.key === "Escape") {
+      toggleQuickMenu(false);
+      $("#notificationCenter").classList.remove("open");
+    }
+  });
+}
+
+/* --------------------------------------------------------------------------
+   Dashboard and achievements
+   -------------------------------------------------------------------------- */
+
+function renderDashboard() {
+  const today = todayISO();
+  const todayTasks = state.data.tasks.filter(task => task.due === today || (!task.due && !task.completed));
+  const completedToday = todayTasks.filter(task => task.completed).length;
+  const taskCompletion = percent(completedToday, todayTasks.length);
+  const attendanceAverage = getAverageAttendance(state.data.attendance);
+  const assignmentCompletion = getAssignmentCompletion();
+
+  $("#dashTodayTasks").textContent = `${completedToday} / ${todayTasks.length}`;
+  $("#dashTaskProgress").style.width = `${taskCompletion}%`;
+  $("#dashAttendance").textContent = `${attendanceAverage}%`;
+  $("#dashAttendanceProgress").style.width = `${attendanceAverage}%`;
+  $("#dashFocusTime").textContent = `${Math.round(state.data.pomodoro.totalMinutes / 60)}h`;
+  $("#dashPomodoroStats").textContent = `${state.data.pomodoro.sessions} sessions completed`;
+  $("#sidebarStreak").textContent = getStudyStreak(state.data);
+
+  $("#assignmentDonut").style.setProperty("--percent", `${assignmentCompletion}%`);
+  $("#assignmentPercent").textContent = `${assignmentCompletion}%`;
+  $("#assignmentSummary").textContent = state.data.assignments.length
+    ? `${state.data.assignments.filter(item => item.completed).length} of ${state.data.assignments.length} completed`
+    : "No assignments yet";
+
+  renderDashboardTasks(todayTasks);
+  renderDashboardExams();
+  renderAchievements();
+  renderTimetableWidgets();
+}
+
+function renderDashboardTasks(tasks) {
+  const container = $("#dashboardTasks");
+  const sorted = [...tasks]
+    .sort((a, b) => priorityScore(a.priority) - priorityScore(b.priority))
+    .slice(0, 5);
+
+  if (!sorted.length) {
+    container.innerHTML = emptyState("No priority tasks for today.");
+    return;
+  }
+
+  container.innerHTML = sorted.map(task => `
+    <div class="item-card ${task.completed ? "completed" : ""}">
+      <div class="item-main">
+        <button class="checkbox-btn ${task.completed ? "checked" : ""}" data-task-toggle="${task.id}">✓</button>
+        <div>
+          <div class="item-title">${escapeHTML(task.title)}</div>
+          <div class="item-meta">
+            <span class="priority-pill priority-${task.priority}">${task.priority}</span>
+            <span>${escapeHTML(task.category || "General")}</span>
+            <span>${formatDate(task.due)}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join("");
+
+  container.querySelectorAll("[data-task-toggle]").forEach(button => {
+    button.addEventListener("click", () => toggleTask(button.dataset.taskToggle));
+  });
+}
+
+function renderDashboardExams() {
+  const container = $("#dashboardExams");
+  const exams = [...state.data.exams]
+    .filter(exam => new Date(`${exam.date}T${exam.time || "00:00"}`) >= new Date())
+    .sort((a, b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`))
+    .slice(0, 4);
+
+  if (!exams.length) {
+    container.innerHTML = emptyState("No upcoming exams.");
+    return;
+  }
+
+  container.innerHTML = exams.map(exam => `
+    <div class="item-card">
+      <div class="item-title">${escapeHTML(exam.subject)}</div>
+      <div class="item-meta">
+        <span class="priority-pill priority-${exam.priority}">${exam.priority}</span>
+        <span>${daysUntil(exam.date)} days left</span>
+        <span>${formatDate(exam.date)} ${formatTime(exam.time)}</span>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderAchievements() {
+  const container = $("#achievementBadges");
+  container.innerHTML = ACHIEVEMENTS.map(achievement => {
+    const unlocked = achievement.test(state.data);
+    return `
+      <div class="achievement ${unlocked ? "" : "locked"}">
+        <strong>${escapeHTML(achievement.name)}</strong>
+        <small>${escapeHTML(achievement.description)}</small>
+      </div>
+    `;
+  }).join("");
+}
+
+function getAverageAttendance(subjects) {
+  const totals = subjects.reduce((acc, subject) => {
+    acc.attended += Number(subject.attended || 0);
+    acc.total += Number(subject.total || 0);
+    return acc;
+  }, { attended: 0, total: 0 });
+  return percent(totals.attended, totals.total);
+}
+
+function getAssignmentCompletion() {
+  return percent(state.data.assignments.filter(item => item.completed).length, state.data.assignments.length);
+}
+
+function getStudyStreak(data) {
+  const days = Object.keys(data.pomodoro.focusByDay || {})
+    .filter(day => data.pomodoro.focusByDay[day] > 0)
+    .sort()
+    .reverse();
+
+  if (!days.length) return 0;
+
+  let streak = 0;
+  let cursor = new Date(`${todayISO()}T00:00:00`);
+  for (const day of days) {
+    const expected = toISODate(cursor);
+    if (day === expected) {
+      streak += 1;
+      cursor.setDate(cursor.getDate() - 1);
+    } else if (streak === 0 && day === toISODate(new Date(Date.now() - 86400000))) {
+      streak += 1;
+      cursor = new Date(`${day}T00:00:00`);
+      cursor.setDate(cursor.getDate() - 1);
+    } else {
+      break;
+    }
+  }
+  return streak;
+}
+
+function emptyState(message) {
+  return `<div class="empty-state">${escapeHTML(message)}</div>`;
+}
+
+function priorityScore(priority) {
+  return { high: 1, medium: 2, low: 3 }[priority] || 4;
+}
+
+/* --------------------------------------------------------------------------
+   Advanced task system
+   -------------------------------------------------------------------------- */
+
+function bindTaskEvents() {
+  $("#taskForm").addEventListener("submit", handleTaskSubmit);
+  $("#taskSearch").addEventListener("input", renderTasks);
+  $("#taskFilter").addEventListener("change", renderTasks);
+  $("#dailyGoal").addEventListener("change", event => {
+    state.data.settings.dailyGoal = clamp(Number(event.target.value) || 5, 1, 50);
+    event.target.value = state.data.settings.dailyGoal;
+    saveData();
+    renderTasks();
+  });
+}
+
+function handleTaskSubmit(event) {
+  event.preventDefault();
+  const existingId = $("#taskId").value;
+  const payload = {
+    title: $("#taskTitle").value.trim(),
+    due: $("#taskDue").value,
+    priority: $("#taskPriority").value,
+    category: $("#taskCategory").value.trim() || "General",
+    recurring: $("#taskRecurring").value,
+    order: state.data.tasks.length
+  };
+
+  if (!payload.title) return;
+
+  if (existingId) {
+    const task = state.data.tasks.find(item => item.id === existingId);
+    Object.assign(task, payload);
+    showToast("Task updated", payload.title);
+  } else {
+    state.data.tasks.push({
+      id: uid("task"),
+      completed: false,
+      createdAt: new Date().toISOString(),
+      completedAt: null,
+      ...payload
+    });
+    showToast("Task added", payload.title);
+  }
+
+  event.target.reset();
+  $("#taskId").value = "";
+  $("#dailyGoal").value = state.data.settings.dailyGoal;
+  saveData();
+  renderAll();
+}
+
+function renderTasks() {
+  const container = $("#taskList");
+  const filter = $("#taskFilter").value;
+  const search = $("#taskSearch").value.toLowerCase().trim();
+  const tasks = state.data.tasks
+    .filter(task => filterTask(task, filter))
+    .filter(task => [task.title, task.category, task.priority].join(" ").toLowerCase().includes(search))
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+  const todayTasks = state.data.tasks.filter(task => task.due === todayISO());
+  const completion = percent(todayTasks.filter(task => task.completed).length, state.data.settings.dailyGoal || 5);
+  $("#taskProgressLabel").textContent = `${clamp(completion, 0, 100)}% of daily goal`;
+  $("#taskProgressBar").style.width = `${clamp(completion, 0, 100)}%`;
+
+  if (!tasks.length) {
+    container.innerHTML = emptyState("No tasks match this view.");
+    return;
+  }
+
+  container.innerHTML = tasks.map(task => taskTemplate(task)).join("");
+  bindTaskCardEvents(container);
+}
+
+function filterTask(task, filter) {
+  if (filter === "today") return task.due === todayISO();
+  if (filter === "active") return !task.completed;
+  if (filter === "completed") return task.completed;
+  if (filter === "high") return task.priority === "high";
+  return true;
+}
+
+function taskTemplate(task) {
+  return `
+    <article class="item-card ${task.completed ? "completed" : ""}" draggable="true" data-task-id="${task.id}">
+      <div class="item-main">
+        <button class="checkbox-btn ${task.completed ? "checked" : ""}" data-task-toggle="${task.id}">✓</button>
+        <div>
+          <div class="item-title">${escapeHTML(task.title)}</div>
+          <div class="item-meta">
+            <span class="priority-pill priority-${task.priority}">${task.priority}</span>
+            <span>${escapeHTML(task.category || "General")}</span>
+            <span>${formatDate(task.due)}</span>
+            <span>${task.recurring === "none" ? "one-time" : `${task.recurring} recurring`}</span>
+          </div>
+        </div>
+      </div>
+      <div class="item-actions">
+        <button data-task-edit="${task.id}">Edit</button>
+        <button data-task-delete="${task.id}">Delete</button>
+      </div>
+    </article>
+  `;
+}
+
+function bindTaskCardEvents(container) {
+  container.querySelectorAll("[data-task-toggle]").forEach(button => {
+    button.addEventListener("click", () => toggleTask(button.dataset.taskToggle));
+  });
+  container.querySelectorAll("[data-task-edit]").forEach(button => {
+    button.addEventListener("click", () => editTask(button.dataset.taskEdit));
+  });
+  container.querySelectorAll("[data-task-delete]").forEach(button => {
+    button.addEventListener("click", () => deleteTask(button.dataset.taskDelete));
+  });
+  container.querySelectorAll("[data-task-id]").forEach(card => {
+    card.addEventListener("dragstart", handleTaskDragStart);
+    card.addEventListener("dragover", handleTaskDragOver);
+    card.addEventListener("drop", handleTaskDrop);
+    card.addEventListener("dragend", handleTaskDragEnd);
+  });
+}
+
+function toggleTask(taskId) {
+  const task = state.data.tasks.find(item => item.id === taskId);
+  if (!task) return;
+
+  task.completed = !task.completed;
+  task.completedAt = task.completed ? new Date().toISOString() : null;
+  if (task.completed && task.recurring !== "none") {
+    createRecurringTask(task);
+  }
+  saveData();
+  renderAll();
+  const message = task.completed ? "Task completed" : "Task reopened";
+  showToast(message, task.title);
+}
+
+function createRecurringTask(task) {
+  const nextDue = task.due ? new Date(`${task.due}T00:00:00`) : new Date();
+  if (task.recurring === "daily") nextDue.setDate(nextDue.getDate() + 1);
+  if (task.recurring === "weekly") nextDue.setDate(nextDue.getDate() + 7);
+
+  const alreadyExists = state.data.tasks.some(item =>
+    item.title === task.title &&
+    item.recurring === task.recurring &&
+    item.due === toISODate(nextDue) &&
+    !item.completed
+  );
+
+  if (!alreadyExists) {
+    state.data.tasks.push({
+      ...task,
+      id: uid("task"),
+      due: toISODate(nextDue),
+      completed: false,
+      completedAt: null,
+      createdAt: new Date().toISOString(),
+      order: state.data.tasks.length
+    });
+  }
+}
+
+function editTask(taskId) {
+  const task = state.data.tasks.find(item => item.id === taskId);
+  if (!task) return;
+  $("#taskId").value = task.id;
+  $("#taskTitle").value = task.title;
+  $("#taskDue").value = task.due || "";
+  $("#taskPriority").value = task.priority;
+  $("#taskCategory").value = task.category || "";
+  $("#taskRecurring").value = task.recurring || "none";
+  $("#taskTitle").focus();
+}
+
+function deleteTask(taskId) {
+  state.data.tasks = state.data.tasks.filter(item => item.id !== taskId);
+  saveData();
+  renderAll();
+  showToast("Task deleted", "Removed from your mission queue.");
+}
+
+function handleTaskDragStart(event) {
+  state.draggedTaskId = event.currentTarget.dataset.taskId;
+  event.currentTarget.classList.add("dragging");
+}
+
+function handleTaskDragOver(event) {
+  event.preventDefault();
+}
+
+function handleTaskDrop(event) {
+  event.preventDefault();
+  const targetId = event.currentTarget.dataset.taskId;
+  if (!state.draggedTaskId || targetId === state.draggedTaskId) return;
+
+  const ordered = [...state.data.tasks].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  const fromIndex = ordered.findIndex(task => task.id === state.draggedTaskId);
+  const toIndex = ordered.findIndex(task => task.id === targetId);
+  const [moved] = ordered.splice(fromIndex, 1);
+  ordered.splice(toIndex, 0, moved);
+  ordered.forEach((task, index) => {
+    task.order = index;
+  });
+  state.data.tasks = ordered;
+  saveData();
+  renderTasks();
+}
+
+function handleTaskDragEnd(event) {
+  event.currentTarget.classList.remove("dragging");
+  state.draggedTaskId = null;
+}
+
+/* --------------------------------------------------------------------------
+   Daily planner
+   -------------------------------------------------------------------------- */
+
+function bindPlannerEvents() {
+  $("#plannerForm").addEventListener("submit", handlePlannerSubmit);
+  $("#plannerDate").addEventListener("change", renderPlanner);
+  $("#plannerGoal").addEventListener("change", event => {
+    state.data.settings.plannerGoal = clamp(Number(event.target.value) || 4, 1, 24);
+    event.target.value = state.data.settings.plannerGoal;
+    saveData();
+    renderPlanner();
+  });
+}
+
+function handlePlannerSubmit(event) {
+  event.preventDefault();
+  const item = {
+    id: uid("plan"),
+    date: $("#plannerDate").value || todayISO(),
+    time: $("#plannerTime").value,
+    type: $("#plannerType").value,
+    title: $("#plannerTitle").value.trim(),
+    notes: $("#plannerNotes").value.trim(),
+    completed: false,
+    createdAt: new Date().toISOString()
+  };
+
+  if (!item.title) return;
+  state.data.planner.push(item);
+  saveData();
+  event.target.reset();
+  $("#plannerDate").value = item.date;
+  $("#plannerTime").value = "09:00";
+  renderAll();
+  showToast("Planner updated", item.title);
+}
+
+function renderPlanner() {
+  const selectedDate = $("#plannerDate").value || todayISO();
+  const items = state.data.planner
+    .filter(item => item.date === selectedDate)
+    .sort((a, b) => minuteValue(a.time) - minuteValue(b.time));
+  const completed = items.filter(item => item.completed).length;
+  const completion = percent(completed, items.length || state.data.settings.plannerGoal);
+
+  $("#plannerBoardTitle").textContent = selectedDate === todayISO() ? "Today" : formatDate(selectedDate);
+  $("#plannerCompletion").textContent = `${clamp(completion, 0, 100)}% planned items done`;
+  $("#plannerProgress").style.width = `${clamp(completion, 0, 100)}%`;
+  $("#plannerGoal").value = state.data.settings.plannerGoal || 4;
+
+  $("#hourGrid").innerHTML = HOURS.map(hour => {
+    const hourItems = items.filter(item => Number(item.time?.slice(0, 2)) === hour);
+    return `
+      <div class="hour-row">
+        <div class="hour-label">${minutesToClock(hour * 60)}</div>
+        <div class="hour-slot">
+          ${hourItems.length ? hourItems.map(plannerTemplate).join("") : ""}
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  $("#hourGrid").querySelectorAll("[data-plan-toggle]").forEach(button => {
+    button.addEventListener("click", () => togglePlannerItem(button.dataset.planToggle));
+  });
+  $("#hourGrid").querySelectorAll("[data-plan-delete]").forEach(button => {
+    button.addEventListener("click", () => deletePlannerItem(button.dataset.planDelete));
+  });
+}
+
+function plannerTemplate(item) {
+  return `
+    <article class="planner-item ${item.completed ? "done" : ""}">
+      <div class="planner-item-top">
+        <strong>${escapeHTML(item.title)}</strong>
+        <span class="type-pill">${escapeHTML(item.type)}</span>
+      </div>
+      <small>${formatTime(item.time)} ${item.notes ? `• ${escapeHTML(item.notes)}` : ""}</small>
+      <div class="item-actions">
+        <button data-plan-toggle="${item.id}">${item.completed ? "Reopen" : "Done"}</button>
+        <button data-plan-delete="${item.id}">Delete</button>
+      </div>
+    </article>
+  `;
+}
+
+function togglePlannerItem(itemId) {
+  const item = state.data.planner.find(plan => plan.id === itemId);
+  if (!item) return;
+  item.completed = !item.completed;
+  saveData();
+  renderAll();
+}
+
+function deletePlannerItem(itemId) {
+  state.data.planner = state.data.planner.filter(plan => plan.id !== itemId);
+  saveData();
+  renderAll();
+}
+
+/* --------------------------------------------------------------------------
+   Pomodoro timer
+   -------------------------------------------------------------------------- */
+
+function bindPomodoroEvents() {
+  $("#startPauseTimer").addEventListener("click", togglePomodoro);
+  $("#resetTimer").addEventListener("click", resetPomodoro);
+  $("#focusDuration").addEventListener("change", updateTimerDurations);
+  $("#breakDuration").addEventListener("change", updateTimerDurations);
+  $("#focusModeBtn").addEventListener("click", openFocusMode);
+  $("#closeFocusOverlay").addEventListener("click", closeFocusMode);
+}
+
+function updateTimerDurations() {
+  if (state.pomodoro.running) return;
+  const focus = clamp(Number($("#focusDuration").value) || 25, 5, 120);
+  const breakMinutes = clamp(Number($("#breakDuration").value) || 5, 1, 45);
+  $("#focusDuration").value = focus;
+  $("#breakDuration").value = breakMinutes;
+  state.data.settings.breakDuration = breakMinutes;
+  state.pomodoro.total = (state.pomodoro.mode === "focus" ? focus : breakMinutes) * 60;
+  state.pomodoro.remaining = state.pomodoro.total;
+  saveData();
+  renderTimer();
+}
+
+function togglePomodoro() {
+  if (state.pomodoro.running) {
+    pausePomodoro();
+  } else {
+    startPomodoro();
+  }
+}
+
+function startPomodoro() {
+  state.pomodoro.running = true;
+  $("#startPauseTimer").textContent = "Pause";
+  clearInterval(state.timerInterval);
+  state.timerInterval = setInterval(tickPomodoro, 1000);
+}
+
+function pausePomodoro() {
+  state.pomodoro.running = false;
+  $("#startPauseTimer").textContent = "Start";
+  clearInterval(state.timerInterval);
+}
+
+function resetPomodoro() {
+  pausePomodoro();
+  state.pomodoro.mode = "focus";
+  state.pomodoro.total = (Number($("#focusDuration").value) || 25) * 60;
+  state.pomodoro.remaining = state.pomodoro.total;
+  renderTimer();
+}
+
+function tickPomodoro() {
+  state.pomodoro.remaining -= 1;
+  if (state.pomodoro.remaining <= 0) {
+    completePomodoroCycle();
+  }
+  renderTimer();
+}
+
+function completePomodoroCycle() {
+  playNotificationSound();
+
+  if (state.pomodoro.mode === "focus") {
+    const minutes = Number($("#focusDuration").value) || 25;
+    state.data.pomodoro.sessions += 1;
+    state.data.pomodoro.totalMinutes += minutes;
+    state.data.pomodoro.todaySessions[todayISO()] = (state.data.pomodoro.todaySessions[todayISO()] || 0) + 1;
+    state.data.pomodoro.focusByDay[todayISO()] = (state.data.pomodoro.focusByDay[todayISO()] || 0) + minutes;
+    state.data.pomodoro.lastStudyDate = todayISO();
+    state.pomodoro.mode = "break";
+    state.pomodoro.total = (Number($("#breakDuration").value) || 5) * 60;
+    state.pomodoro.remaining = state.pomodoro.total;
+    addNotification("Pomodoro complete", "Focus session finished. Take a clean break.", "pomodoro");
+  } else {
+    state.pomodoro.mode = "focus";
+    state.pomodoro.total = (Number($("#focusDuration").value) || 25) * 60;
+    state.pomodoro.remaining = state.pomodoro.total;
+    addNotification("Break complete", "Ready for the next focus sprint.", "pomodoro");
+  }
+
+  saveData();
+  renderAll();
+}
+
+function renderTimer() {
+  const minutes = Math.floor(state.pomodoro.remaining / 60).toString().padStart(2, "0");
+  const seconds = (state.pomodoro.remaining % 60).toString().padStart(2, "0");
+  const text = `${minutes}:${seconds}`;
+  const progress = 1 - state.pomodoro.remaining / state.pomodoro.total;
+  const dashOffset = 603 * clamp(progress, 0, 1);
+
+  $("#timerDisplay").textContent = text;
+  $("#focusOverlayTime").textContent = text;
+  $("#timerProgressCircle").style.strokeDashoffset = dashOffset;
+  $("#pomodoroMode").textContent = state.pomodoro.mode === "focus" ? "Focus Session" : "Break Timer";
+  $("#focusOverlayMode").textContent = state.pomodoro.mode === "focus" ? "Stay with one task." : "Breathe before the next session.";
+}
+
+function renderPomodoroStats() {
+  $("#pomodoroSessions").textContent = state.data.pomodoro.sessions;
+  $("#pomodoroMinutes").textContent = state.data.pomodoro.totalMinutes;
+  $("#pomodoroToday").textContent = state.data.pomodoro.todaySessions[todayISO()] || 0;
+  renderTimer();
+}
+
+function playNotificationSound() {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const context = new AudioContext();
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+    oscillator.type = "sine";
+    oscillator.frequency.value = 680;
+    gain.gain.setValueAtTime(0.001, context.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.18, context.currentTime + 0.03);
+    gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.42);
+    oscillator.connect(gain);
+    gain.connect(context.destination);
+    oscillator.start();
+    oscillator.stop(context.currentTime + 0.45);
+  } catch (error) {
+    console.warn("Audio notification failed", error);
+  }
+}
+
+function openFocusMode() {
+  $("#focusOverlay").classList.remove("hidden");
+  document.documentElement.requestFullscreen?.().catch(() => {});
+}
+
+function closeFocusMode() {
+  $("#focusOverlay").classList.add("hidden");
+  if (document.fullscreenElement) {
+    document.exitFullscreen?.();
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Attendance tracker
+   -------------------------------------------------------------------------- */
+
+function bindAttendanceEvents() {
+  $("#attendanceForm").addEventListener("submit", handleAttendanceSubmit);
+}
+
+function handleAttendanceSubmit(event) {
+  event.preventDefault();
+  const existingId = $("#attendanceId").value;
+  const payload = {
+    subject: $("#attendanceSubject").value.trim(),
+    attended: Math.max(0, Number($("#attendedClasses").value) || 0),
+    total: Math.max(0, Number($("#totalClasses").value) || 0),
+    goal: clamp(Number($("#attendanceGoal").value) || 75, 1, 100)
+  };
+
+  if (!payload.subject) return;
+  if (payload.attended > payload.total) payload.total = payload.attended;
+
+  if (existingId) {
+    Object.assign(state.data.attendance.find(item => item.id === existingId), payload);
+    showToast("Attendance updated", payload.subject);
+  } else {
+    state.data.attendance.push({ id: uid("att"), ...payload });
+    showToast("Subject added", payload.subject);
+  }
+
+  event.target.reset();
+  $("#attendanceId").value = "";
+  $("#attendanceGoal").value = 75;
+  saveData();
+  renderAll();
+}
+
+function renderAttendance() {
+  const container = $("#attendanceList");
+  if (!state.data.attendance.length) {
+    container.innerHTML = emptyState("Add subjects to track attendance health.");
+    return;
+  }
+
+  container.innerHTML = state.data.attendance.map(subject => {
+    const value = percent(subject.attended, subject.total);
+    const statusClass = value >= subject.goal ? "success-text" : value >= subject.goal - 10 ? "warning-text" : "danger-text";
+    const bunkable = classesCanMiss(subject);
+    return `
+      <article class="item-card">
+        <div class="attendance-top">
+          <div>
+            <div class="item-title">${escapeHTML(subject.subject)}</div>
+            <div class="item-meta">
+              <span>${subject.attended}/${subject.total} classes</span>
+              <span>Goal ${subject.goal}%</span>
+              <span class="${statusClass}">${value}%</span>
+            </div>
+          </div>
+          <strong class="${statusClass}">${value}%</strong>
+        </div>
+        <div class="attendance-bar">
+          <div class="progress-track"><span style="width:${clamp(value, 0, 100)}%"></span></div>
+          <small>${bunkable >= 0 ? `Can miss ${bunkable} class(es) and stay on goal` : `${Math.abs(bunkable)} class(es) needed to recover`}</small>
+        </div>
+        <div class="subject-actions">
+          <div class="item-actions">
+            <button data-att-present="${subject.id}">+ Attended</button>
+            <button data-att-total="${subject.id}">+ Missed</button>
+            <button data-att-edit="${subject.id}">Edit</button>
+            <button data-att-delete="${subject.id}">Delete</button>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  container.querySelectorAll("[data-att-present]").forEach(button => {
+    button.addEventListener("click", () => incrementAttendance(button.dataset.attPresent, true));
+  });
+  container.querySelectorAll("[data-att-total]").forEach(button => {
+    button.addEventListener("click", () => incrementAttendance(button.dataset.attTotal, false));
+  });
+  container.querySelectorAll("[data-att-edit]").forEach(button => {
+    button.addEventListener("click", () => editAttendance(button.dataset.attEdit));
+  });
+  container.querySelectorAll("[data-att-delete]").forEach(button => {
+    button.addEventListener("click", () => deleteAttendance(button.dataset.attDelete));
+  });
+}
+
+function classesCanMiss(subject) {
+  const goal = subject.goal / 100;
+  let missed = 0;
+  while ((subject.attended / (subject.total + missed + 1)) >= goal) {
+    missed += 1;
+    if (missed > 200) break;
+  }
+
+  if (missed > 0 || percent(subject.attended, subject.total) >= subject.goal) {
+    return missed;
+  }
+
+  let needed = 0;
+  while (((subject.attended + needed) / (subject.total + needed)) < goal) {
+    needed += 1;
+    if (needed > 200) break;
+  }
+  return -needed;
+}
+
+function incrementAttendance(id, attended) {
+  const subject = state.data.attendance.find(item => item.id === id);
+  if (!subject) return;
+  subject.total += 1;
+  if (attended) subject.attended += 1;
+  saveData();
+  renderAll();
+}
+
+function editAttendance(id) {
+  const subject = state.data.attendance.find(item => item.id === id);
+  if (!subject) return;
+  $("#attendanceId").value = subject.id;
+  $("#attendanceSubject").value = subject.subject;
+  $("#attendedClasses").value = subject.attended;
+  $("#totalClasses").value = subject.total;
+  $("#attendanceGoal").value = subject.goal;
+}
+
+function deleteAttendance(id) {
+  state.data.attendance = state.data.attendance.filter(item => item.id !== id);
+  saveData();
+  renderAll();
+}
+
+/* --------------------------------------------------------------------------
+   Assignment tracker
+   -------------------------------------------------------------------------- */
+
+function bindAssignmentEvents() {
+  $("#assignmentForm").addEventListener("submit", handleAssignmentSubmit);
+  $("#assignmentFilter").addEventListener("change", renderAssignments);
+}
+
+function handleAssignmentSubmit(event) {
+  event.preventDefault();
+  const existingId = $("#assignmentId").value;
+  const payload = {
+    title: $("#assignmentTitle").value.trim(),
+    subject: $("#assignmentSubject").value.trim() || "General",
+    deadline: $("#assignmentDeadline").value,
+    priority: $("#assignmentPriority").value
+  };
+
+  if (!payload.title) return;
+
+  if (existingId) {
+    Object.assign(state.data.assignments.find(item => item.id === existingId), payload);
+    showToast("Assignment updated", payload.title);
+  } else {
+    state.data.assignments.push({
+      id: uid("asg"),
+      completed: false,
+      submittedAt: null,
+      createdAt: new Date().toISOString(),
+      ...payload
+    });
+    showToast("Assignment added", payload.title);
+  }
+
+  event.target.reset();
+  $("#assignmentId").value = "";
+  saveData();
+  renderAll();
+}
+
+function renderAssignments() {
+  const container = $("#assignmentList");
+  const filter = $("#assignmentFilter").value;
+  const assignments = state.data.assignments
+    .filter(item => {
+      if (filter === "pending") return !item.completed;
+      if (filter === "completed") return item.completed;
+      if (filter === "overdue") return !item.completed && isPastDate(item.deadline);
+      return true;
+    })
+    .sort((a, b) => new Date(a.deadline || "2999-01-01") - new Date(b.deadline || "2999-01-01"));
+
+  if (!assignments.length) {
+    container.innerHTML = emptyState("No assignments in this view.");
+    return;
+  }
+
+  container.innerHTML = assignments.map(assignment => {
+    const dueIn = daysUntil(assignment.deadline);
+    const status = assignment.completed ? "Submitted" : dueIn < 0 ? "Overdue" : dueIn === 0 ? "Due today" : `${dueIn} days`;
+    return `
+      <article class="item-card ${assignment.completed ? "completed" : ""}">
+        <div class="item-main">
+          <button class="checkbox-btn ${assignment.completed ? "checked" : ""}" data-asg-toggle="${assignment.id}">✓</button>
+          <div>
+            <div class="item-title">${escapeHTML(assignment.title)}</div>
+            <div class="item-meta">
+              <span>${escapeHTML(assignment.subject)}</span>
+              <span class="priority-pill priority-${assignment.priority}">${assignment.priority}</span>
+              <span>${formatDate(assignment.deadline)}</span>
+              <span>${status}</span>
+            </div>
+          </div>
+        </div>
+        <div class="item-actions">
+          <button data-asg-edit="${assignment.id}">Edit</button>
+          <button data-asg-delete="${assignment.id}">Delete</button>
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  container.querySelectorAll("[data-asg-toggle]").forEach(button => {
+    button.addEventListener("click", () => toggleAssignment(button.dataset.asgToggle));
+  });
+  container.querySelectorAll("[data-asg-edit]").forEach(button => {
+    button.addEventListener("click", () => editAssignment(button.dataset.asgEdit));
+  });
+  container.querySelectorAll("[data-asg-delete]").forEach(button => {
+    button.addEventListener("click", () => deleteAssignment(button.dataset.asgDelete));
+  });
+}
+
+function toggleAssignment(id) {
+  const assignment = state.data.assignments.find(item => item.id === id);
+  if (!assignment) return;
+  assignment.completed = !assignment.completed;
+  assignment.submittedAt = assignment.completed ? new Date().toISOString() : null;
+  saveData();
+  renderAll();
+}
+
+function editAssignment(id) {
+  const assignment = state.data.assignments.find(item => item.id === id);
+  if (!assignment) return;
+  $("#assignmentId").value = assignment.id;
+  $("#assignmentTitle").value = assignment.title;
+  $("#assignmentSubject").value = assignment.subject;
+  $("#assignmentDeadline").value = assignment.deadline || "";
+  $("#assignmentPriority").value = assignment.priority;
+}
+
+function deleteAssignment(id) {
+  state.data.assignments = state.data.assignments.filter(item => item.id !== id);
+  saveData();
+  renderAll();
+}
+
+/* --------------------------------------------------------------------------
+   Rich notes system
+   -------------------------------------------------------------------------- */
+
+function bindNoteEvents() {
+  $("#newNoteBtn").addEventListener("click", createNote);
+  $("#noteSearch").addEventListener("input", renderNotes);
+  $("#noteTitle").addEventListener("input", scheduleNoteSave);
+  $("#noteEditor").addEventListener("input", scheduleNoteSave);
+  $("#pinNoteBtn").addEventListener("click", () => toggleNoteFlag("pinned"));
+  $("#favoriteNoteBtn").addEventListener("click", () => toggleNoteFlag("favorite"));
+  $("#deleteNoteBtn").addEventListener("click", deleteCurrentNote);
+  $$(".format-toolbar button").forEach(button => {
+    button.addEventListener("click", () => {
+      document.execCommand(button.dataset.command, false, button.dataset.value || null);
+      $("#noteEditor").focus();
+      scheduleNoteSave();
+    });
+  });
+}
+
+function createNote() {
+  const note = {
+    id: uid("note"),
+    title: "Untitled note",
+    body: "",
+    pinned: false,
+    favorite: false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+  state.data.notes.unshift(note);
+  state.selectedNoteId = note.id;
+  saveData();
+  renderNotes();
+  $("#noteTitle").focus();
+}
+
+function renderNotes() {
+  if (!state.data.notes.length) {
+    state.selectedNoteId = null;
+    $("#noteList").innerHTML = emptyState("No notes yet.");
+    $("#noteTitle").value = "";
+    $("#noteEditor").innerHTML = "";
+    $("#noteWordCount").textContent = "0 words";
+    $("#noteSaveStatus").textContent = "Create a note to start";
+    return;
+  }
+
+  if (!state.selectedNoteId || !state.data.notes.some(note => note.id === state.selectedNoteId)) {
+    state.selectedNoteId = [...state.data.notes].sort(noteSort)[0].id;
+  }
+
+  const search = $("#noteSearch").value.toLowerCase().trim();
+  const notes = [...state.data.notes]
+    .filter(note => [note.title, stripHTML(note.body)].join(" ").toLowerCase().includes(search))
+    .sort(noteSort);
+
+  $("#noteList").innerHTML = notes.length ? notes.map(note => `
+    <button class="note-tab ${note.id === state.selectedNoteId ? "active" : ""}" data-note-id="${note.id}">
+      <strong>${note.pinned ? "Pinned " : ""}${note.favorite ? "Fav " : ""}${escapeHTML(note.title || "Untitled note")}</strong>
+      <small>${wordCount(stripHTML(note.body))} words • ${new Date(note.updatedAt).toLocaleDateString()}</small>
+    </button>
+  `).join("") : emptyState("No matching notes.");
+
+  $("#noteList").querySelectorAll("[data-note-id]").forEach(button => {
+    button.addEventListener("click", () => {
+      saveCurrentNote();
+      state.selectedNoteId = button.dataset.noteId;
+      renderNotes();
+    });
+  });
+
+  renderCurrentNote();
+}
+
+function noteSort(a, b) {
+  if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+  if (a.favorite !== b.favorite) return a.favorite ? -1 : 1;
+  return new Date(b.updatedAt) - new Date(a.updatedAt);
+}
+
+function renderCurrentNote() {
+  const note = getCurrentNote();
+  if (!note) return;
+  if (document.activeElement !== $("#noteTitle")) $("#noteTitle").value = note.title;
+  if (document.activeElement !== $("#noteEditor")) $("#noteEditor").innerHTML = note.body;
+  $("#pinNoteBtn").textContent = note.pinned ? "Unpin" : "Pin";
+  $("#favoriteNoteBtn").textContent = note.favorite ? "Unfavorite" : "Favorite";
+  $("#noteWordCount").textContent = `${wordCount(stripHTML(note.body))} words`;
+  $("#noteSaveStatus").textContent = "Auto-saved";
+}
+
+function getCurrentNote() {
+  return state.data.notes.find(note => note.id === state.selectedNoteId);
+}
+
+function scheduleNoteSave() {
+  clearTimeout(state.noteSaveTimer);
+  $("#noteSaveStatus").textContent = "Saving...";
+  state.noteSaveTimer = setTimeout(saveCurrentNote, 350);
+  $("#noteWordCount").textContent = `${wordCount(stripHTML($("#noteEditor").innerHTML))} words`;
+}
+
+function saveCurrentNote() {
+  const note = getCurrentNote();
+  if (!note) return;
+  note.title = $("#noteTitle").value.trim() || "Untitled note";
+  note.body = $("#noteEditor").innerHTML;
+  note.updatedAt = new Date().toISOString();
+  saveData();
+  $("#noteSaveStatus").textContent = "Auto-saved";
+  renderDashboard();
+}
+
+function toggleNoteFlag(flag) {
+  const note = getCurrentNote();
+  if (!note) return;
+  note[flag] = !note[flag];
+  note.updatedAt = new Date().toISOString();
+  saveData();
+  renderNotes();
+}
+
+function deleteCurrentNote() {
+  const note = getCurrentNote();
+  if (!note) return;
+  state.data.notes = state.data.notes.filter(item => item.id !== note.id);
+  state.selectedNoteId = null;
+  saveData();
+  renderNotes();
+}
+
+/* --------------------------------------------------------------------------
+   Exam countdown system
+   -------------------------------------------------------------------------- */
+
+function bindExamEvents() {
+  $("#examForm").addEventListener("submit", handleExamSubmit);
+  clearInterval(state.countdownInterval);
+  state.countdownInterval = setInterval(renderExams, 1000);
+}
+
+function handleExamSubmit(event) {
+  event.preventDefault();
+  const existingId = $("#examId").value;
+  const payload = {
+    subject: $("#examSubject").value.trim(),
+    date: $("#examDate").value,
+    time: $("#examTime").value || "09:00",
+    priority: $("#examPriority").value
+  };
+
+  if (!payload.subject || !payload.date) {
+    showToast("Exam needs a date", "Add subject and exam date.");
+    return;
+  }
+
+  if (existingId) {
+    Object.assign(state.data.exams.find(item => item.id === existingId), payload);
+    showToast("Exam updated", payload.subject);
+  } else {
+    state.data.exams.push({ id: uid("exam"), createdAt: new Date().toISOString(), ...payload });
+    showToast("Exam added", payload.subject);
+  }
+
+  event.target.reset();
+  $("#examId").value = "";
+  $("#examTime").value = "09:00";
+  saveData();
+  renderAll();
+}
+
+function renderExams() {
+  const container = $("#examList");
+  const exams = [...state.data.exams].sort((a, b) =>
+    new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`)
+  );
+
+  if (!exams.length) {
+    container.innerHTML = emptyState("Add exam dates to start countdowns.");
+    return;
+  }
+
+  container.innerHTML = exams.map(exam => {
+    const countdown = getCountdown(exam);
+    return `
+      <article class="item-card">
+        <div class="item-title">${escapeHTML(exam.subject)}</div>
+        <div class="item-meta">
+          <span class="priority-pill priority-${exam.priority}">${exam.priority}</span>
+          <span>${formatDate(exam.date)} ${formatTime(exam.time)}</span>
+        </div>
+        <h3>${countdown}</h3>
+        <div class="item-actions">
+          <button data-exam-edit="${exam.id}">Edit</button>
+          <button data-exam-delete="${exam.id}">Delete</button>
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  container.querySelectorAll("[data-exam-edit]").forEach(button => {
+    button.addEventListener("click", () => editExam(button.dataset.examEdit));
+  });
+  container.querySelectorAll("[data-exam-delete]").forEach(button => {
+    button.addEventListener("click", () => deleteExam(button.dataset.examDelete));
+  });
+
+  renderDashboardExams();
+}
+
+function getCountdown(exam) {
+  const target = new Date(`${exam.date}T${exam.time || "00:00"}`);
+  const distance = target - new Date();
+  if (distance <= 0) return "Exam time";
+  const days = Math.floor(distance / 86400000);
+  const hours = Math.floor((distance % 86400000) / 3600000);
+  const minutes = Math.floor((distance % 3600000) / 60000);
+  const seconds = Math.floor((distance % 60000) / 1000);
+  return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+}
+
+function editExam(id) {
+  const exam = state.data.exams.find(item => item.id === id);
+  if (!exam) return;
+  $("#examId").value = exam.id;
+  $("#examSubject").value = exam.subject;
+  $("#examDate").value = exam.date;
+  $("#examTime").value = exam.time;
+  $("#examPriority").value = exam.priority;
+}
+
+function deleteExam(id) {
+  state.data.exams = state.data.exams.filter(item => item.id !== id);
+  saveData();
+  renderAll();
+}
+
+/* --------------------------------------------------------------------------
+   GPA and CGPA calculator
+   -------------------------------------------------------------------------- */
+
+function bindGpaEvents() {
+  $("#gpaForm").addEventListener("submit", handleGpaSubmit);
+  $("#gpaMarks").addEventListener("input", event => {
+    $("#gpaGrade").value = marksToGradePoint(Number(event.target.value) || 0);
+  });
+}
+
+function handleGpaSubmit(event) {
+  event.preventDefault();
+  const existingId = $("#gpaId").value;
+  const payload = {
+    subject: $("#gpaSubject").value.trim(),
+    semester: clamp(Number($("#gpaSemester").value) || 1, 1, 12),
+    credits: clamp(Number($("#gpaCredits").value) || 1, 1, 10),
+    marks: clamp(Number($("#gpaMarks").value) || 0, 0, 100),
+    grade: clamp(Number($("#gpaGrade").value) || 0, 0, 10)
+  };
+
+  if (!payload.subject) return;
+
+  if (existingId) {
+    Object.assign(state.data.grades.find(item => item.id === existingId), payload);
+  } else {
+    state.data.grades.push({ id: uid("grade"), ...payload });
+  }
+
+  event.target.reset();
+  $("#gpaId").value = "";
+  $("#gpaSemester").value = 1;
+  $("#gpaCredits").value = 3;
+  $("#gpaMarks").value = 85;
+  $("#gpaGrade").value = 9;
+  saveData();
+  renderAll();
+}
+
+function marksToGradePoint(marks) {
+  if (marks >= 90) return 10;
+  if (marks >= 80) return 9;
+  if (marks >= 70) return 8;
+  if (marks >= 60) return 7;
+  if (marks >= 50) return 6;
+  if (marks >= 40) return 5;
+  return 0;
+}
+
+function renderGpa() {
+  const grades = state.data.grades;
+  const currentSemester = grades.reduce((max, grade) => Math.max(max, grade.semester), 1);
+  const semesterGrades = grades.filter(grade => grade.semester === currentSemester);
+  $("#currentGpa").textContent = calculateWeightedGpa(semesterGrades).toFixed(2);
+  $("#currentCgpa").textContent = calculateWeightedGpa(grades).toFixed(2);
+
+  if (!grades.length) {
+    $("#gpaList").innerHTML = emptyState("Add subject grades to calculate GPA.");
+    return;
+  }
+
+  $("#gpaList").innerHTML = grades
+    .sort((a, b) => a.semester - b.semester)
+    .map(grade => `
+      <article class="item-card">
+        <div class="item-title">${escapeHTML(grade.subject)}</div>
+        <div class="item-meta">
+          <span>Semester ${grade.semester}</span>
+          <span>${grade.credits} credits</span>
+          <span>${grade.marks} marks</span>
+          <span>${grade.grade} GP</span>
+        </div>
+        <div class="item-actions">
+          <button data-grade-edit="${grade.id}">Edit</button>
+          <button data-grade-delete="${grade.id}">Delete</button>
+        </div>
+      </article>
+    `).join("");
+
+  $("#gpaList").querySelectorAll("[data-grade-edit]").forEach(button => {
+    button.addEventListener("click", () => editGrade(button.dataset.gradeEdit));
+  });
+  $("#gpaList").querySelectorAll("[data-grade-delete]").forEach(button => {
+    button.addEventListener("click", () => deleteGrade(button.dataset.gradeDelete));
+  });
+}
+
+function calculateWeightedGpa(grades) {
+  const totalCredits = grades.reduce((sum, grade) => sum + Number(grade.credits), 0);
+  if (!totalCredits) return 0;
+  const weighted = grades.reduce((sum, grade) => sum + Number(grade.grade) * Number(grade.credits), 0);
+  return weighted / totalCredits;
+}
+
+function editGrade(id) {
+  const grade = state.data.grades.find(item => item.id === id);
+  if (!grade) return;
+  $("#gpaId").value = grade.id;
+  $("#gpaSubject").value = grade.subject;
+  $("#gpaSemester").value = grade.semester;
+  $("#gpaCredits").value = grade.credits;
+  $("#gpaMarks").value = grade.marks;
+  $("#gpaGrade").value = grade.grade;
+}
+
+function deleteGrade(id) {
+  state.data.grades = state.data.grades.filter(item => item.id !== id);
+  saveData();
+  renderAll();
+}
+
+/* --------------------------------------------------------------------------
+   Weekly timetable manager
+   -------------------------------------------------------------------------- */
+
+function bindTimetableEvents() {
+  $("#timetableForm").addEventListener("submit", handleTimetableSubmit);
+}
+
+function handleTimetableSubmit(event) {
+  event.preventDefault();
+  const existingId = $("#timetableId").value;
+  const payload = {
+    subject: $("#timetableSubject").value.trim(),
+    day: $("#timetableDay").value,
+    start: $("#timetableStart").value,
+    end: $("#timetableEnd").value,
+    room: $("#timetableRoom").value.trim(),
+    teacher: $("#timetableTeacher").value.trim(),
+    color: $("#timetableColor").value
+  };
+
+  if (!payload.subject) return;
+
+  if (minuteValue(payload.end) <= minuteValue(payload.start)) {
+    showToast("Invalid timing", "Class end time must be after start time.");
+    return;
+  }
+
+  if (existingId) {
+    Object.assign(state.data.timetable.find(item => item.id === existingId), payload);
+    showToast("Class updated", payload.subject);
+  } else {
+    state.data.timetable.push({ id: uid("class"), ...payload });
+    showToast("Class added", payload.subject);
+  }
+
+  event.target.reset();
+  $("#timetableId").value = "";
+  $("#timetableStart").value = "09:00";
+  $("#timetableEnd").value = "10:00";
+  $("#timetableColor").value = "#5ddcff";
+  saveData();
+  renderAll();
+}
+
+function renderTimetable() {
+  const times = buildTimetableTimes();
+  const now = new Date();
+  const today = getTodayName();
+  let html = `<div class="tt-head">Time</div>`;
+  html += TIMETABLE_DAYS.map(day => `<div class="tt-head">${day.slice(0, 3)}</div>`).join("");
+
+  times.forEach(time => {
+    html += `<div class="tt-time">${formatTime(time)}</div>`;
+    TIMETABLE_DAYS.forEach(day => {
+      const entries = state.data.timetable
+        .filter(item => item.day === day && item.start === time)
+        .sort((a, b) => minuteValue(a.start) - minuteValue(b.start));
+      html += `
+        <div class="tt-cell" data-tt-day="${day}" data-tt-time="${time}">
+          ${entries.map(entry => timetableEntryTemplate(entry, day === today && isCurrentClass(entry, now))).join("")}
+        </div>
+      `;
+    });
+  });
+
+  $("#timetableGrid").innerHTML = html;
+  bindTimetableCardEvents();
+  renderTimetableWidgets();
+}
+
+function buildTimetableTimes() {
+  const starts = state.data.timetable.map(item => item.start);
+  const base = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"];
+  return [...new Set([...base, ...starts])].sort((a, b) => minuteValue(a) - minuteValue(b));
+}
+
+function timetableEntryTemplate(entry, current) {
+  return `
+    <article class="tt-entry ${current ? "current" : ""}" draggable="true" data-tt-id="${entry.id}" style="--entry-color:${entry.color}">
+      <strong>${escapeHTML(entry.subject)}</strong>
+      <small>${formatTime(entry.start)} - ${formatTime(entry.end)}</small>
+      <small>${escapeHTML(entry.room || "Room TBA")}</small>
+      <small>${escapeHTML(entry.teacher || "Teacher TBA")}</small>
+      <div class="tt-entry-actions">
+        <button data-tt-edit="${entry.id}">Edit</button>
+        <button data-tt-delete="${entry.id}">Delete</button>
+      </div>
+    </article>
+  `;
+}
+
+function bindTimetableCardEvents() {
+  $("#timetableGrid").querySelectorAll("[data-tt-edit]").forEach(button => {
+    button.addEventListener("click", event => {
+      event.stopPropagation();
+      editTimetable(button.dataset.ttEdit);
+    });
+  });
+  $("#timetableGrid").querySelectorAll("[data-tt-delete]").forEach(button => {
+    button.addEventListener("click", event => {
+      event.stopPropagation();
+      deleteTimetable(button.dataset.ttDelete);
+    });
+  });
+  $("#timetableGrid").querySelectorAll(".tt-entry").forEach(entry => {
+    entry.addEventListener("dragstart", event => {
+      state.draggedTimetableId = event.currentTarget.dataset.ttId;
+    });
+  });
+  $("#timetableGrid").querySelectorAll(".tt-cell").forEach(cell => {
+    cell.addEventListener("dragover", event => event.preventDefault());
+    cell.addEventListener("drop", event => {
+      event.preventDefault();
+      const entry = state.data.timetable.find(item => item.id === state.draggedTimetableId);
+      if (!entry) return;
+      entry.day = cell.dataset.ttDay;
+      entry.start = cell.dataset.ttTime;
+      const duration = 60;
+      entry.end = minutesToClock(minuteValue(entry.start) + duration);
+      state.draggedTimetableId = null;
+      saveData();
+      renderAll();
+    });
+  });
+}
+
+function editTimetable(id) {
+  const entry = state.data.timetable.find(item => item.id === id);
+  if (!entry) return;
+  $("#timetableId").value = entry.id;
+  $("#timetableSubject").value = entry.subject;
+  $("#timetableDay").value = entry.day;
+  $("#timetableStart").value = entry.start;
+  $("#timetableEnd").value = entry.end;
+  $("#timetableRoom").value = entry.room;
+  $("#timetableTeacher").value = entry.teacher;
+  $("#timetableColor").value = entry.color;
+}
+
+function deleteTimetable(id) {
+  state.data.timetable = state.data.timetable.filter(item => item.id !== id);
+  saveData();
+  renderAll();
+}
+
+function isCurrentClass(entry, now = new Date()) {
+  const current = now.getHours() * 60 + now.getMinutes();
+  return current >= minuteValue(entry.start) && current <= minuteValue(entry.end);
+}
+
+function renderTimetableWidgets() {
+  const today = getTodayName();
+  const nowMinutes = new Date().getHours() * 60 + new Date().getMinutes();
+  const todaysEntries = state.data.timetable
+    .filter(item => item.day === today)
+    .sort((a, b) => minuteValue(a.start) - minuteValue(b.start));
+  const next = todaysEntries.find(item => minuteValue(item.end) >= nowMinutes);
+  const remaining = todaysEntries.filter(item => minuteValue(item.end) >= nowMinutes);
+
+  $("#dashNextClass").textContent = next ? next.subject : "No class";
+  $("#dashNextClassMeta").textContent = next
+    ? `${formatTime(next.start)} in ${next.room || "room TBA"}`
+    : "No remaining class today";
+  $("#nextClassPill").textContent = next
+    ? `Next: ${next.subject} at ${formatTime(next.start)}`
+    : "No upcoming class";
+
+  const dashboard = $("#dashboardTimetable");
+  if (!todaysEntries.length) {
+    dashboard.innerHTML = emptyState("No classes scheduled today.");
+  } else {
+    dashboard.innerHTML = remaining.length ? remaining.slice(0, 5).map(entry => `
+      <div class="item-card">
+        <div class="item-title">${escapeHTML(entry.subject)}</div>
+        <div class="item-meta">
+          <span>${formatTime(entry.start)} - ${formatTime(entry.end)}</span>
+          <span>${escapeHTML(entry.room || "Room TBA")}</span>
+          <span>${escapeHTML(entry.teacher || "Teacher TBA")}</span>
+        </div>
+      </div>
+    `).join("") : emptyState("All classes are complete for today.");
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Notifications, reminders, and toasts
+   -------------------------------------------------------------------------- */
+
+function startReminderLoop() {
+  clearInterval(state.reminderInterval);
+  state.reminderInterval = setInterval(checkReminders, 60000);
+  setTimeout(checkReminders, 1200);
+}
+
+function checkReminders() {
+  state.data.assignments.forEach(assignment => {
+    if (assignment.completed || !assignment.deadline) return;
+    const due = daysUntil(assignment.deadline);
+    if (due >= 0 && due <= 1) {
+      const key = `assignment-${assignment.id}-${due}`;
+      if (!wasReminderShown(key)) {
+        addNotification("Assignment deadline", `${assignment.title} is ${due === 0 ? "due today" : "due tomorrow"}.`, "assignment");
+        setRememberedReminder(key);
+      }
+    }
+  });
+
+  state.data.exams.forEach(exam => {
+    const due = daysUntil(exam.date);
+    if (due >= 0 && due <= 3) {
+      const key = `exam-${exam.id}-${due}`;
+      if (!wasReminderShown(key)) {
+        addNotification("Upcoming exam", `${exam.subject} is in ${due} day(s).`, "exam");
+        setRememberedReminder(key);
+      }
+    }
+  });
+
+  state.data.attendance.forEach(subject => {
+    const value = percent(subject.attended, subject.total);
+    if (subject.total && value < subject.goal) {
+      const key = `attendance-${subject.id}`;
+      if (!wasReminderShown(key)) {
+        addNotification("Attendance warning", `${subject.subject} is at ${value}%, below your ${subject.goal}% goal.`, "attendance");
+        setRememberedReminder(key);
+      }
+    }
+  });
+
+  const now = new Date();
+  const today = getTodayName();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  state.data.timetable
+    .filter(item => item.day === today)
+    .forEach(entry => {
+      const diff = minuteValue(entry.start) - currentMinutes;
+      if (diff >= 0 && diff <= 10) {
+        const key = `class-${entry.id}-${entry.start}`;
+        if (!wasReminderShown(key)) {
+          addNotification("Class reminder", `${entry.subject} starts at ${formatTime(entry.start)}.`, "timetable");
+          setRememberedReminder(key);
+        }
+      }
+    });
+}
+
+function addNotification(title, body, type = "general") {
+  const notification = {
+    id: uid("notify"),
+    title,
+    body,
+    type,
+    createdAt: new Date().toISOString()
+  };
+  state.data.notifications.unshift(notification);
+  state.data.notifications = state.data.notifications.slice(0, 30);
+  saveData();
+  renderNotifications();
+  showToast(title, body);
+}
+
+function renderNotifications() {
+  const list = $("#notificationList");
+  $("#notificationDot").classList.toggle("hidden", !state.data.notifications.length);
+
+  if (!state.data.notifications.length) {
+    list.innerHTML = emptyState("No notifications yet.");
+    return;
+  }
+
+  list.innerHTML = state.data.notifications.map(item => `
+    <article class="notification-item">
+      <strong>${escapeHTML(item.title)}</strong>
+      <span>${escapeHTML(item.body)}</span>
+      <small>${new Date(item.createdAt).toLocaleString()} • ${escapeHTML(item.type)}</small>
+    </article>
+  `).join("");
+}
+
+function showToast(title, body = "") {
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.innerHTML = `<strong>${escapeHTML(title)}</strong>${body ? `<span>${escapeHTML(body)}</span>` : ""}`;
+  $("#toastStack").appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateY(12px)";
+    setTimeout(() => toast.remove(), 220);
+  }, 3400);
+}
+
+/* --------------------------------------------------------------------------
+   Quick actions
+   -------------------------------------------------------------------------- */
+
+function bindQuickActions() {
+  $("#quickAddBtn").addEventListener("click", () => toggleQuickMenu());
+  $("#floatingAction").addEventListener("click", () => toggleQuickMenu());
+  $("#quickMenu").querySelectorAll("[data-quick]").forEach(button => {
+    button.addEventListener("click", () => handleQuickAction(button.dataset.quick));
+  });
+}
+
+function toggleQuickMenu(force) {
+  const menu = $("#quickMenu");
+  menu.classList.toggle("open", typeof force === "boolean" ? force : !menu.classList.contains("open"));
+}
+
+function handleQuickAction(type) {
+  toggleQuickMenu(false);
+  const map = {
+    task: ["tasks", "#taskTitle"],
+    assignment: ["assignments", "#assignmentTitle"],
+    note: ["notes", null],
+    exam: ["exams", "#examSubject"],
+    class: ["timetable", "#timetableSubject"]
+  };
+  const [section, focusTarget] = map[type];
+  activateSection(section);
+  if (type === "note") {
+    createNote();
+    return;
+  }
+  setTimeout(() => $(focusTarget)?.focus(), 120);
+}
+
+/* --------------------------------------------------------------------------
+   Analytics dashboard with Chart.js CDN and graceful fallback
+   -------------------------------------------------------------------------- */
+
+function renderAnalytics() {
+  renderInsightCards();
+  if (!window.Chart) {
+    renderChartFallbacks();
+    return;
+  }
+
+  const textColor = getComputedStyle(document.body).getPropertyValue("--text").trim();
+  const lineColor = getComputedStyle(document.body).getPropertyValue("--line").trim();
+  const accent = getComputedStyle(document.body).getPropertyValue("--accent").trim();
+  const accentTwo = getComputedStyle(document.body).getPropertyValue("--accent-2").trim();
+  const danger = getComputedStyle(document.body).getPropertyValue("--danger").trim();
+  const labels = lastSevenDays().map(day => day.label);
+  const keys = lastSevenDays().map(day => day.key);
+
+  drawChart("studyHoursChart", {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [{
+        label: "Study hours",
+        data: keys.map(key => ((state.data.pomodoro.focusByDay[key] || 0) / 60).toFixed(2)),
+        backgroundColor: accent,
+        borderRadius: 8
+      }]
+    },
+    options: chartOptions(textColor, lineColor)
+  });
+
+  const completed = state.data.tasks.filter(task => task.completed).length;
+  const active = state.data.tasks.length - completed;
+  drawChart("taskChart", {
+    type: "doughnut",
+    data: {
+      labels: ["Completed", "Active"],
+      datasets: [{
+        data: [completed, active],
+        backgroundColor: [accentTwo, danger],
+        borderWidth: 0
+      }]
+    },
+    options: doughnutOptions(textColor)
+  });
+
+  drawChart("attendanceChart", {
+    type: "line",
+    data: {
+      labels: state.data.attendance.map(item => item.subject),
+      datasets: [{
+        label: "Attendance %",
+        data: state.data.attendance.map(item => percent(item.attended, item.total)),
+        borderColor: accent,
+        backgroundColor: "rgba(93, 220, 255, 0.18)",
+        fill: true,
+        tension: 0.35
+      }]
+    },
+    options: chartOptions(textColor, lineColor)
+  });
+
+  const asgDone = state.data.assignments.filter(item => item.completed).length;
+  const asgOpen = state.data.assignments.length - asgDone;
+  drawChart("assignmentChart", {
+    type: "bar",
+    data: {
+      labels: ["Completed", "Pending"],
+      datasets: [{
+        label: "Assignments",
+        data: [asgDone, asgOpen],
+        backgroundColor: [accentTwo, danger],
+        borderRadius: 8
+      }]
+    },
+    options: chartOptions(textColor, lineColor)
+  });
+}
+
+function drawChart(canvasId, config) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  if (state.charts[canvasId]) {
+    state.charts[canvasId].destroy();
+  }
+  state.charts[canvasId] = new Chart(canvas, config);
+}
+
+function chartOptions(textColor, lineColor) {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        labels: { color: textColor }
+      }
+    },
+    scales: {
+      x: {
+        ticks: { color: textColor },
+        grid: { color: lineColor }
+      },
+      y: {
+        ticks: { color: textColor },
+        grid: { color: lineColor },
+        beginAtZero: true
+      }
+    }
+  };
+}
+
+function doughnutOptions(textColor) {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        labels: { color: textColor }
+      }
+    }
+  };
+}
+
+function renderChartFallbacks() {
+  $$(".chart-card").forEach(card => {
+    if (!card.querySelector(".chart-fallback")) {
+      const fallback = document.createElement("div");
+      fallback.className = "empty-state chart-fallback";
+      fallback.textContent = "Charts load when Chart.js CDN is available.";
+      card.appendChild(fallback);
+    }
+  });
+}
+
+function lastSevenDays() {
+  return Array.from({ length: 7 }, (_, index) => {
+    const date = new Date();
+    date.setDate(date.getDate() - (6 - index));
+    return {
+      key: toISODate(date),
+      label: date.toLocaleDateString(undefined, { weekday: "short" })
+    };
+  });
+}
+
+function renderInsightCards() {
+  const focusByDay = state.data.pomodoro.focusByDay || {};
+  const productiveDay = Object.entries(focusByDay)
+    .sort((a, b) => b[1] - a[1])[0];
+  const overdueAssignments = state.data.assignments.filter(item => !item.completed && isPastDate(item.deadline)).length;
+  const activeTasks = state.data.tasks.filter(item => !item.completed).length;
+  const notesWords = state.data.notes.reduce((sum, note) => sum + wordCount(stripHTML(note.body)), 0);
+
+  $("#insightGrid").innerHTML = [
+    ["Study streak", `${getStudyStreak(state.data)} days`, "Focus sessions across consecutive days"],
+    ["Most productive day", productiveDay ? formatDate(productiveDay[0]) : "No data", productiveDay ? `${productiveDay[1]} focus minutes` : "Complete a Pomodoro first"],
+    ["Active workload", `${activeTasks} tasks`, `${overdueAssignments} overdue assignment(s)`],
+    ["Knowledge base", `${notesWords} words`, `${state.data.notes.length} saved note(s)`]
+  ].map(([label, value, detail]) => `
+    <article class="insight-card">
+      <span class="eyebrow">${escapeHTML(label)}</span>
+      <strong>${escapeHTML(value)}</strong>
+      <small>${escapeHTML(detail)}</small>
+    </article>
+  `).join("");
+}
+
+  </script>
+</body>
+</html>
